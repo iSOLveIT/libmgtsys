@@ -2,13 +2,15 @@ from datetime import datetime as dt
 
 from sqlalchemy_utils.types import ChoiceType
 
-from project.init import db
-from project.helpers.helper import PkModel
+from .. import db
+from ..helper import PkModel
+# from project.modules.users.models import User
+from ..users.models import User
 
 
 user_book = db.Table('user_book',
                      db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
-                     db.Column('user_id', db.String(30), db.ForeignKey('user.user_id')),
+                     db.Column('user_id', db.String(30), db.ForeignKey(User.id)),
                      db.Column('date_borrowed', db.DateTime, nullable=False, default=dt.now()),
                      db.Column('return_date', db.DateTime, nullable=False)
                      )
@@ -21,20 +23,20 @@ class Books(PkModel):
 
     __tablename__ = "books"
 
-    id = db.Column(db.Integer, primary_key=True, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     title = db.Column(db.String(300), nullable=False, info={'label': 'Title'})
     classification_no = db.Column(db.String(10), nullable=False, info={'label': 'Classification No.'})
     author = db.Column(db.String(300), nullable=False, info={'label': 'Author'})
     publication = db.Column(db.String(300), nullable=False, info={'label': 'Publication'})
     category = db.Column(ChoiceType(choices=CATEGORY), nullable=False, info={'label': 'Category'})
-    comments = db.Column(db.Text(300), nullable=False, info={'label': 'Comments'})
+    comments = db.Column(db.Text, nullable=False, info={'label': 'Comments'})
     date_recorded = db.Column(db.DateTime, nullable=False, default=dt.now())
     # Overall qty = current_qty + spoilt
     qty_added = db.Column(db.Integer, nullable=False)  # Number newly added
     qty_spoilt = db.Column(db.Integer, nullable=False)  # Number spoilt
     current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added)
 
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String(30), db.ForeignKey(User.id))
     batch = db.relationship('Book', backref='book_batch', lazy=True)
 
     def __repr__(self):

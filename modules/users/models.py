@@ -5,8 +5,9 @@ from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_utils.types import PasswordType, ChoiceType
 
-from project.init import db
-from project.helpers.helper import PkModel
+# from project.modules import db
+from .. import db
+from ..helper import PkModel
 
 
 class User(UserMixin, PkModel):
@@ -16,7 +17,7 @@ class User(UserMixin, PkModel):
 
     __tablename__ = "users"
 
-    user_id = db.Column(db.String(30), primary_key=True)
+    id = db.Column(db.String(30), primary_key=True)
     sid = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
     name = db.Column(db.String(300), nullable=False, info={'label': 'Name'})
     _password = db.Column(PasswordType(max_length=300, schemes=['pbkdf2_sha512']), nullable=False)
@@ -34,7 +35,7 @@ class User(UserMixin, PkModel):
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
 
     def __repr__(self):
-        return f"<User-id: {self.user_id}, User-sid: {self.sid}>"
+        return f"<User-id: {self.id}, User-sid: {self.sid}>"
 
     @hybrid_property
     def password(self):

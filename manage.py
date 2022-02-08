@@ -2,7 +2,7 @@ from pathlib import Path
 import subprocess
 import click
 
-from run import app
+from app import app
 from helpers.database import autoload_models
 
 
