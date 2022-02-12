@@ -1,5 +1,6 @@
 from flask import flash
 
+
 def alert_success(message):
 
     flash(f'''

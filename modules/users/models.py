@@ -6,7 +6,7 @@ from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_utils.types import PasswordType, ChoiceType
 
 # from project.modules import db
-from .. import db
+from .. import db, login_manager
 from ..helper import PkModel
 
 
@@ -17,10 +17,11 @@ class User(UserMixin, PkModel):
 
     __tablename__ = "users"
 
-    id = db.Column(db.String(30), primary_key=True)
+    id = db.Column(db.String(30), primary_key=True, info={'label': 'User ID'})
     sid = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
     name = db.Column(db.String(300), nullable=False, info={'label': 'Name'})
-    _password = db.Column(PasswordType(max_length=300, schemes=['pbkdf2_sha512']), nullable=False)
+    _password = db.Column(PasswordType(max_length=300, schemes=['pbkdf2_sha512']),
+                          nullable=False, info={'label': 'Password'})
     gender = db.Column(ChoiceType(choices=GENDER), nullable=False, info={'label': 'Gender'})
     date_registered = db.Column(db.DateTime, nullable=False, default=dt.now())
     last_seen = db.Column(db.DateTime, nullable=False, default=dt.now())
@@ -50,8 +51,17 @@ class User(UserMixin, PkModel):
         check = compare_digest(self._password, password)
         return check
 
-    def has_role(self, role):
-        return any(r.name == role for r in self.roles)
+    def is_admin(self):
+        r = self.role
+        return any([r.purpose == "ADMIN"])
+
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(user_id)
+
+
+login_manager.login_view = "auth.login"
 
 
 class Class(PkModel):

@@ -45,7 +45,7 @@ class Books(PkModel):
 
 class Book(PkModel):
     """Model for book table"""
-    BOOK_STATUS = [('in-stock', 'in-stock'), ('out-stock', 'out-stock')]
+    BOOK_STATUS = [('available', 'available'), ('unavailable', 'unavailable')]
 
     __tablename__ = "book"
 

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="Sophia Asebu" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		
+        <title>LearnUp - Online Library Management System</title>
+		 
+        <!-- Custom CSS -->
+        <link href="static/css/styles.css" rel="stylesheet">
+		
+		<!-- Custom Color Option -->
+		<link href="static/css/colors.css" rel="stylesheet">
+		
+    </head>
+	
+    <body class="log-bg">
+	
+        <!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
+		
+		
+        <!-- ============================================================== -->
+        <!-- Main wrapper - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <div id="main-wrapper">
+		
+            <!-- ========================== SignUp Elements ============================= -->
+			<section class="log-space">
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-lg-11 col-md-11">
+						
+							<div class="row no-gutters position-relative log_rads">
+								<div class="col-lg-6 col-md-5 bg-cover" style="background:#1f2431 url(static/img/log.png)no-repeat;">
+									<div class="lui_9okt6">
+										<div class="_loh_revu97">
+											<div id="reviews-login">
+
+												<!-- Single Reviews -->
+												<div class="_loh_r96">
+													<div class="_loh_r92">
+														<h1>Welcome to LearnUp</h1>
+													</div>
+													<div class="_loh_foot_r93">
+														<h5>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</h5>
+													</div>
+												</div>
+
+
+											</div>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-lg-6 col-md-7 position-static p-4">
+									<div class="log_wraps">
+										<a href="/auth/login" class="log-logo_head"><img src="static/img/logo.png" class="img-fluid" width="80" alt="" /></a>
+										<div class="log__heads">
+											<h4 class="mt-0 logs_title">Sign <span class="theme-cl">In</span></h4>
+										</div>
+										<form action="" method="POST">
+											{% for field in form %}
+												<div class="form-group">
+													{% if field.id not in ['csrf_token'] %}
+														{{ field.label }}
+													{% endif %}
+													{{ field }}
+												</div>
+											{%endfor%}
+
+											<div class="form-group">
+												<button class="btn btn_apply w-100 btn-primary">Sign In</button>
+											</div>
+										</form>
+
+										<div class="form-group text-center mb-0 mt-3 theme-cl">
+											Contact the Admin if you have any account related issues?
+										</div>
+										
+									</div>
+								</div>
+							</div>
+						
+						</div>
+					</div>
+				</div>
+			</section>
+			<!-- ========================== Login Elements ============================= -->
+			
+
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Wrapper -->
+		<!-- ============================================================== -->
+
+		<!-- ============================================================== -->
+		<!-- All Jquery -->
+		<!-- ============================================================== -->
+		<script src="static/js/jquery.min.js"></script>
+		<script src="static/js/popper.min.js"></script>
+		<script src="static/js/bootstrap.min.js"></script>
+		<script src="static/js/select2.min.js"></script>
+		<script src="static/js/slick.js"></script>
+		<script src="static/js/jquery.counterup.min.js"></script>
+		<script src="static/js/counterup.min.js"></script>
+		<script src="static/js/custom.js"></script>
+		<!-- ============================================================== -->
+		<!-- This page plugins -->
+		<!-- ============================================================== -->
+
+	</body>
+</html>
