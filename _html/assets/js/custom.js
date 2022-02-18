@@ -489,9 +489,21 @@ $(function() {
 		placeholder: "Choose Category",
 		allowClear: true
 	});
-	// Select User category
-	$('#u-category').select2({
-		placeholder: "Choose User",
+	// Select Class category
+	$('#cl-category').select2({
+		placeholder: "Choose Class",
+		allowClear: true
+	});
+	
+	// Select Department category
+	$('#dp-category').select2({
+		placeholder: "Choose Department",
+		allowClear: true
+	});
+
+	// Select Role category
+	$('#ro-category').select2({
+		placeholder: "Choose Role",
 		allowClear: true
 	});
 	
@@ -502,3 +514,16 @@ $(function() {
 	});
 	
 });
+
+let searchInputs = document.querySelectorAll(".form-control");
+
+for (let searchInput of searchInputs) {
+    if (searchInput.oninput == null){
+        let btn = document.getElementById("view_user_btn");
+        btn.innerHTML = "Search All";
+    } 
+    else {
+        let btn = document.getElementById("view_user_btn");
+        btn.innerHTML = "Search";
+    }
+}

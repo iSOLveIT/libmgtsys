@@ -21,6 +21,7 @@
 ------------- List Of Table ----------*/
 
 /* CSS Document */
+@import url(../css/custom.css);
 @import url(../css/plugins/animation.css);
 @import url(../css/plugins/bootstrap.min.css);
 @import url(../css/plugins/date-picker.css);
@@ -10106,4 +10107,3 @@ ul.cources_facts_list li {
     padding:5px 10px;
 }
 }
-
