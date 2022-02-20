@@ -135,7 +135,88 @@
 							</div>
 							<!-- /Row -->
 							
+							<!-- Row -->
+							<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
+							<div class="row mb-3">
+								
+								<div class="col-lg-4 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
+											<label for="userID">User ID</label>
+											<input type="text" id="userID" class="form-control" placeholder="10087872" />
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-4 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
+											<label for="return_date">Return Date</label>
+											<input type="date" id="return_date" class="form-control"/>
+										</div>
+									</div>
+								</div>
+								
+								<div class="col-lg-2 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
+											<label style="visibility:hidden;">Search</label>
+											<button class="btn search-btn full-width" 
+											style="padding: 15px 25px;border-radius: 5px;" id="search_borrowed_books_btn">
+												Search
+											</button>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!-- /Row -->
 							
+							<!-- Row -->
+							<div class="mb-3"><h5 class="mb-0">Results</h5></div>
+							<div class="row mb-2">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="dashboard_container">
+										
+										<div class="dashboard_container_body">
+											<div class="table-responsive">
+												<table class="table">
+													<thead class="thead-dark">
+														<tr>
+															<th scope="col">Access No.</th>
+															<th scope="col">Title</th>
+															<th scope="col">Date Borrowed</th>
+															<th scope="col">Return Date</th>
+															<th scope="col"></th>
+															<th scope="col"></th>
+														</tr>
+													</thead>
+													<tbody>
+														<tr>
+															<th scope="row">2203</th>
+															<td>Oral English for Secondary Schools</td>
+															<td>20-02-2022</td>
+															<td>22-02-2022</td>
+															<td>
+																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
+																	<i class="ti-bell"></i> Send Notice
+																</button>
+															</td>
+															<td>
+																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
+																	<i class="ti-trash"></i> Returned
+																</button>
+															</td>
+														</tr>
+														
+													</tbody>
+												</table>
+											</div>
+										</div>
+										
+									</div>
+								</div>
+								
+							</div>
+							<!-- /Row -->
 							
 							
 						</div>

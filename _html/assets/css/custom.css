@@ -16,3 +16,7 @@
     -webkit-animation-name: slideInRight;
     animation-name: slideInRight;
 }
+
+[class*=" ti-"], [class^=ti-]{
+    font-size: 1rem !important;
+}

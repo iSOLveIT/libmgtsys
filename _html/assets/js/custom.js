@@ -507,36 +507,24 @@ $(function() {
 		allowClear: true
 	});
 	
-	// country
-	$('#country').select2({
-		placeholder: "Choose Country",
+	// programme
+	$('.programme').select2({
+		placeholder: "Choose Programme",
 		allowClear: true
 	});
 
 	// gender
-	$('#gender-1').select2({
+	$('.gender').select2({
 		placeholder: "Choose Gender",
 		allowClear: true
 	});
-	$('#gender-2').select2({
-		placeholder: "Choose Gender",
-		allowClear: true
-	});
-	$('#gender-3').select2({
-		placeholder: "Choose Gender",
-		allowClear: true
-	});
-
+	
 	// track
 	$('#track').select2({
 		placeholder: "Choose Track",
 		allowClear: true
 	});
 
-	
-	$('.popover-dismiss').popover({
-		trigger: 'focus'
-	});
 });
 
 // let searchInputs = document.querySelectorAll(".form-control");
