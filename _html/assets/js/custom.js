@@ -519,11 +519,18 @@ $(function() {
 		allowClear: true
 	});
 	
+	// current_class
+	$('#current_class').select2({
+		placeholder: "Choose Class",
+		allowClear: true
+	});
+
 	// track
 	$('#track').select2({
 		placeholder: "Choose Track",
 		allowClear: true
 	});
+
 
 });
 
