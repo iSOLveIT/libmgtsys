@@ -2263,7 +2263,7 @@ outline:none;
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
 }
-/*----------- GLobal Settings: Custom Radio Button ------------*/
+/*----------- GLobal Settings: Custom Radio Button ------------
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
     position: absolute;
@@ -2313,7 +2313,7 @@ outline:none;
     -webkit-transform: scale(1);
     transform: scale(1);
 }
-/*------------- GLobal Settings: Bootstrap 4 hack --------------*/
+------------- GLobal Settings: Bootstrap 4 hack --------------*/
 .card-columns {
   -webkit-column-gap: 30px;
   -moz-column-gap: 30px;
@@ -8180,6 +8180,11 @@ ul.cart_list li strong {
     margin: 0;
 	font-weight:400;
     font-size: 17px;
+}
+.dashboard_fl_1 h3 {
+    margin: 0;
+	font-weight:bold;
+    font-size: 20px;
 }
 .dashboard_container_body {
     padding:0;

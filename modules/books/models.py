@@ -29,7 +29,7 @@ class Books(PkModel):
     author = db.Column(db.String(300), nullable=False, info={'label': 'Author'})
     publication = db.Column(db.String(300), nullable=False, info={'label': 'Publication'})
     category = db.Column(ChoiceType(choices=CATEGORY), nullable=False, info={'label': 'Category'})
-    comments = db.Column(db.Text, nullable=False, info={'label': 'Comments'})
+    comments = db.Column(db.Text, info={'label': 'Comments'})
     date_recorded = db.Column(db.DateTime, nullable=False, default=dt.now())
     # Overall qty = current_qty + spoilt
     qty_added = db.Column(db.Integer, nullable=False)  # Number newly added

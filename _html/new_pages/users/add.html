@@ -135,9 +135,231 @@
 								</div>
 							</div>
 							<!-- /Row -->
+
+							<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="content-box-01">
+										<div class="content-box-01-head mb-3">
+											<h5 class="mb-0 font-normal" style="text-transform: none;">
+												You can add/register users either by importing a file (must be an excel or csv file)
+												or by filling in the user registration form. 
+												You can download <a href="#" download style="color: #0000ff;">a sample of the import file</a>. <br>
+												The excel or csv file should have these column titles at the top row: 
+												UserID, AccountType, Name, Gender, Class/Department, and AdmissionYear. <br>
+												<span style="font-weight:600;">Note:</span> AdmissionYear is not required for Admin & Teacher account types.
+											
+											</h5>
+										</div>
+									</div>
+							</div>
+
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="dashboard_container">
+										<div class="dashboard_container_header">
+											<div class="dashboard_fl_1">
+												<h4>
+													Import File
+												</h4>
+												
+											</div>
+										</div>
+										<div class="dashboard_container_body">
+											<div class="submit-section">
+												<form action="#" method="get" enctype="multipart/form-data">
+													<div class="form-row">
+														<div class="form-group col-md-12">
+															<div class="input-group">
+															<div class="custom-file">
+																<input type="file" class="custom-file-input" id="inputGroupFile04" style="margin-top: 10px;" aria-describedby="inputGroupFileAddon04" accept=".xlsx .csv">
+																<label class="custom-file-label" for="inputGroupFile04">
+																<i class="ti-plus"></i>	Add File
+																</label>
+															</div>
+															<div class="input-group-append">
+																<button class="btn" type="button" id="inputGroupFileAddon04" 
+																style="border-radius: 0 4px 4px 0;padding: 0 10px;background: #131b31;border: 1px solid #131b31;">
+																	<i class="ti-thumb-up"></i> Submit</button>
+															</div>
+															</div>
+														</div>														
+													</div>
+												</form>
+											</div>								
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<!-- /Row -->
 							
-							
-							
+							<!-- Row -->
+							<div class="row">
+								<div class="col-5">
+									<hr>
+								</div>
+								<div class="col-2 text-center">
+									<h1>OR</h1>
+								</div>
+								<div class="col-5">
+									<hr>
+								</div>
+							</div>
+							<!-- /Row -->
+
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="dashboard_container">
+										<div class="dashboard_container_header">
+											<div class="dashboard_fl_1">
+												<h4>Fill User Registration Form</h4>
+											</div>
+										</div>
+										<div class="dashboard_container_body p-4">
+											<!-- User info -->
+											<div class="submit-section">
+												<form action="#" method="get">
+													
+													<div class="form-group col-md-12">
+														<label style="font-size:1rem;font-weight:bold;">
+															Choose the Account Type</label> <br>
+
+														<input type="radio" value="is_student" name="account_type" id="student_account" checked> <label>Student</label> &nbsp;&nbsp;&nbsp;
+														<input type="radio" value="is_teacher" name="account_type" id="teacher_account"> <label>Teacher</label> &nbsp;&nbsp;&nbsp;
+														<input type="radio" value="is_admin" name="account_type" id="admin_account"> <label>Admin</label> 
+													</div>
+
+													<!-- Student form -->
+													<div class="form-row slideInRight form-anime" id="student_form">
+														<div class="form-group col-md-6">
+															<label>Student ID</label>
+															<input type="text" class="form-control" placeholder="10087872">
+														</div>
+														
+														<div class="form-group col-md-6">
+															<label>Your Name</label>
+															<input type="text" class="form-control" placeholder="Shaurya Preet">
+														</div>
+														
+														
+														<div class="form-group col-md-6">
+															<label>Gender</label>
+															<select id="gender-1" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="M">Male</option>
+																<option value="F">Female</option>
+															</select>
+														</div>
+														
+														<div class="form-group col-md-6">
+															<label>Admission Year</label>
+															<input type="month" class="form-control">
+														</div>
+														
+														<div class="form-group col-md-6">
+															<label>Class</label>
+															<select id="cl-category" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="GD">Gold</option>
+																<option value="F">Green</option>
+															</select>
+														</div>
+														
+														
+														
+													</div>
+													<!-- Student form -->
+
+													<!-- Teacher form -->
+													<div class="form-row d-none" id="teacher_form">
+														<div class="form-group col-md-6">
+															<label>Staff ID</label>
+															<input type="text" class="form-control" placeholder="TA10218761">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Your Name</label>
+															<input type="text" class="form-control" placeholder="Shaurya Preet">
+														</div>
+														
+														
+														<div class="form-group col-md-6">
+															<label>Gender</label>
+															<select id="gender-2" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="M">Male</option>
+																<option value="F">Female</option>
+															</select>
+														</div>
+														
+														
+														<div class="form-group col-md-6">
+															<label>Department</label>
+															<select id="dp-category" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="GD">Gold</option>
+																<option value="F">Green</option>
+															</select>
+														</div>
+														
+														
+														
+													</div>
+													<!-- Teacher form -->
+													
+													<!-- Admin form -->
+													<div class="form-row d-none" id="admin_form">
+														<div class="form-group col-md-6">
+															<label>Admin ID</label>
+															<input type="text" class="form-control" placeholder="AD10318723">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Your Name</label>
+															<input type="text" class="form-control" placeholder="Shaurya Preet">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Password</label>
+															<input type="password" class="form-control" placeholder="Enter Password">
+														</div>
+														
+														
+														<div class="form-group col-md-6">
+															<label>Gender</label>
+															<select id="gender-3" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="M">Male</option>
+																<option value="F">Female</option>
+															</select>
+														</div>
+																												
+													</div>
+													<!-- Admin form -->
+
+													<div class="form-row">
+														<div class="form-group col-md-2">
+															<div>
+																<button class="btn search-btn full-width rounded">
+																	<i class="ti-thumb-up"></i> Submit
+																</button>
+															</div>
+														</div>
+													</div>	
+
+												</form>
+											</div>
+											<!-- User info -->
+											
+											
+											
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<!-- /Row -->
 							
 						</div>
 					
