@@ -531,6 +531,20 @@ $(function() {
 		allowClear: true
 	});
 
+	// dept
+	$('.dept').select2({
+		placeholder: "Choose Department",
+		allowClear: true
+	});
+
+	// account_type
+	$('.account_type').select2({
+		placeholder: "Choose Account Type",
+		allowClear: true
+	});
+
+
+
 
 });
 

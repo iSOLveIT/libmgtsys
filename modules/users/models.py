@@ -53,7 +53,7 @@ class User(UserMixin, PkModel):
 
     def is_admin(self):
         r = self.role
-        return any([r.purpose == "ADMIN"])
+        return any([r.purpose == "ADMIN" and r.permission_level is True])
 
 
 @login_manager.user_loader
@@ -103,7 +103,7 @@ class Role(PkModel):
     """Model for role based access control assigned to users"""
 
     ACCESS = [('student', 'STUDENT'), ('teacher', 'TEACHER'),
-              ('admin', 'ADMIN'), ('guest', 'GUEST')]
+              ('admin', 'ADMIN')]
 
     __tablename__ = "role"
 
