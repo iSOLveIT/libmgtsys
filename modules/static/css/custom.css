@@ -1,0 +1,22 @@
+.result_btns{
+    color: #fff;
+    font-weight: bolder;
+    padding: 6px;
+    border-radius: 5px;
+    font-size: 0.7rem;
+}
+.table tr th, .table tr td {
+    padding: 8px 10px !important;
+}
+
+.form-anime{
+    transition: 0.2s ease-in;
+    -webkit-animation-duration: 0.05s;
+    animation-duration: 0.05s;
+    -webkit-animation-name: slideInRight;
+    animation-name: slideInRight;
+}
+
+[class*=" ti-"], [class^=ti-]{
+    font-size: 1rem !important;
+}

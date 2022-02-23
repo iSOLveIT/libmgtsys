@@ -128,51 +128,161 @@
 									<nav aria-label="breadcrumb">
 										<ol class="breadcrumb">
 											<li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="#">Manage Records</a></li>
-											<li class="breadcrumb-item active" aria-current="page">Staff</li>
+                                            <li class="breadcrumb-item"><a href="#">Books</a></li>
+											<li class="breadcrumb-item active" aria-current="page">Add Books</li>
 										</ol>
 									</nav>
 								</div>
 							</div>
 							<!-- /Row -->
 							
+							<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="content-box-01">
+										<div class="content-box-01-head mb-3">
+											<h5 class="mb-0 font-normal" style="text-transform: none;">
+												You can add/register books either by importing a file (must be an excel or csv file)
+												or by filling in the book inventory form. 
+												You can download <a href="#" download style="color: #0000ff;">a sample of the import file</a>. <br>
+												The excel or csv file should have these column titles at the top row: 
+												Classification No., Title, Author, Category, Publication, Quantity Added, Catalogue No., and Comments. <br>
+												<span style="font-weight:600;">Note:</span> Catalogue No. and Comments are not required.
+											
+											</h5>
+										</div>
+									</div>
+							</div>
+
 							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Add Staff</h5></div>
 							<div class="row">
 								<div class="col-lg-12 col-md-12 col-sm-12">
 									<div class="dashboard_container">
 										<div class="dashboard_container_header">
 											<div class="dashboard_fl_1">
-												<h4>Fill in Staff Details</h4>
+												<h4>
+													Import File
+												</h4>
+												
+											</div>
+										</div>
+										<div class="dashboard_container_body">
+											<div class="submit-section">
+												<form action="#" method="get" enctype="multipart/form-data">
+													<div class="form-row">
+														<div class="form-group col-md-12">
+															<div class="input-group">
+															<div class="custom-file">
+																<input type="file" class="custom-file-input" id="inputGroupFile04" style="margin-top: 10px;" aria-describedby="inputGroupFileAddon04" accept=".xlsx, .xls, .csv">
+																<label class="custom-file-label" for="inputGroupFile04">
+																<i class="ti-plus"></i>	Add File
+																</label>
+															</div>
+															<div class="input-group-append">
+																<button class="btn" type="button" id="inputGroupFileAddon04" 
+																style="border-radius: 0 4px 4px 0;padding: 0 10px;background: #131b31;border: 1px solid #131b31;">
+																	<i class="ti-thumb-up"></i> Submit</button>
+															</div>
+															</div>
+														</div>														
+													</div>
+												</form>
+											</div>								
+										</div>
+										
+									</div>
+								</div>
+							</div>
+							<!-- /Row -->
+							
+							<!-- Row -->
+							<div class="row">
+								<div class="col-5">
+									<hr>
+								</div>
+								<div class="col-2 text-center">
+									<h1>OR</h1>
+								</div>
+								<div class="col-5">
+									<hr>
+								</div>
+							</div>
+							<!-- /Row -->
+
+							<!-- Row -->
+							<div class="row">
+								<div class="col-lg-12 col-md-12 col-sm-12">
+									<div class="dashboard_container">
+										<div class="dashboard_container_header">
+											<div class="dashboard_fl_1">
+												<h4>Fill Book Inventory Form</h4>
 											</div>
 										</div>
 										<div class="dashboard_container_body p-4">
-											<!-- Staff info -->
+											<!-- Book info -->
 											<div class="submit-section">
 												<form action="#" method="get">
-													<!-- Add staff form -->
+													<!-- Book form -->
 													<div class="form-row slideInRight form-anime" id="student_form">
-																										
 														<div class="form-group col-md-6">
-															<label>Department</label>
-															<input type="text" name="" id="" class="form-control" placeholder="Eg. English or Geography">
+															<label>Classification No.</label>
+															<input type="text" class="form-control" placeholder="ENG203">
 														</div>
-
-														<div class="form-group col-md-2">
-															<label style="visibility:hidden;">Search</label>
-															<button class="btn search-btn full-width" 
-															style="padding: 15px 25px;border-radius: 5px;" id="dp_submit_btn">
-																Submit
-															</button>
-														</div>
-
 														
+														<div class="form-group col-md-6">
+															<label>Title</label>
+															<input type="text" class="form-control" placeholder="The White Whale">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Author</label>
+															<input type="text" class="form-control" placeholder="Shaurya Preet">
+														</div>
+														
+														
+														<div class="form-group col-md-6">
+															<label>Category</label>
+															<select id="c-category" class="form-control">
+																<option value="">&nbsp;</option>
+																<option value="M">Maths</option>
+																<option value="F">Fante</option>
+															</select>
+														</div>
+														
+														<div class="form-group col-md-6">
+															<label>Publication</label>
+															<input type="text" class="form-control" placeholder="PM Printing Press">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Quantity Added</label>
+															<input type="number" class="form-control" placeholder="Number of books added">
+														</div>
+
+														<div class="form-group col-md-6">
+															<label>Catalogue No.</label>
+															<input type="text" class="form-control" placeholder="Book location on shelve">
+														</div>
+														
+														<div class="form-group col-md-6">
+															<label>Comments</label>
+															<textarea class="form-control">Summary about book</textarea>
+														</div>
 														
 													</div>
-													<!-- Add staff form -->
+													<!-- Book form -->
+
+													<div class="form-row">
+														<div class="form-group col-md-2">
+															<div>
+																<button class="btn search-btn full-width rounded">
+																	<i class="ti-thumb-up"></i> Submit
+																</button>
+															</div>
+														</div>
+													</div>	
+
 												</form>
 											</div>
-											<!-- Staff info -->
+											<!-- Book info -->
 											
 											
 											
@@ -182,83 +292,7 @@
 								</div>
 							</div>
 							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
-							<div class="row mb-3">
-								
-								<div class="col-lg-6 col-md-12 col-sm-12">
-									<div class="form-group m-0">
-										<div>
-											<label>Department</label>
-											<select class="form-control dept">
-												<option value="">&nbsp;</option>
-												<option value="GD">Science Department</option>
-												<option value="GN">Business Department</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-2 col-md-12 col-sm-12">
-									<div class="form-group m-0">
-										<div>
-											<label style="visibility:hidden;">Search</label>
-											<button class="btn search-btn full-width" 
-											style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
-												Search
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Results</h5></div>
-							<div class="row mb-2">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										
-										<div class="dashboard_container_body">
-											<div class="table-responsive">
-												<table class="table">
-													<thead class="thead-dark">
-														<tr>
-															<th scope="col">Department</th>
-															<th scope="col"></th>
-															<th scope="col">Total Teachers</th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<th scope="row" colspan=2>English Department</th>
-															<td>125</td>
-															<td>
-																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-																	<i class="ti-plus"></i> Edit
-																</button>
-															</td>
-															<td>
-																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-																	<i class="ti-trash"></i> Delete
-																</button>
-															</td>
-														</tr>
-														
-													</tbody>
-												</table>
-											</div>
-										</div>
-										
-									</div>
-								</div>
-								
-							</div>
-							<!-- /Row -->
-							
+					
 							
 							
 						</div>

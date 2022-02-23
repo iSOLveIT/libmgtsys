@@ -1,0 +1,168 @@
+{% extends 'layout.html' %}
+
+{% block title %}LearnUp | Class Mgt.{% endblock %}
+
+{% block content %}
+<!-- Row -->
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#">Home</a></li>
+				<li class="breadcrumb-item"><a href="#">Manage Records</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Class</li>
+			</ol>
+		</nav>
+	</div>
+</div>
+<!-- /Row -->
+
+<!-- Row -->
+<div class="mb-3"><h5 class="mb-0">Add Class</h5></div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			<div class="dashboard_container_header">
+				<div class="dashboard_fl_1">
+					<h4>Fill in Class Details</h4>
+				</div>
+			</div>
+			<div class="dashboard_container_body p-4">
+				<!-- Class info -->
+				<div class="submit-section">
+					<form action="{{ url_for('record_mgt.add_class') }}" method="post">
+						<!-- Add class form -->
+						<div class="form-row slideInRight form-anime" id="student_form">
+							{% for field in form %}
+								{% if field.name != 'csrf_token' %}
+									<div class="form-group col-md-6">
+										{% if field.id not in ['csrf_token'] %}
+											{{ field.label }}
+										{% endif %}
+										{{ field }}
+									</div>
+								{% endif %}
+							{%endfor%}
+																			
+							<div class="form-group col-md-6">
+								<label>Admission Year</label>
+								<input type="month" name="year_group" class="form-control">
+							</div>
+
+						</div>
+						<!-- Add class form -->
+						{{ form.csrf_token }}
+
+						<div class="form-row">
+							<div class="form-group col-md-2">
+								<div>
+									<button class="btn search-btn full-width rounded">
+										<i class="ti-thumb-up"></i> Submit
+									</button>
+								</div>
+							</div>
+						</div>	
+
+					</form>
+				</div>
+				<!-- Class info -->
+				
+				
+				
+			</div>
+			
+		</div>
+	</div>
+</div>
+<!-- /Row -->
+
+<!-- Row -->
+<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
+<div class="row mb-3">
+	
+	<div class="col-lg-4 col-md-12 col-sm-12">
+		<div class="form-group m-0">
+			<div>
+				<label>Programme</label>
+				<select class="form-control programme">
+					<option value="">&nbsp;</option>
+					<option value="M">General Arts</option>
+					<option value="F">Business</option>
+				</select>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-4 col-md-12 col-sm-12">
+		<div class="form-group m-0">
+			<div>
+				<label for="admission_yr">Admission Year</label>
+				<input type="number" id="admission_yr" class="form-control"/>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-2 col-md-12 col-sm-12">
+		<div class="form-group m-0">
+			<div>
+				<label style="visibility:hidden;">Search</label>
+				<button class="btn search-btn full-width" 
+				style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
+					Search
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /Row -->
+
+<!-- Row -->
+<div class="mb-3"><h5 class="mb-0">Results</h5></div>
+<div class="row mb-2">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			
+			<div class="dashboard_container_body">
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Programme</th>
+								<th scope="col">Class</th>
+								<th scope="col">Total Students</th>
+								<th scope="col">Admission Year</th>
+								<th scope="col"></th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">BUSINESS</th>
+								<td>BU3AGD</td>
+								<td>45</td>
+								<td>2019</td>
+								<td>
+									<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
+										<i class="ti-plus"></i> Edit Class
+									</button>
+								</td>
+								<td>
+									<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
+										<i class="ti-trash"></i> Delete Class
+									</button>
+								</td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+<!-- /Row -->
+
+				
+{% endblock %}
+	

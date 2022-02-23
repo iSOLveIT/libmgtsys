@@ -21,6 +21,7 @@
 ------------- List Of Table ----------*/
 
 /* CSS Document */
+@import url(../css/custom.css);
 @import url(../css/plugins/animation.css);
 @import url(../css/plugins/bootstrap.min.css);
 @import url(../css/plugins/date-picker.css);
@@ -2262,7 +2263,7 @@ outline:none;
 .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
   right: 0px;
 }
-/*----------- GLobal Settings: Custom Radio Button ------------*/
+/*----------- GLobal Settings: Custom Radio Button ------------
 [type="radio"]:checked,
 [type="radio"]:not(:checked) {
     position: absolute;
@@ -2312,7 +2313,7 @@ outline:none;
     -webkit-transform: scale(1);
     transform: scale(1);
 }
-/*------------- GLobal Settings: Bootstrap 4 hack --------------*/
+------------- GLobal Settings: Bootstrap 4 hack --------------*/
 .card-columns {
   -webkit-column-gap: 30px;
   -moz-column-gap: 30px;
@@ -6560,7 +6561,7 @@ div#main2 {
     line-height: 40px;
     text-align: center;
     color: #606e88;
-    border: 1px solid #eaeff5;
+    border: 1px solid #616161;
     background-color: #ffffff;
     display: inline-block;
     border-radius: 50%;
@@ -6756,21 +6757,25 @@ a.btn.btn_apply.w-100 {
     color: #ffffff;
     opacity: 0.3;
 }
-._loh_r92 h1 {
+._loh_r92 h4 {
+    font-size: 20px;
     margin: 0;
     color: #ffffff;
 }
 ._loh_r93 {
     color: rgba(255,255,255,0.8);
 }
-._loh_foot_r93 h5 {
+._loh_foot_r93 h4 {
     margin:0;
     font-size: 15px;
-    font-weight: normal;
     line-height: 1;
     color: #ffeb3b;
 }
-
+._loh_foot_r93 span {
+    color: white;
+    font-size: 13px;
+    line-height: 1;
+}
 .modal {
     z-index: 9999;
 }
@@ -8176,6 +8181,11 @@ ul.cart_list li strong {
 	font-weight:400;
     font-size: 17px;
 }
+.dashboard_fl_1 h3 {
+    margin: 0;
+	font-weight:bold;
+    font-size: 20px;
+}
 .dashboard_container_body {
     padding:0;
 }
@@ -8328,7 +8338,7 @@ ul.cart_list li strong {
 	opacity:0.7;
 }
 
-span.payment_status {
+span.book_status {
     padding: 5px 15px;
     border-radius: 3px;
 	font-size:13px;
@@ -8344,23 +8354,23 @@ span.payment_status {
 	font-size:13px;
     display: inline-block;
 }
-span.payment_status.inprogress {
+span.book_status.inprogress {
     background: rgba(255, 152, 0,0.1);
 	color: #FF9800;
 }
-span.payment_status.complete {
+span.book_status.available {
     color: #459e49;
     background: rgba(69, 158, 73,0.1);
 }
-span.payment_status.pending {
+span.book_status.pending {
     color: #2196f3;
     background: rgba(33, 150, 243,0.1);
 }
-span.payment_status.hold {
+span.book_status.hold {
     background: rgba(166, 97, 218,0.1);
     color: #a661da;
 }
-span.payment_status.cancel {
+span.book_status.cancel {
     background: rgba(233, 30, 99,0.1);
     color: #e91e63;
 }
@@ -8631,7 +8641,6 @@ ul.nav.nav-second-level.collapse.show {
 /*---------- Small footer -------------------*/
 footer{
 	z-index:99;
-	padding-top:60px;
 	position:relative;
 }
 footer.dark-footer{
@@ -10102,28 +10111,4 @@ ul.cources_facts_list li {
 	margin-right: 4px;
     padding:5px 10px;
 }
-}
-
-input[type="password"] {
-    width: 100%;
-    height: 54px;
-    border-radius: 4px;
-    color: #495057;
-    font-size: 15px;
-    box-shadow: none;
-    padding: 0.5rem 0.75rem;
-    border: 1px solid #e6eaf3;
-    background-clip: initial;
-}
-.log_wraps input[type="password"] {
-    border-radius: 4px;
-    background: #f4f5f7;
-    border: 1px solid #eaecf1;
-    transition: all ease 0.4s;
-}
-
-.log_wraps input[type="password"]:focus {
-    color: #2196f3;
-    background: rgba(33, 150, 243,0.1);
-    border-color: rgba(33, 150, 243,0.1);
 }

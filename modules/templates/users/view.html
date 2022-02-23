@@ -128,84 +128,73 @@
 									<nav aria-label="breadcrumb">
 										<ol class="breadcrumb">
 											<li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="#">Manage Records</a></li>
-											<li class="breadcrumb-item active" aria-current="page">Staff</li>
+                                            <li class="breadcrumb-item"><a href="#">Users</a></li>
+											<li class="breadcrumb-item active" aria-current="page">View Users</li>
 										</ol>
 									</nav>
 								</div>
 							</div>
 							<!-- /Row -->
 							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Add Staff</h5></div>
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-												<h4>Fill in Staff Details</h4>
-											</div>
-										</div>
-										<div class="dashboard_container_body p-4">
-											<!-- Staff info -->
-											<div class="submit-section">
-												<form action="#" method="get">
-													<!-- Add staff form -->
-													<div class="form-row slideInRight form-anime" id="student_form">
-																										
-														<div class="form-group col-md-6">
-															<label>Department</label>
-															<input type="text" name="" id="" class="form-control" placeholder="Eg. English or Geography">
-														</div>
-
-														<div class="form-group col-md-2">
-															<label style="visibility:hidden;">Search</label>
-															<button class="btn search-btn full-width" 
-															style="padding: 15px 25px;border-radius: 5px;" id="dp_submit_btn">
-																Submit
-															</button>
-														</div>
-
-														
-														
-													</div>
-													<!-- Add staff form -->
-												</form>
-											</div>
-											<!-- Staff info -->
-											
-											
-											
-										</div>
-										
-									</div>
-								</div>
-							</div>
-							<!-- /Row -->
 							
 							<!-- Row -->
 							<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
 							<div class="row mb-3">
 								
-								<div class="col-lg-6 col-md-12 col-sm-12">
+								<div class="col-lg-3 col-md-12 col-sm-12">
 									<div class="form-group m-0">
 										<div>
-											<label>Department</label>
-											<select class="form-control dept">
+											<input type="text" id="userid" class="form-control" placeholder="User ID" />
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
+											<select id="cl-category" class="form-control">
 												<option value="">&nbsp;</option>
-												<option value="GD">Science Department</option>
-												<option value="GN">Business Department</option>
+												<option value="1">Web Designing</option>
+												<option value="2">Business</option>
+												<option value="3">Accounting</option>
+												<option value="3">Development</option>
+												<option value="3">Art & Culture</option>
 											</select>
 										</div>
 									</div>
 								</div>
-								
+								<div class="col-lg-3 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
+											<select id="dp-category" class="form-control">
+												<option value="">&nbsp;</option>
+												<option value="1">Web Designing</option>
+												<option value="2">Business</option>
+												<option value="3">Accounting</option>
+												<option value="3">Development</option>
+												<option value="3">Art & Culture</option>
+											</select>
+										</div>
+									</div>
+								</div>
 								<div class="col-lg-2 col-md-12 col-sm-12">
 									<div class="form-group m-0">
 										<div>
-											<label style="visibility:hidden;">Search</label>
+											<select id="ro-category" class="form-control">
+												<option value="">&nbsp;</option>
+												<option value="1">Web Designing</option>
+												<option value="2">Business</option>
+												<option value="3">Accounting</option>
+												<option value="3">Development</option>
+												<option value="3">Art & Culture</option>
+											</select>
+										</div>
+									</div>
+								</div>
+								<div class="col-lg-2 col-md-12 col-sm-12">
+									<div class="form-group m-0">
+										<div>
 											<button class="btn search-btn full-width" 
-											style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
+											style="padding: 15px 25px;border-radius: 5px;" id="view_user_btn">
 												Search
 											</button>
 										</div>
@@ -225,17 +214,22 @@
 												<table class="table">
 													<thead class="thead-dark">
 														<tr>
-															<th scope="col">Department</th>
-															<th scope="col"></th>
-															<th scope="col">Total Teachers</th>
-															<th scope="col"></th>
-															<th scope="col"></th>
+															<th scope="col">User ID</th>
+															<th scope="col">Name</th>
+															<th scope="col">Class/Department</th>
+															<th scope="col">Gender</th>
+															<th scope="col">Date Registered</th>
+															<th></th>
+															<th></th>
 														</tr>
 													</thead>
 													<tbody>
 														<tr>
-															<th scope="row" colspan=2>English Department</th>
-															<td>125</td>
+															<th scope="row">10087872</th>
+															<td>Randy Duodu</td>
+															<td>BU3AGD</td>
+															<td>M</td>
+															<td>20-02-2022</td>
 															<td>
 																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
 																	<i class="ti-plus"></i> Edit
@@ -258,7 +252,6 @@
 								
 							</div>
 							<!-- /Row -->
-							
 							
 							
 						</div>

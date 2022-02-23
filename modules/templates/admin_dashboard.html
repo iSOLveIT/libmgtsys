@@ -1,0 +1,197 @@
+{% extends 'layout.html' %}
+
+{% block title %}LearnUp | Admin Dashboard{% endblock %}
+
+{% block content %}
+<!-- Row -->
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#">Home</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+			</ol>
+		</nav>
+	</div>
+</div>
+<!-- /Row -->
+
+<!-- Row -->
+<div class="row">
+
+	<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+		<div class="dashboard_stats_wrap">
+			<div class="dashboard_stats_wrap_content"><h4 class="text-success">400000</h4> <span>Users</span></div>
+			<div class="dashboard_stats_wrap-icon"><i class="ti-user"></i></div>
+		</div>	
+	</div>
+	
+	<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+		<div class="dashboard_stats_wrap">
+			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">56324242</h4> <span>Books</span></div>
+			<div class="dashboard_stats_wrap-icon"><i class="ti-book"></i></div>
+		</div>	
+	</div>
+	
+	<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+		<div class="dashboard_stats_wrap">
+			<div class="dashboard_stats_wrap_content"><h4 class="text-danger">2000</h4> <span>Borrowed Books</span></div>
+			<div class="dashboard_stats_wrap-icon"><i class="ti-layers"></i></div>
+		</div>	
+	</div>
+	
+	<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
+		<div class="dashboard_stats_wrap">
+			<div class="dashboard_stats_wrap_content"><h4 class="text-info">38</h4> <span>Classes</span></div>
+			<div class="dashboard_stats_wrap-icon"><i class="ti-home"></i></div>
+		</div>	
+	</div>
+	
+</div>
+<!-- /Row -->
+
+<!-- row-->
+<div class="row">
+	
+	<div class="col-xl-7 col-lg-6 col-md-12 col-sm-12">
+		<div class="content-box-01">
+			<div class="content-box-01-head mb-3"><h5 class="mb-0">Search Books</h5></div>
+			<div class="content-box-01-full mb-4">
+				<div class="row">
+					<div class="col-12">
+						<div class="form-group">
+							<div>
+								<input type="text" class="form-control" placeholder="Keyword" />
+							</div>
+						</div>
+					</div>
+
+					<div class="col-12 small-pad">
+						<div class="form-group">
+							<div>
+								<select id="c-category" class="form-control">
+									<option value="">&nbsp;</option>
+									<option value="1">Web Designing</option>
+									<option value="2">Business</option>
+									<option value="3">Accounting</option>
+									<option value="3">Development</option>
+									<option value="3">Art & Culture</option>
+								</select>
+							</div>
+						</div>
+					</div>
+
+					<div class="col">
+						<div class="form-group">
+							<div>
+								<button class="btn search-btn full-width">
+									<i class="ti-search"></i> Search
+								</button>
+							</div>
+						</div>
+					</div>
+				
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	<div class="col-lg-5 col-md-12 col-sm-12">
+		<div class="card">
+			<div class="card-header">
+				<h5>Notifications</h5>
+			</div>
+			<div class="ground-list ground-hover-list">
+				<div style="max-height: 150px; overflow: auto;">
+					<div class="ground ground-list-single">
+						<a href="#">
+							<div class="btn-circle-40 btn-success">
+								<i class="ti-envelope"></i>
+							</div>
+						</a>
+
+						<div class="ground-content">
+							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi fugit porro nisi vitae velit sint maiores voluptatem animi dolorum tenetur atque expedita molestiae officia, qui modi architecto ullam eius earum.</p>
+						</div>
+					</div>
+
+					<div class="ground ground-list-single">
+						<a href="#">
+							<div class="btn-circle-40 btn-success">
+								<i class="ti-envelope"></i>
+							</div>
+						</a>
+
+						<div class="ground-content">
+							<p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Sequi fugit porro nisi vitae velit sint maiores voluptatem animi dolorum tenetur atque expedita molestiae officia, qui modi architecto ullam eius earum.</p>
+						</div>
+					</div>
+
+				</div>
+
+				
+				<div class="ground ground-list-single form-group mb-0" style="border-bottom: none;">
+					<div class="ground-content input-group">
+						<textarea name="message" id="" rows="2" style="width:100%"></textarea>
+					</div>
+
+					<a href="#">
+						<div class="btn-circle-40 btn-primary"><i class="ti-arrow-right" style="font-weight: bolder;"></i></div>
+					</a>
+
+					
+				</div>
+				
+				
+				
+			</div>
+		</div>		
+	</div>
+
+	
+	
+</div>
+<!-- Row End -->
+
+<!-- Row -->
+<div class="row">
+
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			<div class="dashboard_container_header">
+				<div class="dashboard_fl_1">
+					<h4>Results</h4>
+				</div>
+			</div>
+			<div class="dashboard_container_body">
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Title</th>
+								<th scope="col">Author</th>
+								<th scope="col">Status</th>
+								<th scope="col">Assign to</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">Ananse and the Chiefs</th>
+								<td>Randy Duodu</td>
+								<td><span class="book_status available">Available</span></td>
+								<td></td>
+							</tr>
+							
+						</tbody>
+					</table>
+				</div>
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+<!-- /Row -->
+				
+{% endblock %}
+	

@@ -3,7 +3,7 @@ from datetime import datetime as dt
 from sqlalchemy_utils.types import ChoiceType
 
 from .. import db
-from ..helper import PkModel
+from ..db_helper import PkModel
 # from project.modules.users.models import User
 from ..users.models import User
 

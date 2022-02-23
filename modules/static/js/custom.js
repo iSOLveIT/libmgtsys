@@ -484,16 +484,122 @@ $(function() {
 	});
 		
 	
-	// Select Job category
+	// Select Book category
 	$('#c-category').select2({
 		placeholder: "Choose Category",
 		allowClear: true
 	});
-	
-	// country
-	$('#country').select2({
-		placeholder: "Choose Country",
+	// Select Class category
+	$('#cl-category').select2({
+		placeholder: "Choose Class",
 		allowClear: true
 	});
 	
+	// Select Department category
+	$('#dp-category').select2({
+		placeholder: "Choose Department",
+		allowClear: true
+	});
+
+	// Select Role category
+	$('#ro-category').select2({
+		placeholder: "Choose Role",
+		allowClear: true
+	});
+	
+	// programme
+	$('.programme').select2({
+		placeholder: "Choose Programme",
+		allowClear: true
+	});
+
+	// gender
+	$('.gender').select2({
+		placeholder: "Choose Gender",
+		allowClear: true
+	});
+	
+	// current_class
+	$('#current_class').select2({
+		placeholder: "Choose Class",
+		allowClear: true
+	});
+
+	// track
+	$('#track').select2({
+		placeholder: "Choose Track",
+		allowClear: true
+	});
+
+	// dept
+	$('.dept').select2({
+		placeholder: "Choose Department",
+		allowClear: true
+	});
+
+	// account_type
+	$('.account_type').select2({
+		placeholder: "Choose Account Type",
+		allowClear: true
+	});
+
+
+
+
 });
+
+// let searchInputs = document.querySelectorAll(".form-control");
+
+// for (let searchInput of searchInputs) {
+//     if (searchInput.oninput == null){
+//         let btn = document.getElementById("view_user_btn");
+//         btn.innerHTML = "Search All";
+//     } 
+//     else {
+//         let btn = document.getElementById("view_user_btn");
+//         btn.innerHTML = "Search";
+//     }
+// }
+
+// User Account Type 
+const admin_account =  document.querySelector("#admin_account[type='radio']");
+const teacher_account =  document.querySelector("#teacher_account[type='radio']");
+const student_account = document.querySelector("#student_account[type='radio']");
+
+admin_account.addEventListener('click', function(){
+	let admin_form = document.getElementById("admin_form");
+	let student_form = document.getElementById("student_form");
+	let teacher_form = document.getElementById("teacher_form");
+
+	student_form.classList.add("d-none");
+	teacher_form.classList.add("d-none");
+
+	admin_form.classList.add("slideInRight", "form-anime");
+	admin_form.classList.remove("d-none");
+	
+})
+
+student_account.addEventListener('click', function(){
+	let admin_form = document.getElementById("admin_form");
+	let student_form = document.getElementById("student_form");
+	let teacher_form = document.getElementById("teacher_form");
+
+	admin_form.classList.add("d-none");
+	teacher_form.classList.add("d-none");
+
+	student_form.classList.add("slideInRight", "form-anime");
+	student_form.classList.remove("d-none");
+	
+})
+teacher_account.addEventListener('click', function(){
+	let admin_form = document.getElementById("admin_form");
+	let student_form = document.getElementById("student_form");
+	let teacher_form = document.getElementById("teacher_form");
+
+	student_form.classList.add("d-none");
+	admin_form.classList.add("d-none");
+
+	teacher_form.classList.add("slideInRight", "form-anime");
+	teacher_form.classList.remove("d-none");
+	
+})

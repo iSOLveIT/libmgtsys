@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="author" content="Sophia Asebu" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		
+        <title>{% block title %}{% endblock %}</title>
+		 
+        <!-- Custom CSS -->
+        <link href="{{ url_for('static', filename='css/styles.css') }}" rel="stylesheet">
+		
+		<!-- Custom Color Option -->
+		<link href="{{ url_for('static', filename='css/colors.css') }}" rel="stylesheet">
+
+		{% block extralinks %}
+			
+		{% endblock %}
+
+		{% block extracss %}
+			
+		{% endblock %}
+		
+    </head>
+
+	<body class="red-skin">
+
+		<!-- ============================================================== -->
+        <!-- Preloader - style you can find in spinners.css -->
+        <!-- ============================================================== -->
+        <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
+		
+		
+        <!-- ============================================================== -->
+        <!-- Main wrapper - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <div id="main-wrapper">
+		
+            <!-- ============================================================== -->
+            <!-- Top header  -->
+            <!-- ============================================================== -->
+            <!-- Start Navigation -->
+			{% include 'includes/navbar.html' %}
+			<!-- End Navigation -->
+			<div class="clearfix"></div>
+			<!-- ============================================================== -->
+			<!-- Top header  -->
+			<!-- ============================================================== -->		
+
+			
+			<!-- ============================ Dashboard: Dashboard Start ================================== -->
+			<section class="gray pt-5">
+				<div class="container-fluid">
+										
+					<div class="row">
+
+						{% include 'includes/dashboard_menu.html' %}
+						
+						<div class="col-lg-9 col-md-9 col-sm-12">
+							{% block content %}
+								
+							{% endblock %}
+						</div>
+					
+					</div>
+					
+				</div>
+			</section>
+			<!-- ============================ Dashboard: Dashboard End ================================== -->
+			
+		
+			<!-- ============================ Footer Start ================================== -->
+			<footer class="dark-footer skin-dark-footer">
+				
+				
+				<div class="footer-bottom">
+					<div class="container">
+						<div class="row align-items-center">
+							
+							<div class="col-lg-6 col-md-6">
+								<p class="mb-0">© {{ year }} LearnUp. Designd By Sophia Asebu.</p>
+							</div>
+							
+						</div>
+					</div>
+				</div>
+			</footer>
+			<!-- ============================ Footer End ================================== -->
+			
+			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
+			
+
+		</div>
+		<!-- ============================================================== -->
+		<!-- End Wrapper -->
+		<!-- ============================================================== -->
+
+
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/counter.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+		<!-- ============================================================== -->
+		<!-- This page plugins -->
+		<!-- ============================================================== -->
+		<script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>	
+		<script>
+			$('#side-menu').metisMenu();
+		</script>
+
+		{% block extrajs %}
+			
+		{% endblock %}
+	</body>
+	 
+</html>
