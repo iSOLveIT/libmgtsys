@@ -12,6 +12,7 @@ class AddClassForm(ModelForm):
     AddClass - Form for adding classes
 
     """
+
     class Meta:
         model = Class
         only = ['programme', 'current_class', 'track']
@@ -19,14 +20,14 @@ class AddClassForm(ModelForm):
             'programme': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
+                    'required': '',
                     'class': 'form-control programme'
                 }
             },
             'track': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
+                    'required': '',
                     'class': 'form-control',
                     'id': 'track'
                 }
@@ -34,7 +35,7 @@ class AddClassForm(ModelForm):
             'current_class': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
+                    'required': '',
                     'class': 'form-control',
                     'id': 'current_class'
                 }
@@ -47,6 +48,7 @@ class SearchClassForm(ModelForm):
     SearchClass - Form for searching classes based on programme and admission year
 
     """
+
     class Meta:
         model = Class
         only = ['programme']
@@ -54,8 +56,9 @@ class SearchClassForm(ModelForm):
             'programme': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
-                    'class': 'form-control programme'
+                    'required': '',
+                    'class': 'form-control programme',
+                    'id': 'search_programme'
                 }
             }
         }
@@ -68,6 +71,7 @@ class AddStaffForm(ModelForm):
     AddStaff - Form for adding departments to staff
 
     """
+
     class Meta:
         model = Staff
         only = ['department']
@@ -75,7 +79,7 @@ class AddStaffForm(ModelForm):
             'department': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
+                    'required': '',
                     'class': 'form-control',
                     'placeholder': 'E.g. English or Geography'
                 }
@@ -88,17 +92,18 @@ class SearchStaffForm(ModelForm):
     SearchStaff - Form for searching staff based on department
 
     """
+
     class Meta:
         model = Staff
-        
+
         department = QuerySelectField(
-        'Department:',
-        validators = [InputRequired()],
-        query_factory=lambda: Staff.query.all(),
-        render_kw={
-            'class': "form-control dept"
-        }
-    )
+            'Department:',
+            validators=[InputRequired()],
+            query_factory=lambda: Staff.query.all(),
+            render_kw={
+                'class': "form-control dept"
+            }
+        )
 
 
 # Forms for role records
@@ -111,12 +116,11 @@ class AddRoleForm(ModelForm):
             'purpose': {
                 'render_kw': {
                     'autocomplete': 'off',
-                    'required':'',
+                    'required': '',
                     'class': 'form-control account_type'
                 }
             }
         }
-
 
 # class SearchRoleForm(ModelForm):
 #     class Meta:
@@ -131,5 +135,3 @@ class AddRoleForm(ModelForm):
 #                 }
 #             }
 #         }
-
-        

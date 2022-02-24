@@ -78,41 +78,45 @@
 
 <!-- Row -->
 <div class="mb-3"><h5 class="mb-0">Search By</h5></div>
-<div class="row mb-3">
-	
-	<div class="col-lg-4 col-md-12 col-sm-12">
-		<div class="form-group m-0">
-			<div>
-				<label>Programme</label>
-				<select class="form-control programme">
-					<option value="">&nbsp;</option>
-					<option value="M">General Arts</option>
-					<option value="F">Business</option>
-				</select>
+<form action="{{ url_for('record_mgt.class_index') }}" method="post">
+	<div class="row mb-3">
+		{% for field in searchform %}
+			{% if field.name != 'csrf_token' %}
+				<div class="col-lg-4 col-md-12 col-sm-12">
+					<div class="form-group m-0">
+						<div>
+						{% if field.id not in ['csrf_token'] %}
+							{{ field.label }}
+						{% endif %}
+						{{ field }}
+						</div>
+					</div>
+				</div>	
+			{% endif %}
+		{%endfor%}
+			
+		<div class="col-lg-3 col-md-12 col-sm-12">
+			<div class="form-group m-0">
+				<div>
+					<label for="admission_yr">Admission Year</label>
+					<input type="number" maxlength="4" name="admission_yr" id="admission_yr" required class="form-control" placeholder="Year enrolled, e.g. 2016"/>
+				</div>
+			</div>
+		</div>
+		{{ searchform.csrf_token }}
+		<div class="col-lg-2 col-md-12 col-sm-12">
+			<div class="form-group m-0">
+				<div>
+					<label style="visibility:hidden;">Search</label>
+					<button class="btn search-btn full-width" 
+					style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
+						Search
+					</button>
+				</div>
 			</div>
 		</div>
 	</div>
-	<div class="col-lg-4 col-md-12 col-sm-12">
-		<div class="form-group m-0">
-			<div>
-				<label for="admission_yr">Admission Year</label>
-				<input type="number" id="admission_yr" class="form-control"/>
-			</div>
-		</div>
-	</div>
-	
-	<div class="col-lg-2 col-md-12 col-sm-12">
-		<div class="form-group m-0">
-			<div>
-				<label style="visibility:hidden;">Search</label>
-				<button class="btn search-btn full-width" 
-				style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
-					Search
-				</button>
-			</div>
-		</div>
-	</div>
-</div>
+</form>
 <!-- /Row -->
 
 <!-- Row -->
@@ -122,6 +126,7 @@
 		<div class="dashboard_container">
 			
 			<div class="dashboard_container_body">
+				{% if class_records %}
 				<div class="table-responsive">
 					<table class="table">
 						<thead class="thead-dark">
@@ -135,26 +140,35 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<th scope="row">BUSINESS</th>
-								<td>BU3AGD</td>
-								<td>45</td>
-								<td>2019</td>
-								<td>
-									<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-										<i class="ti-plus"></i> Edit Class
-									</button>
-								</td>
-								<td>
-									<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-										<i class="ti-trash"></i> Delete Class
-									</button>
-								</td>
-							</tr>
-							
+							{% for record in class_records %}
+								<tr>
+									<th scope="row">{{ record.programme }}</th>
+									{% set s_prog = record.programme | get_course %}
+									{% set s_form = record.year_group | get_current_class %}
+									{% set s_track = record.track | get_track %}
+
+									{% set s_class = [s_prog, s_form, record.current_class, s_track] | join('') %}
+									<td>{{ s_class }} </td>
+									<td>{{ record.users | length }}</td>
+									<td>{{ record.year_group }}</td>
+									<td>
+										<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
+											<i class="ti-plus"></i> Edit Class
+										</button>
+									</td>
+									<td>
+										<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
+											<i class="ti-trash"></i> Delete Class
+										</button>
+									</td>
+								</tr>
+							{% endfor %}
 						</tbody>
 					</table>
 				</div>
+				{% else %}
+					<h4 class="p-3 text-center">No records found!</h4>
+				{% endif %}
 			</div>
 			
 		</div>

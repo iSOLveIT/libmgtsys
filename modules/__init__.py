@@ -42,11 +42,46 @@ class ModelForm(BaseModelForm):
         return db.session
 
 
+# Custom jinja filters
 @app.template_filter()
 @pass_eval_context
 def get_enum(eval_ctx, value):
     # Custom filter to return enumerated iterable
     return enumerate(value)
+
+
+@app.template_filter()
+@pass_eval_context
+def get_track(eval_ctx, value):
+    # Custom filter to get a shorthand version of student track
+    # For example: if track value is GOLD, then the function will return GD
+    text = value
+    new_text = str(text.value)
+    shorthand = f"{new_text[0]}{new_text[-1]}".upper()
+    return shorthand
+
+
+@app.template_filter()
+@pass_eval_context
+def get_course(eval_ctx, value):
+    # Custom filter to get a shorthand version of student course
+    # If the course value is one word, then the function will return the first 2 characters
+    # or if the course value is two words, then the function will return the first character of each word
+    # E.g.: BUSINESS = BU, GENERAL ARTS = GA
+    text = value
+    new_text = str(text.value).split(' ', 1)
+    shorthand = f"{new_text[0][0]}{new_text[1][0]}".upper() if len(new_text) == 2 else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    return shorthand
+
+
+@app.template_filter()
+@pass_eval_context
+def get_current_class(eval_ctx, value):
+    # Custom filter to return the current class of a student
+    from datetime import datetime as dt
+    current_yr = dt.utcnow().year
+    diff_year = current_yr - int(value)
+    return diff_year
 
 
 # Blueprints
