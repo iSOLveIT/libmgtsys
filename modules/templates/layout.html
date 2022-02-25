@@ -87,6 +87,10 @@
 			</footer>
 			<!-- ============================ Footer End ================================== -->
 			
+			{% block modal %}
+								
+			{% endblock %}
+			
 			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
 			
 
@@ -102,14 +106,13 @@
 		<script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
-			<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
-		<!-- ============================================================== -->
-		<!-- This page plugins -->
-		<!-- ============================================================== -->
+		<script src="https://unpkg.com/htmx.org@1.7.0" integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
 		<script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>	
 		<script>
 			$('#side-menu').metisMenu();
 		</script>
+		<!-- ============================================================== -->
 
 		{% block extrajs %}
 			

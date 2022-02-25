@@ -44,11 +44,6 @@
 								{% endif %}
 							{%endfor%}
 																			
-							<div class="form-group col-md-6">
-								<label>Admission Year</label>
-								<input type="month" name="year_group" class="form-control">
-							</div>
-
 						</div>
 						<!-- Add class form -->
 						{{ form.csrf_token }}
@@ -78,45 +73,40 @@
 
 <!-- Row -->
 <div class="mb-3"><h5 class="mb-0">Search By</h5></div>
-<form action="{{ url_for('record_mgt.class_index') }}" method="post">
-	<div class="row mb-3">
-		{% for field in searchform %}
-			{% if field.name != 'csrf_token' %}
-				<div class="col-lg-4 col-md-12 col-sm-12">
-					<div class="form-group m-0">
-						<div>
-						{% if field.id not in ['csrf_token'] %}
-							{{ field.label }}
-						{% endif %}
-						{{ field }}
-						</div>
+<div class="row mb-3">
+	{% for field in searchform %}
+		{% if field.name != 'csrf_token' %}
+			<div class="col-lg-4 col-md-12 col-sm-12">
+				<div class="form-group m-0">
+					<div>
+					{% if field.id not in ['csrf_token'] %}
+						{{ field.label }}
+					{% endif %}
+					{{ field }}
 					</div>
-				</div>	
-			{% endif %}
-		{%endfor%}
-			
-		<div class="col-lg-3 col-md-12 col-sm-12">
-			<div class="form-group m-0">
-				<div>
-					<label for="admission_yr">Admission Year</label>
-					<input type="number" maxlength="4" name="admission_yr" id="admission_yr" required class="form-control" placeholder="Year enrolled, e.g. 2016"/>
 				</div>
-			</div>
-		</div>
-		{{ searchform.csrf_token }}
-		<div class="col-lg-2 col-md-12 col-sm-12">
-			<div class="form-group m-0">
-				<div>
-					<label style="visibility:hidden;">Search</label>
-					<button class="btn search-btn full-width" 
-					style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
-						Search
-					</button>
-				</div>
+			</div>	
+		{% endif %}
+	{%endfor%}
+		
+	<div class="col-lg-2 col-md-12 col-sm-12">
+		<div class="form-group m-0">
+			<div>
+				<label style="visibility:hidden;">Search</label>
+				<button hx-get="{{ url_for('record_mgt.search_class' ) }}" id="view_book_btn"
+					class="btn search-btn full-width" style="padding: 15px 25px;border-radius: 5px;"
+					hx-trigger="click"
+					hx-target="#results_box"
+					hx-include=".search_params"
+					hx-swap="outerHTML">
+					Search
+				</button>
+				
 			</div>
 		</div>
 	</div>
-</form>
+	{{ searchform.csrf_token }}
+</div>
 <!-- /Row -->
 
 <!-- Row -->
@@ -125,7 +115,7 @@
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<div class="dashboard_container">
 			
-			<div class="dashboard_container_body">
+			<div class="dashboard_container_body" id="results_box">
 				{% if class_records %}
 				<div class="table-responsive">
 					<table class="table">
@@ -152,17 +142,29 @@
 									<td>{{ record.users | length }}</td>
 									<td>{{ record.year_group }}</td>
 									<td>
-										<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
+										  <button hx-get="{{ url_for('record_mgt.edit_class', class_id=record.id ) }}" id="edit_btn" 
+										  	class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+											hx-trigger="click"
+											hx-target="#editrecord"
+											hx-swap="outerHTML"
+											onclick="modal_effects()">
 											<i class="ti-plus"></i> Edit Class
 										</button>
+										
 									</td>
 									<td>
-										<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
+										<button hx-delete="{{ url_for('record_mgt.delete_class', class_id=record.id ) }}" id="delete_btn"
+											class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
+											hx-trigger="click"
+											hx-target="#results_box"
+											hx-include="[name='csrf_token']"
+											hx-swap="outerHTML">
 											<i class="ti-trash"></i> Delete Class
 										</button>
 									</td>
 								</tr>
 							{% endfor %}
+							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
 						</tbody>
 					</table>
 				</div>
@@ -177,6 +179,12 @@
 </div>
 <!-- /Row -->
 
+
+
 				
+{% endblock %}
+
+{% block modal %}
+<div id="editrecord"></div>
 {% endblock %}
 	

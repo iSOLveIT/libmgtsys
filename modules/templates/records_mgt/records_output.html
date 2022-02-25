@@ -1,0 +1,57 @@
+<div class="dashboard_container_body" id="results_box">
+    {% if class_records %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Programme</th>
+                    <th scope="col">Class</th>
+                    <th scope="col">Total Students</th>
+                    <th scope="col">Admission Year</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in class_records %}
+                    <tr>
+                        <th scope="row">{{ record.programme }}</th>
+                        {% set s_prog = record.programme | get_course %}
+                        {% set s_form = record.year_group | get_current_class %}
+                        {% set s_track = record.track | get_track %}
+
+                        {% set s_class = [s_prog, s_form, record.current_class, s_track] | join('') %}
+                        <td>{{ s_class }} </td>
+                        <td>{{ record.users | length }}</td>
+                        <td>{{ record.year_group }}</td>
+                        <td>
+                              <button hx-get="{{ url_for('record_mgt.edit_class', class_id=record.id ) }}"
+                                      id="edit_btn" class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+                                      hx-trigger="click"
+                                      hx-target="#editrecord"
+                                      hx-swap="outerHTML"
+                                      onclick="modal_effects()">
+                                <i class="ti-plus"></i> Edit Class
+                            </button>
+
+                        </td>
+                        <td>
+                            <button hx-delete="{{ url_for('record_mgt.delete_class', class_id=record.id ) }}" id="delete_btn"
+                                    class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
+                                    hx-trigger="click"
+                                    hx-target="#results_box"
+                                    hx-include="[name='csrf_token']"
+                                    hx-swap="outerHTML">
+                                <i class="ti-trash"></i> Delete Class
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+        <h4 class="p-3 text-center">No records found!</h4>
+    {% endif %}
+</div>

@@ -15,7 +15,7 @@ class AddClassForm(ModelForm):
 
     class Meta:
         model = Class
-        only = ['programme', 'current_class', 'track']
+        only = ['programme', 'current_class', 'track', 'year_group']
         field_args = {
             'programme': {
                 'render_kw': {
@@ -39,6 +39,15 @@ class AddClassForm(ModelForm):
                     'class': 'form-control',
                     'id': 'current_class'
                 }
+            },
+            'year_group': {
+                'render_kw': {
+                    'autocomplete': 'off',
+                    'required': '',
+                    'class': 'form-control',
+                    'placeholder': 'Year enrolled, e.g. 2016',
+                    'maxlength': '4'
+                }
             }
         }
 
@@ -51,14 +60,24 @@ class SearchClassForm(ModelForm):
 
     class Meta:
         model = Class
-        only = ['programme']
+        only = ['programme', 'year_group']
         field_args = {
             'programme': {
                 'render_kw': {
                     'autocomplete': 'off',
                     'required': '',
-                    'class': 'form-control programme',
+                    'class': 'form-control programme search_params',
                     'id': 'search_programme'
+                }
+            },
+            'year_group': {
+                'render_kw': {
+                    'autocomplete': 'off',
+                    'required': '',
+                    'class': 'form-control search_params',
+                    'placeholder': 'Year enrolled, e.g. 2016',
+                    'maxlength': '4',
+                    'id': 'search_year'
                 }
             }
         }

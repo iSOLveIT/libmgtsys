@@ -603,3 +603,21 @@ teacher_account.addEventListener('click', function(){
 	teacher_form.classList.remove("d-none");
 	
 })
+
+$('#editrecord').on('shown.bs.modal', function () {
+  $('select:first-child').trigger('focus')
+})
+
+function modal_effects(){
+	const page_body = document.querySelector("body");
+	page_body.classList.add("modal-open", "pr-2");
+}
+
+
+function close_modal() {
+	let edit_modal = document.getElementById("editrecord");
+	let page_body = document.querySelector("body");
+	page_body.classList.remove("modal-open", "pr-2");
+	edit_modal.classList.remove("show");
+	edit_modal.style.display = "none";
+}

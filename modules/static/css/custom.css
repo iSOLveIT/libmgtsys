@@ -4,6 +4,7 @@
     padding: 6px;
     border-radius: 5px;
     font-size: 0.7rem;
+    outline: none!important;
 }
 .table tr th, .table tr td {
     padding: 8px 10px !important;

@@ -81,7 +81,7 @@ class Class(PkModel):
     programme = db.Column(ChoiceType(COURSES), nullable=False, info={'label': 'Programme'})
     current_class = db.Column(ChoiceType(CLASS_RANGE), nullable=False, info={'label': 'Class'})
     track = db.Column(ChoiceType(TRACK), nullable=False, info={'label': 'Track'})
-    year_group = db.Column(db.String(100), nullable=False)
+    year_group = db.Column(db.Integer, nullable=False, info={'label': 'Admission Year'})
     users = db.relationship('User', backref='class', lazy=True)
 
     def __repr__(self):
