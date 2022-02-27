@@ -526,7 +526,7 @@ $(function() {
 	});
 
 	// track
-	$('#track').select2({
+	$('.track').select2({
 		placeholder: "Choose Track",
 		allowClear: true
 	});

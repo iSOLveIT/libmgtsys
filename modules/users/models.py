@@ -81,7 +81,8 @@ class Class(PkModel):
     programme = db.Column(ChoiceType(COURSES), nullable=False, info={'label': 'Programme'})
     current_class = db.Column(ChoiceType(CLASS_RANGE), nullable=False, info={'label': 'Class'})
     track = db.Column(ChoiceType(TRACK), nullable=False, info={'label': 'Track'})
-    year_group = db.Column(db.Integer, nullable=False, info={'label': 'Admission Year'})
+    year_group = db.Column(db.String(4), nullable=False, info={'label': 'Admission Year'})
+    class_tag = db.Column(db.String(20), unique=True, nullable=False)
     users = db.relationship('User', backref='class', lazy=True)
 
     def __repr__(self):
@@ -94,7 +95,7 @@ class Staff(PkModel):
     __tablename__ = "staff"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    department = db.Column(db.String(100), nullable=False, info={'label': 'Department'})
+    department = db.Column(db.String(100), unique=True, nullable=False, info={'label': 'Department'})
     users = db.relationship('User', backref='staff', lazy=True)
 
     def __repr__(self):
@@ -110,7 +111,7 @@ class Role(PkModel):
     __tablename__ = "role"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    purpose = db.Column(ChoiceType(ACCESS), nullable=False, info={'label': 'Account Type'})
+    purpose = db.Column(ChoiceType(ACCESS), unique=True, nullable=False, info={'label': 'Account Type'})
     permission_level = db.Column(db.Boolean, nullable=False, default=False)
     users = db.relationship('User', backref='role', lazy=True)
 

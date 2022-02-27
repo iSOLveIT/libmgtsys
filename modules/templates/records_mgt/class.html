@@ -51,7 +51,7 @@
 						<div class="form-row">
 							<div class="form-group col-md-2">
 								<div>
-									<button class="btn search-btn full-width rounded">
+									<button type="submit" class="btn search-btn full-width rounded">
 										<i class="ti-thumb-up"></i> Submit
 									</button>
 								</div>
@@ -76,7 +76,7 @@
 <div class="row mb-3">
 	{% for field in searchform %}
 		{% if field.name != 'csrf_token' %}
-			<div class="col-lg-4 col-md-12 col-sm-12">
+			<div class="col-lg-3 col-md-12 col-sm-12">
 				<div class="form-group m-0">
 					<div>
 					{% if field.id not in ['csrf_token'] %}
@@ -93,7 +93,7 @@
 		<div class="form-group m-0">
 			<div>
 				<label style="visibility:hidden;">Search</label>
-				<button hx-get="{{ url_for('record_mgt.search_class' ) }}" id="view_book_btn"
+				<button hx-get="{{ url_for('record_mgt.search_class' ) }}" id="view_class_btn"
 					class="btn search-btn full-width" style="padding: 15px 25px;border-radius: 5px;"
 					hx-trigger="click"
 					hx-target="#results_box"
@@ -169,7 +169,7 @@
 					</table>
 				</div>
 				{% else %}
-					<h4 class="p-3 text-center">No records found!</h4>
+				<h4 class="p-3 text-center">No class records found!</h4>
 				{% endif %}
 			</div>
 			
@@ -185,6 +185,7 @@
 {% endblock %}
 
 {% block modal %}
-<div id="editrecord"></div>
+    <div id="editrecord"></div>
 {% endblock %}
+
 	

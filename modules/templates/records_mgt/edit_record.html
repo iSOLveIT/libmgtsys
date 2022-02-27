@@ -1,35 +1,113 @@
-<!-- Edit records Modal -->
-<div class="modal fade show" id="editrecord" tabindex="-1" role="dialog" aria-labelledby="edit-records" style="display:block;background-color:#0000005c;">
-    <div class="modal-dialog modal-dialog-centered edit-records-pop-form" role="document">
-        <div class="modal-content" id="edit-records">
-            <span class="mod-close" onclick="close_modal()" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
-            <div class="modal-body">
-                <h4 class="modal-header-title">Edit Class</h4>
-                <div class="edit-records-form">
-                    <form action="{{ url_for('record_mgt.edit_class', class_id=class_id ) }}" method="post">
-                        {% for field in form %}
-                            {% if field.name != 'csrf_token' %}
-                                <div class="form-group">
-                                    {% if field.id not in ['csrf_token'] %}
-                                        {{ field.label }}
-                                    {% endif %}
-                                    {{ field }}
-                                </div>
-                            {% endif %}
-                        {%endfor%}
+{% if view == 'class' %}
+    <!-- Edit records Modal -->
+    <div class="modal fade show" id="editrecord" tabindex="-1" role="dialog" aria-labelledby="edit-records" style="display:block;background-color:#0000005c;">
+        <div class="modal-dialog modal-dialog-centered edit-records-pop-form" role="document">
+            <div class="modal-content" id="edit-records">
+                <span class="mod-close" onclick="close_modal()" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
+                <div class="modal-body">
+                    <h4 class="modal-header-title">Edit Class</h4>
+                    <div class="edit-records-form">
+                        <form action="{{ url_for('record_mgt.edit_class', class_id=class_id ) }}" method="post">
+                            {% for field in form %}
+                                {% if field.name != 'csrf_token' %}
+                                    <div class="form-group">
+                                        {% if field.id not in ['csrf_token'] %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {{ field }}
+                                    </div>
+                                {% endif %}
+                            {%endfor%}
 
-                        {{ form.csrf_token }}
-                        <div class="form-group">
-                            <button type="submit" class="btn btn-md full-width pop-login">
-                                <i class="ti-thumb-up"></i> Submit
-                            </button>
-                        </div>
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-md full-width pop-login">
+                                    <i class="ti-thumb-up"></i> Submit
+                                </button>
+                            </div>
 
-                    </form>
+                        </form>
+                    </div>
+
                 </div>
-
             </div>
         </div>
     </div>
-</div>
-<!-- End Modal -->
+    <!-- End Modal -->
+{% endif %}
+
+{% if view == 'staff' %}
+    <!-- Edit records Modal -->
+    <div class="modal fade show" id="editrecord" tabindex="-1" role="dialog" aria-labelledby="edit-records" style="display:block;background-color:#0000005c;">
+        <div class="modal-dialog modal-dialog-centered edit-records-pop-form" role="document">
+            <div class="modal-content" id="edit-records">
+                <span class="mod-close" onclick="close_modal()" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
+                <div class="modal-body">
+                    <h4 class="modal-header-title">Edit Staff</h4>
+                    <div class="edit-records-form">
+                        <form action="{{ url_for('record_mgt.edit_staff', staff_id=staff_id ) }}" method="post">
+                            {% for field in form %}
+                                {% if field.name != 'csrf_token' %}
+                                    <div class="form-group">
+                                        {% if field.id not in ['csrf_token'] %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {{ field }}
+                                    </div>
+                                {% endif %}
+                            {%endfor%}
+
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-md full-width pop-login">
+                                    <i class="ti-thumb-up"></i> Submit
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+{% endif %}
+
+{% if view == 'role' %}
+    <!-- Edit records Modal -->
+    <div class="modal fade show" id="editrecord" tabindex="-1" role="dialog" aria-labelledby="edit-records" style="display:block;background-color:#0000005c;">
+        <div class="modal-dialog modal-dialog-centered edit-records-pop-form" role="document">
+            <div class="modal-content" id="edit-records">
+                <span class="mod-close" onclick="close_modal()" data-dismiss="modal" aria-hidden="true"><i class="ti-close"></i></span>
+                <div class="modal-body">
+                    <h4 class="modal-header-title">Edit Role</h4>
+                    <div class="edit-records-form">
+                        <form action="{{ url_for('record_mgt.edit_role', role_id=role_id ) }}" method="post">
+                            {% for field in form %}
+                                {% if field.name != 'csrf_token' %}
+                                    <div class="form-group">
+                                        {% if field.id not in ['csrf_token'] %}
+                                            {{ field.label }}
+                                        {% endif %}
+                                        {{ field }}
+                                    </div>
+                                {% endif %}
+                            {%endfor%}
+
+                            {{ form.csrf_token }}
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-md full-width pop-login">
+                                    <i class="ti-thumb-up"></i> Submit
+                                </button>
+                            </div>
+
+                        </form>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End Modal -->
+{% endif %}

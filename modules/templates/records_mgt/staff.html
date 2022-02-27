@@ -1,321 +1,178 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="author" content="www.frebsite.nl" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		
-        <title>LearnUp - Online Course & Education HTML Template</title>
-		 
-        <!-- Custom CSS -->
-        <link href="../../assets/css/styles.css" rel="stylesheet">
-		
-		<!-- Custom Color Option -->
-		<link href="../../assets/css/colors.css" rel="stylesheet">
-		
-    </head>
-	
-    <body class="red-skin">
-	
-        <!-- ============================================================== -->
-        <!-- Preloader - style you can find in spinners.css -->
-        <!-- ============================================================== -->
-        <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
-		
-		
-        <!-- ============================================================== -->
-        <!-- Main wrapper - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <div id="main-wrapper">
-		
-            <!-- ============================================================== -->
-            <!-- Top header  -->
-            <!-- ============================================================== -->
-            <!-- Start Navigation -->
-			<div class="header header-light head-shadow">
-				<div class="container">
-					<nav id="navigation" class="navigation navigation-landscape">
-						<div class="nav-header">
-							<a class="nav-brand" href="#">
-								<img src="../../assets/img/logo.png" class="logo" alt="" />
-							</a>
-							<div class="nav-toggle"></div>
-						</div>
-						<div class="nav-menus-wrapper" style="transition-property: none;">
-							<ul class="nav-menu">
-							
-								<li><a href="#">About Us</a></li>
-								<li><a href="#">Contact</a></li>
-								
-							</ul>
-							
-							<ul class="nav-menu nav-menu-social align-to-right">
-								<li class="login_click theme-bg">
-									<a href="#"><i class="ti-power-off"></i> Log Out</a>
-								</li>
-							</ul>
-						</div>
-					</nav>
-				</div>
-			</div>
-			<!-- End Navigation -->
-			<div class="clearfix"></div>
-			<!-- ============================================================== -->
-			<!-- Top header  -->
-			<!-- ============================================================== -->		
+{% extends 'layout.html' %}
 
-			
-			<!-- ============================ Dashboard: Dashboard Start ================================== -->
-			<section class="gray pt-5">
-				<div class="container-fluid">
-										
-					<div class="row">
-					
-						<div class="col-lg-3 col-md-3">
-							<div class="dashboard-navbar">
-								
-								<div class="d-user-avater">
-									<img src="../../assets/img/m_user.svg" width="500" height="500" class="img-fluid avater" alt="">
-									<h4>Adam Harshvardhan</h4>
-									<span>Canada USA</span>
-								</div>
-								
-								<div class="d-navigation">
-									<ul id="side-menu">
-										<li class="active"><a href="#"><i class="ti-dashboard"></i>Dashboard</a></li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-user"></i>Users<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-plus"></i>Add Users</a></li>
-												<li><a href="#"><i class="ti-view-list"></i>View Users</a></li>
-												<li><a href="#"><i class="ti-eraser"></i>Update/Delete Users</a></li>
-											</ul>
-										</li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-book"></i>Books<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-plus"></i>Add Books</a></li>
-												<li><a href="#"><i class="ti-view-list"></i>View Books</a></li>
-												<li><a href="#"><i class="ti-eraser"></i>Update/Delete Books</a></li>
-											</ul>
-										</li>
-										<li><a href="#"><i class="ti-layers"></i>Track Books</a></li>
-										<li><a href="#"><i class="ti-tag"></i>Generate Book Tags</a></li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-layers"></i>Manage Records<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-home"></i>Class</a></li>
-												<li><a href="#"><i class="ti-desktop"></i>Staff</a></li>
-												<li><a href="#"><i class="ti-flag"></i>Role</a></li>
-												
-											</ul>
-										</li>
-										
-										<li><a href="#"><i class="ti-notepad"></i>Reports</a></li>
-									</ul>
-								</div>
-								
-							</div>
-							
-							
-						</div>	
-						
-						<div class="col-lg-9 col-md-9 col-sm-12">
-							
-							<!-- Row -->
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
-									<nav aria-label="breadcrumb">
-										<ol class="breadcrumb">
-											<li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="#">Manage Records</a></li>
-											<li class="breadcrumb-item active" aria-current="page">Staff</li>
-										</ol>
-									</nav>
-								</div>
-							</div>
-							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Add Staff</h5></div>
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-												<h4>Fill in Staff Details</h4>
-											</div>
-										</div>
-										<div class="dashboard_container_body p-4">
-											<!-- Staff info -->
-											<div class="submit-section">
-												<form action="#" method="get">
-													<!-- Add staff form -->
-													<div class="form-row slideInRight form-anime" id="student_form">
-																										
-														<div class="form-group col-md-6">
-															<label>Department</label>
-															<input type="text" name="" id="" class="form-control" placeholder="Eg. English or Geography">
-														</div>
+{% block title %}LearnUp | Staff Mgt.{% endblock %}
 
-														<div class="form-group col-md-2">
-															<label style="visibility:hidden;">Search</label>
-															<button class="btn search-btn full-width" 
-															style="padding: 15px 25px;border-radius: 5px;" id="dp_submit_btn">
-																Submit
-															</button>
-														</div>
+{% block content %}
 
-														
-														
-													</div>
-													<!-- Add staff form -->
-												</form>
-											</div>
-											<!-- Staff info -->
-											
-											
-											
-										</div>
-										
-									</div>
-								</div>
-							</div>
-							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
-							<div class="row mb-3">
-								
-								<div class="col-lg-6 col-md-12 col-sm-12">
-									<div class="form-group m-0">
-										<div>
-											<label>Department</label>
-											<select class="form-control dept">
-												<option value="">&nbsp;</option>
-												<option value="GD">Science Department</option>
-												<option value="GN">Business Department</option>
-											</select>
-										</div>
-									</div>
-								</div>
-								
-								<div class="col-lg-2 col-md-12 col-sm-12">
-									<div class="form-group m-0">
-										<div>
-											<label style="visibility:hidden;">Search</label>
-											<button class="btn search-btn full-width" 
-											style="padding: 15px 25px;border-radius: 5px;" id="view_book_btn">
-												Search
-											</button>
-										</div>
-									</div>
-								</div>
-							</div>
-							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Results</h5></div>
-							<div class="row mb-2">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										
-										<div class="dashboard_container_body">
-											<div class="table-responsive">
-												<table class="table">
-													<thead class="thead-dark">
-														<tr>
-															<th scope="col">Department</th>
-															<th scope="col"></th>
-															<th scope="col">Total Teachers</th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<th scope="row" colspan=2>English Department</th>
-															<td>125</td>
-															<td>
-																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-																	<i class="ti-plus"></i> Edit
-																</button>
-															</td>
-															<td>
-																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-																	<i class="ti-trash"></i> Delete
-																</button>
-															</td>
-														</tr>
-														
-													</tbody>
-												</table>
-											</div>
-										</div>
-										
-									</div>
-								</div>
-								
-							</div>
-							<!-- /Row -->
-							
-							
-							
-						</div>
-					
-					</div>
-					
-				</div>
-			</section>
-			<!-- ============================ Dashboard: Dashboard End ================================== -->
-			
-		
-			<!-- ============================ Footer Start ================================== -->
-			<footer class="dark-footer skin-dark-footer">
-				
-				
-				<div class="footer-bottom">
-					<div class="container">
-						<div class="row align-items-center">
-							
-							<div class="col-lg-6 col-md-6">
-								<p class="mb-0">© 2020 LearnUp. Designd By Sophia Asebu.</p>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</footer>
-			<!-- ============================ Footer End ================================== -->
-			
-			
-			
-			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-			
-
+	<!-- Row -->
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
+			<nav aria-label="breadcrumb">
+				<ol class="breadcrumb">
+					<li class="breadcrumb-item"><a href="#">Home</a></li>
+					<li class="breadcrumb-item"><a href="#">Manage Records</a></li>
+					<li class="breadcrumb-item active" aria-current="page">Staff</li>
+				</ol>
+			</nav>
 		</div>
-		<!-- ============================================================== -->
-		<!-- End Wrapper -->
-		<!-- ============================================================== -->
+	</div>
+	<!-- /Row -->
+	
+	<!-- Row -->
+	<div class="mb-3"><h5 class="mb-0">Add Staff</h5></div>
+	<div class="row">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<h4>Fill in Staff Details</h4>
+					</div>
+				</div>
+				<div class="dashboard_container_body p-4">
+					<!-- Staff info -->
+					<div class="submit-section">
+						<form action="{{ url_for('record_mgt.add_staff') }}" method="post">
+							<!-- Add staff form -->
+							<div class="form-row slideInRight form-anime" id="staff_form">
 
-		<!-- ============================================================== -->
-		<!-- All Jquery -->
-		<!-- ============================================================== -->
-		<script src="../../assets/js/jquery.min.js"></script>
-		<script src="../../assets/js/popper.min.js"></script>
-		<script src="../../assets/js/bootstrap.min.js"></script>
-		<script src="../../assets/js/select2.min.js"></script>
-		<script src="../../assets/js/slick.js"></script>
-		<script src="../../assets/js/jquery.counterup.min.js"></script>
-		<script src="../../assets/js/counterup.min.js"></script>
-		<script src="../../assets/js/custom.js"></script>
-		<!-- ============================================================== -->
-		<!-- This page plugins -->
-		<!-- ============================================================== -->
-		<script src="../../assets/js/metisMenu.min.js"></script>	
-		<script>
-			$('#side-menu').metisMenu();
-		</script>
+								{% for field in form %}
+									{% if field.name != 'csrf_token' %}
+										<div class="form-group col-md-6">
+											{% if field.id not in ['csrf_token'] %}
+												{{ field.label }}
+											{% endif %}
+											{{ field }}
+										</div>
+									{% endif %}
+								{%endfor%}
+																				
+								
+								<div class="form-group col-md-2">
+									<label style="visibility:hidden;">Submit</label>
+									<button type="submit" class="btn search-btn full-width rounded" 
+									style="padding: 15px 25px;" id="dp_submit_btn">
+										Submit
+									</button>
+								</div>
 
-	</body>
-</html>
+								{{ form.csrf_token }}
+								
+							</div>
+							<!-- Add staff form -->
+						</form>
+					</div>
+					<!-- Staff info -->
+					
+					
+					
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	<!-- /Row -->
+	
+	<!-- Row -->
+	<div class="mb-3"><h5 class="mb-0">Search By</h5></div>
+	<div class="row mb-3">
+	{% for field in searchform %}
+		{% if field.name != 'csrf_token' %}
+			<div class="col-lg-6 col-md-12 col-sm-12">
+				<div class="form-group m-0">
+					<div>
+					{% if field.id not in ['csrf_token'] %}
+						{{ field.label }}
+					{% endif %}
+					{{ field }}
+					</div>
+				</div>
+			</div>	
+		{% endif %}
+	{%endfor%}
+		
+	<div class="col-lg-2 col-md-12 col-sm-12">
+		<div class="form-group m-0">
+			<div>
+				<label style="visibility:hidden;">Search</label>
+				<button hx-get="{{ url_for('record_mgt.search_staff' ) }}" id="view_staff_btn"
+					class="btn search-btn full-width" style="padding: 15px 25px;border-radius: 5px;"
+					hx-trigger="click"
+					hx-target="#results_box"
+					hx-include=".search_params"
+					hx-swap="outerHTML">
+					Search
+				</button>
+				
+			</div>
+		</div>
+	</div>
+	{{ searchform.csrf_token }}
+	</div>
+	<!-- /Row -->
+	
+	<!-- Row -->
+	<div class="mb-3"><h5 class="mb-0">Results</h5></div>
+	<div class="row mb-2">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				
+				<div class="dashboard_container_body" id="results_box">
+					{% if dept_record %}
+					<div class="table-responsive">
+						<table class="table">
+							<thead class="thead-dark">
+								<tr>
+									<th scope="col">Department</th>
+									<th scope="col"></th>
+									<th scope="col">Total Teachers</th>
+									<th scope="col"></th>
+									<th scope="col"></th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr>
+									<th scope="row" colspan=2>{{ dept_record.department }}</th>
+									<td>{{ dept_record.users | length }}</td>
+									<td>
+										<button hx-get="{{ url_for('record_mgt.edit_staff', staff_id=dept_record.id ) }}"
+												id="edit_btn" class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+												hx-trigger="click"
+												hx-target="#editrecord"
+												hx-swap="outerHTML"
+												onclick="modal_effects()">
+											<i class="ti-plus"></i> Edit Staff
+										</button>
+
+									</td>
+									<td>
+										<button hx-delete="{{ url_for('record_mgt.delete_staff', staff_id=dept_record.id ) }}" id="delete_btn"
+												class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
+												hx-trigger="click"
+												hx-target="#results_box"
+												hx-include="[name='csrf_token']"
+												hx-swap="outerHTML">
+											<i class="ti-trash"></i> Delete Staff
+										</button>
+									</td>
+								</tr>
+								<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+							</tbody>
+						</table>
+					</div>
+					{% else %}
+					<h4 class="p-3 text-center">No staff records found!</h4>
+					{% endif %}
+				</div>
+				
+			</div>
+		</div>
+		
+	</div>
+	<!-- /Row -->
+							
+{% endblock %}
+
+
+{% block modal %}
+    <div id="editrecord"></div>
+{% endblock %}

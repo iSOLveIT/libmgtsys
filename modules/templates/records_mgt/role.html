@@ -1,326 +1,153 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="author" content="www.frebsite.nl" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-		
-        <title>LearnUp - Online Course & Education HTML Template</title>
-		 
-        <!-- Custom CSS -->
-        <link href="../../assets/css/styles.css" rel="stylesheet">
-		
-		<!-- Custom Color Option -->
-		<link href="../../assets/css/colors.css" rel="stylesheet">
-		
-    </head>
-	
-    <body class="red-skin">
-	
-        <!-- ============================================================== -->
-        <!-- Preloader - style you can find in spinners.css -->
-        <!-- ============================================================== -->
-        <div id="preloader"><div class="preloader"><span></span><span></span></div></div>
-		
-		
-        <!-- ============================================================== -->
-        <!-- Main wrapper - style you can find in pages.scss -->
-        <!-- ============================================================== -->
-        <div id="main-wrapper">
-		
-            <!-- ============================================================== -->
-            <!-- Top header  -->
-            <!-- ============================================================== -->
-            <!-- Start Navigation -->
-			<div class="header header-light head-shadow">
-				<div class="container">
-					<nav id="navigation" class="navigation navigation-landscape">
-						<div class="nav-header">
-							<a class="nav-brand" href="#">
-								<img src="../../assets/img/logo.png" class="logo" alt="" />
-							</a>
-							<div class="nav-toggle"></div>
-						</div>
-						<div class="nav-menus-wrapper" style="transition-property: none;">
-							<ul class="nav-menu">
-							
-								<li><a href="#">About Us</a></li>
-								<li><a href="#">Contact</a></li>
-								
-							</ul>
-							
-							<ul class="nav-menu nav-menu-social align-to-right">
-								<li class="login_click theme-bg">
-									<a href="#"><i class="ti-power-off"></i> Log Out</a>
-								</li>
-							</ul>
-						</div>
-					</nav>
+{% extends 'layout.html' %}
+
+{% block title %}LearnUp | Staff Mgt.{% endblock %}
+
+{% block content %}
+<!-- Row -->
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb">
+				<li class="breadcrumb-item"><a href="#">Home</a></li>
+				<li class="breadcrumb-item"><a href="#">Manage Records</a></li>
+				<li class="breadcrumb-item active" aria-current="page">Role</li>
+			</ol>
+		</nav>
+	</div>
+</div>
+<!-- /Row -->
+
+<!-- Row -->
+<div class="mb-3"><h5 class="mb-0">Add Role</h5></div>
+<div class="row">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			<div class="dashboard_container_header">
+				<div class="dashboard_fl_1">
+					<h4>Fill in Role Details</h4>
 				</div>
 			</div>
-			<!-- End Navigation -->
-			<div class="clearfix"></div>
-			<!-- ============================================================== -->
-			<!-- Top header  -->
-			<!-- ============================================================== -->		
-
-			
-			<!-- ============================ Dashboard: Dashboard Start ================================== -->
-			<section class="gray pt-5">
-				<div class="container-fluid">
-										
-					<div class="row">
-					
-						<div class="col-lg-3 col-md-3">
-							<div class="dashboard-navbar">
-								
-								<div class="d-user-avater">
-									<img src="../../assets/img/m_user.svg" width="500" height="500" class="img-fluid avater" alt="">
-									<h4>Adam Harshvardhan</h4>
-									<span>Canada USA</span>
-								</div>
-								
-								<div class="d-navigation">
-									<ul id="side-menu">
-										<li class="active"><a href="#"><i class="ti-dashboard"></i>Dashboard</a></li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-user"></i>Users<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-plus"></i>Add Users</a></li>
-												<li><a href="#"><i class="ti-view-list"></i>View Users</a></li>
-												<li><a href="#"><i class="ti-eraser"></i>Update/Delete Users</a></li>
-											</ul>
-										</li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-book"></i>Books<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-plus"></i>Add Books</a></li>
-												<li><a href="#"><i class="ti-view-list"></i>View Books</a></li>
-												<li><a href="#"><i class="ti-eraser"></i>Update/Delete Books</a></li>
-											</ul>
-										</li>
-										<li><a href="#"><i class="ti-layers"></i>Track Books</a></li>
-										<li><a href="#"><i class="ti-tag"></i>Generate Book Tags</a></li>
-										<li class="dropdown">
-											<a href="#"><i class="ti-layers"></i>Manage Records<span class="ti-angle-left"></span></a>
-											<ul class="nav nav-second-level">
-												<li><a href="#"><i class="ti-home"></i>Class</a></li>
-												<li><a href="#"><i class="ti-desktop"></i>Staff</a></li>
-												<li><a href="#"><i class="ti-flag"></i>Role</a></li>
-												
-											</ul>
-										</li>
-										
-										<li><a href="#"><i class="ti-notepad"></i>Reports</a></li>
-									</ul>
-								</div>
-								
-							</div>
-							
-							
-						</div>	
-						
-						<div class="col-lg-9 col-md-9 col-sm-12">
-							
-							<!-- Row -->
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
-									<nav aria-label="breadcrumb">
-										<ol class="breadcrumb">
-											<li class="breadcrumb-item"><a href="#">Home</a></li>
-                                            <li class="breadcrumb-item"><a href="#">Manage Records</a></li>
-											<li class="breadcrumb-item active" aria-current="page">Role</li>
-										</ol>
-									</nav>
-								</div>
-							</div>
-							<!-- /Row -->
-							
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Add Role</h5></div>
-							<div class="row">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										<div class="dashboard_container_header">
-											<div class="dashboard_fl_1">
-												<h4>Fill in Role Details</h4>
-											</div>
-										</div>
-										<div class="dashboard_container_body p-4">
-											<!-- Role info -->
-											<div class="submit-section">
-												<form action="#" method="get">
-													<!-- Add role form -->
-													<div class="form-row slideInRight form-anime" id="student_form">
-																										
-														<div class="form-group col-md-6">
-															<label>Account Type</label>
-															<select class="form-control account_type">
-																<option value="">&nbsp;</option>
-																<option value="admin">Admin</option>
-																<option value="student">Student</option>
-																<option value="teacher">Teacher</option>
-															</select>
-														</div>
-														
-														<div class="form-group col-md-2">
-															<label style="visibility:hidden;">Search</label>
-															<button class="btn search-btn full-width" 
-															style="padding: 15px 25px;border-radius: 5px;" id="dp_submit_btn">
-																Submit
-															</button>
-														</div>
-
-													</div>
-													<!-- Add role form -->
-
-												</form>
-											</div>
-											<!-- Role info -->
-											
-											
-											
-										</div>
-										
+			<div class="dashboard_container_body p-4">
+				<!-- Role info -->
+				<div class="submit-section">
+					<form>
+						<!-- Add role form -->
+						<div class="form-row slideInRight form-anime" id="role_form">
+																			
+							{% for field in form %}
+								{% if field.name != 'csrf_token' %}
+									<div class="form-group col-md-6">
+										{% if field.id not in ['csrf_token'] %}
+											{{ field.label }}
+										{% endif %}
+										{{ field }}
 									</div>
-								</div>
-							</div>
-							<!-- /Row -->
+								{% endif %}
+							{%endfor%}
 							
-													
-							<!-- Row -->
-							<div class="mb-3"><h5 class="mb-0">Results</h5></div>
-							<div class="row mb-2">
-								<div class="col-lg-12 col-md-12 col-sm-12">
-									<div class="dashboard_container">
-										
-										<div class="dashboard_container_body">
-											<div class="table-responsive">
-												<table class="table">
-													<thead class="thead-dark">
-														<tr>
-															<th scope="col">Role</th>
-															<th scope="col">Permission Level</th>
-															<th scope="col">Total No. of Users</th>
-															<th scope="col"></th>
-															<th scope="col"></th>
-														</tr>
-													</thead>
-													<tbody>
-														<tr>
-															<th scope="row">ADMIN</th>
-															<td>1</td>
-															<td>2</td>
-															<td>
-																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-																	<i class="ti-plus"></i> Edit Role
-																</button>
-															</td>
-															<td>
-																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-																	<i class="ti-trash"></i> Delete Role
-																</button>
-															</td>
-														</tr>
-														<tr>
-															<th scope="row">STUDENT</th>
-															<td>0</td>
-															<td>1680</td>
-															<td>
-																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-																	<i class="ti-plus"></i> Edit Role
-																</button>
-															</td>
-															<td>
-																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-																	<i class="ti-trash"></i> Delete Role
-																</button>
-															</td>
-														</tr>
-														<tr>
-															<th scope="row">TEACHER</th>
-															<td>0</td>
-															<td>210</td>
-															<td>
-																<button class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;">
-																	<i class="ti-plus"></i> Edit Role
-																</button>
-															</td>
-															<td>
-																<button class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;">
-																	<i class="ti-trash"></i> Delete Role
-																</button>
-															</td>
-														</tr>
-														
-													</tbody>
-												</table>
-											</div>
-										</div>
-										
-									</div>
-								</div>
+							<div class="form-group col-md-2">
+								<label style="visibility:hidden;">Submit</label>
+								<button type="submit" class="btn search-btn full-width rounded" style="padding: 15px 25px;" id="ro_submit_btn"
+									hx-post="{{ url_for('record_mgt.add_role' ) }}"	
+									hx-trigger="click"
+									hx-target="#results_box"
+									hx-include="#purpose"
+									hx-swap="outerHTML">
+									Submit
+								</button>
 								
 							</div>
-							<!-- /Row -->
-							
-							
-							
+
+							{{ form.csrf_token }}
+								
+
 						</div>
-					
-					</div>
-					
+						<!-- Add role form -->
+
+					</form>
 				</div>
-			</section>
-			<!-- ============================ Dashboard: Dashboard End ================================== -->
-			
-		
-			<!-- ============================ Footer Start ================================== -->
-			<footer class="dark-footer skin-dark-footer">
+				<!-- Role info -->
 				
 				
-				<div class="footer-bottom">
-					<div class="container">
-						<div class="row align-items-center">
-							
-							<div class="col-lg-6 col-md-6">
-								<p class="mb-0">© 2020 LearnUp. Designd By Sophia Asebu.</p>
-							</div>
-							
-						</div>
-					</div>
-				</div>
-			</footer>
-			<!-- ============================ Footer End ================================== -->
+				
+			</div>
 			
-			
-			
-			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-			
-
 		</div>
-		<!-- ============================================================== -->
-		<!-- End Wrapper -->
-		<!-- ============================================================== -->
+	</div>
+</div>
+<!-- /Row -->
 
-		<!-- ============================================================== -->
-		<!-- All Jquery -->
-		<!-- ============================================================== -->
-		<script src="../../assets/js/jquery.min.js"></script>
-		<script src="../../assets/js/popper.min.js"></script>
-		<script src="../../assets/js/bootstrap.min.js"></script>
-		<script src="../../assets/js/select2.min.js"></script>
-		<script src="../../assets/js/slick.js"></script>
-		<script src="../../assets/js/jquery.counterup.min.js"></script>
-		<script src="../../assets/js/counterup.min.js"></script>
-		<script src="../../assets/js/custom.js"></script>
-		<!-- ============================================================== -->
-		<!-- This page plugins -->
-		<!-- ============================================================== -->
-		<script src="../../assets/js/metisMenu.min.js"></script>	
-		<script>
-			$('#side-menu').metisMenu();
-		</script>
+						
+<!-- Row -->
+<div class="mb-3"><h5 class="mb-0">List of Roles</h5></div>
+<div class="row mb-2">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			
+			<div class="dashboard_container_body" id="results_box">
+				{% if role_records %}
+				<div class="table-responsive">
+					<table class="table">
+						<thead class="thead-dark">
+							<tr>
+								<th scope="col">Role</th>
+								<th scope="col">Permission Level</th>
+								<th scope="col">Total No. of Users</th>
+								<th scope="col"></th>
+								<th scope="col"></th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for record in role_records %}
+								<tr>
+									<th scope="row">{{ record.purpose }}</th>
+									{% set permit = 0 %}
+									{% if record.permission_level %}
+										{% set permit = 1 %}
+									{% endif %}
+									<td>{{ permit }} </td>
+									<td>{{ record.users | length }}</td>
+									<td>
+										<button hx-get="{{ url_for('record_mgt.edit_role', role_id=record.id ) }}"
+												id="edit_btn" class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+												hx-trigger="click"
+												hx-target="#editrecord"
+												hx-swap="outerHTML"
+												onclick="modal_effects()">
+											<i class="ti-plus"></i> Edit Role
+										</button>
 
-	</body>
-</html>
+									</td>
+									<td>
+										<button hx-delete="{{ url_for('record_mgt.delete_role', role_id=record.id ) }}" id="delete_btn"
+												class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
+												hx-trigger="click"
+												hx-target="#results_box"
+												hx-include="[name='csrf_token']"
+												hx-swap="outerHTML">
+											<i class="ti-trash"></i> Delete Role
+										</button>
+									</td>
+								</tr>
+							{% endfor %}
+							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+						</tbody>
+					</table>
+				</div>
+				{% else %}
+					<h4 class="p-3 text-center">No role records found!</h4>
+				{% endif %}
+			</div>
+			
+		</div>
+	</div>
+	
+</div>
+<!-- /Row -->
+							
+{% endblock %}
+	
+
+{% block modal %}
+    <div id="editrecord"></div>
+{% endblock %}
