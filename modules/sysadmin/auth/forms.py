@@ -10,9 +10,9 @@ from project.modules import ModelForm
 class LoginForm(ModelForm):
     class Meta:
         model = User
-        only = ['id', 'password']
+        only = ['sid', 'password']
         field_args = {
-            'id': {
+            'sid': {
                 'render_kw': {
                     'autocomplete': 'off',
                     'required': '',

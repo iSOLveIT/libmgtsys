@@ -3,12 +3,16 @@ from secrets import compare_digest
 
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy_utils.types import PasswordType, ChoiceType
+from sqlalchemy_utils.types import PasswordType, ChoiceType, Password
 
 # from project.modules import db
 from .. import db, login_manager
 from ..db_helper import PkModel
 # from ..tracking.meta import Book
+# from sqlalchemy_utils import force_auto_coercion
+#
+#
+# force_auto_coercion()
 
 
 class User(UserMixin, PkModel):
@@ -18,11 +22,11 @@ class User(UserMixin, PkModel):
 
     __tablename__ = "users"
 
-    id = db.Column(db.String(30), primary_key=True, info={'label': 'User ID'})
-    sid = db.Column(db.Integer, unique=True, nullable=False, autoincrement=True)
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    sid = db.Column(db.String(30), unique=True, nullable=False, info={'label': 'User ID'})
     name = db.Column(db.String(300), nullable=False, info={'label': 'Name'})
     _password = db.Column(PasswordType(max_length=300, schemes=['pbkdf2_sha512']),
-                          nullable=False, info={'label': 'Password'})
+                          nullable=False, default=f"SWESCO_{id}", info={'label': 'Password'})
     gender = db.Column(ChoiceType(choices=GENDER), nullable=False, info={'label': 'Gender'})
     date_registered = db.Column(db.DateTime, nullable=False, default=dt.now())
     last_seen = db.Column(db.DateTime, nullable=False, default=dt.now())
@@ -32,9 +36,9 @@ class User(UserMixin, PkModel):
 
     # books_recorded = db.relationship('Books', backref='recorded_by', lazy=True)
 
-    role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
-    class_id = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)
-    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'), nullable=False)
+    role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
+    class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+    staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
 
     def __repr__(self):
         return f"<User-id: {self.id}, User-sid: {self.sid}>"
@@ -49,7 +53,7 @@ class User(UserMixin, PkModel):
         self._password = plaintext
 
     def check_password(self, password):
-        check = compare_digest(self._password, password)
+        check = compare_digest(self._password, Password(value=password))
         return check
 
     def is_admin(self):

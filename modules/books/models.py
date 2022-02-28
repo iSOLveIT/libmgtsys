@@ -11,7 +11,7 @@ from ..users.models import User
 
 user_book = db.Table('user_book',
                      db.Column('book_id', db.Integer, db.ForeignKey('book.id')),
-                     db.Column('user_id', db.String(30), db.ForeignKey(User.id)),
+                     db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
                      db.Column('date_borrowed', db.DateTime, nullable=False, default=dt.now()),
                      db.Column('return_date', db.DateTime, nullable=False)
                      )
@@ -37,7 +37,7 @@ class Books(PkModel):
     qty_spoilt = db.Column(db.Integer, nullable=False)  # Number spoilt
     current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added)
 
-    user_id = db.Column(db.String(30), db.ForeignKey(User.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     books_recorded = db.relationship('User', backref=backref("recorded_by", uselist=False))
     batch = db.relationship('Book', backref='book_batch', lazy=True)
 
