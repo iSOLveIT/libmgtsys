@@ -23,7 +23,8 @@
 		
     </head>
 
-	<body class="red-skin">
+	{% if user_log %}
+		<body class="red-skin">
 
 		<!-- ============================================================== -->
         <!-- Preloader - style you can find in spinners.css -->
@@ -117,6 +118,39 @@
 		{% block extrajs %}
 			
 		{% endblock %}
-	</body>
+		</body>
+		
+	{% else %}
+		<body class="log-bg">
+			<div id="preloader"><div class="preloader"><span></span><span></span></div></div>
+		
+			<div id="main-wrapper">
+				{% block login_content %}
+					
+				{% endblock %}
+			</div>
+
+
+		<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/select2.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/slick.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/jquery.counterup.min.js') }}"></script>
+		<script src="https://unpkg.com/htmx.org@1.7.0" integrity="sha384-EzBXYPt0/T6gxNp0nuPtLkmRpmDBbjg6WmCUZRLXBBwYYmwAUxzlSGej0ARHX0Bo" crossorigin="anonymous"></script>
+		<script src="{{ url_for('static', filename='js/custom.js') }}"></script>
+		<script src="{{ url_for('static', filename='js/metisMenu.min.js') }}"></script>	
+		<script>
+			$('#side-menu').metisMenu();
+		</script>
+		<!-- ============================================================== -->
+
+		{% block login_extrajs %}
+			
+		{% endblock %}
+		</body>
+	{% endif %}
+
+	
 	 
 </html>

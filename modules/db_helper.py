@@ -67,8 +67,6 @@ class CRUDMixin:
         db.session.add(self)
         if commit:
             db.session.commit()
-
-        db.session.close()
         return self
 
     def save_all(self, instances: list, commit=True):
@@ -84,7 +82,6 @@ class CRUDMixin:
         db.session.add_all(instances)
         if commit:
             db.session.commit()
-        db.session.close()
         return self
 
     def delete(self, commit=True):
@@ -101,7 +98,6 @@ class CRUDMixin:
         if commit:
             db.session.commit()
             return self
-        db.session.close()
         return None
 
 

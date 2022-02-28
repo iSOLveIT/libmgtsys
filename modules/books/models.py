@@ -1,5 +1,6 @@
 from datetime import datetime as dt
 
+from sqlalchemy.orm import backref
 from sqlalchemy_utils.types import ChoiceType
 
 from .. import db
@@ -37,6 +38,7 @@ class Books(PkModel):
     current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added)
 
     user_id = db.Column(db.String(30), db.ForeignKey(User.id))
+    books_recorded = db.relationship('User', backref=backref("recorded_by", uselist=False))
     batch = db.relationship('Book', backref='book_batch', lazy=True)
 
     def __repr__(self):

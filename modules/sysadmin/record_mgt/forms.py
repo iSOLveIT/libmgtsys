@@ -130,10 +130,10 @@ class SearchStaffForm(ModelForm):
     department = QuerySelectField(
         'Department:',
         validators=[InputRequired()],
-        query_factory=lambda: Staff.query.all(),
+        query_factory=lambda: Staff.query.order_by(Staff.department).all(),
         get_label="department",
         render_kw={
-            'class': "form-control dept search_params"
+            'class': "form-control dept"
         }
     )
 

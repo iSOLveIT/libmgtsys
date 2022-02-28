@@ -30,7 +30,7 @@
 			<div class="dashboard_container_body p-4">
 				<!-- Role info -->
 				<div class="submit-section">
-					<form>
+					<form hx-post="{{ url_for('record_mgt.add_role' ) }}" hx-target="#results_box" hx-swap="outerHTML">
 						<!-- Add role form -->
 						<div class="form-row slideInRight form-anime" id="role_form">
 																			
@@ -47,12 +47,8 @@
 							
 							<div class="form-group col-md-2">
 								<label style="visibility:hidden;">Submit</label>
-								<button type="submit" class="btn search-btn full-width rounded" style="padding: 15px 25px;" id="ro_submit_btn"
-									hx-post="{{ url_for('record_mgt.add_role' ) }}"	
-									hx-trigger="click"
-									hx-target="#results_box"
-									hx-include="#purpose"
-									hx-swap="outerHTML">
+								<button type="submit" class="btn search-btn full-width rounded" 
+								style="padding: 15px 25px;" id="ro_submit_btn">
 									Submit
 								</button>
 								
