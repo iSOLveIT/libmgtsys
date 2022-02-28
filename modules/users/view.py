@@ -1,10 +1,11 @@
 from functools import wraps
 
-from flask import Blueprint, redirect, url_for
+from flask import Blueprint, redirect, url_for, render_template, flash
 from flask_login import current_user
+from pathlib import Path
 
 from .models import User, Class, Staff, Role
-# from project.modules.users.models import User, Class, Staff, Role
+from .forms import StudentForm, TeacherForm, AdminForm
 
 
 # Activation needed. Move from here to dashboard folder
@@ -18,9 +19,21 @@ def activation_required(f):
     return wrap
 
 
-users_bp = Blueprint("users", __name__, url_prefix="/users")
+static_path = Path('.').parent.absolute() / 'modules/static'
+users_bp = Blueprint("users", __name__, url_prefix="/users", static_folder=static_path)
 
 
-@users_bp.route("/user", defaults={"uid": 2})
-def list_user(uid):
-    return f"User is {uid}"
+# CRUD for class records
+
+# View to show user registration page
+@users_bp.route("/register")
+def user_index():
+    context = {}
+    user_log = True
+    admin = True  # remove this when user login is implemented
+    student_form = StudentForm()
+    teacher_form = TeacherForm()
+    admin_form = AdminForm()
+    context.update(admin=admin, student_form=student_form, user_log=user_log,
+                   teacher_form=teacher_form, admin_form=admin_form)
+    return render_template("users/add.html", **context)

@@ -8,12 +8,13 @@ from sqlalchemy_utils.types import PasswordType, ChoiceType
 # from project.modules import db
 from .. import db, login_manager
 from ..db_helper import PkModel
+# from ..tracking.meta import Book
 
 
 class User(UserMixin, PkModel):
     """Model for the users table"""
 
-    GENDER = [('M', 'male'), ('F', 'female')]
+    GENDER = [('', ''), ('M', 'Male'), ('F', 'Female')]
 
     __tablename__ = "users"
 
@@ -29,7 +30,7 @@ class User(UserMixin, PkModel):
     has_activated = db.Column(db.Boolean(), nullable=False, default=False)
     is_active = db.Column(db.Boolean, nullable=False, default=False)
 
-    books_recorded = db.relationship('Books', backref='recorded_by', lazy=True)
+    # books_recorded = db.relationship('Books', backref='recorded_by', lazy=True)
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'), nullable=False)
     class_id = db.Column(db.Integer, db.ForeignKey('class.id'), nullable=False)

@@ -10,14 +10,30 @@
     padding: 8px 10px !important;
 }
 
+/*
 .form-anime{
     transition: 0.2s ease-in;
     -webkit-animation-duration: 0.05s;
     animation-duration: 0.05s;
     -webkit-animation-name: slideInRight;
     animation-name: slideInRight;
-}
+}*/
 
 [class*=" ti-"], [class^=ti-]{
     font-size: 1rem !important;
+}
+
+a#admin-tab:hover, a#student-tab:hover, a#teacher-tab:hover{
+    color: #000033!important;
+}
+a#admin-tab.active:hover, a#student-tab.active:hover, a#teacher-tab.active:hover{
+    color: #edf0f5!important;
+}
+
+a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
+    background: #000033!important;
+}
+
+.red-skin .btn.search-btn{
+    background-color: #000033!important;
 }

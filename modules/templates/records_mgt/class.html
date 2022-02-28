@@ -73,40 +73,39 @@
 
 <!-- Row -->
 <div class="mb-3"><h5 class="mb-0">Search By</h5></div>
-<div class="row mb-3">
-	{% for field in searchform %}
-		{% if field.name != 'csrf_token' %}
-			<div class="col-lg-3 col-md-12 col-sm-12">
-				<div class="form-group m-0">
-					<div>
-					{% if field.id not in ['csrf_token'] %}
-						{{ field.label }}
-					{% endif %}
-					{{ field }}
+<form hx-get="{{ url_for('record_mgt.search_class' ) }}" hx-target="#results_box" hx-swap="outerHTML">
+	<div class="row mb-3">
+		{% for field in searchform %}
+			{% if field.name != 'csrf_token' %}
+				<div class="col-lg-3 col-md-12 col-sm-12">
+					<div class="form-group m-0">
+						<div>
+						{% if field.id not in ['csrf_token'] %}
+							{{ field.label }}
+						{% endif %}
+						{{ field }}
+						</div>
 					</div>
-				</div>
-			</div>	
-		{% endif %}
-	{%endfor%}
+				</div>	
+			{% endif %}
+		{%endfor%}
 		
-	<div class="col-lg-2 col-md-12 col-sm-12">
-		<div class="form-group m-0">
-			<div>
-				<label style="visibility:hidden;">Search</label>
-				<button hx-get="{{ url_for('record_mgt.search_class' ) }}" id="view_class_btn"
-					class="btn search-btn full-width" style="padding: 15px 25px;border-radius: 5px;"
-					hx-trigger="click"
-					hx-target="#results_box"
-					hx-include=".search_params"
-					hx-swap="outerHTML">
-					Search
-				</button>
-				
+		<div class="col-lg-2 col-md-12 col-sm-12">
+			<div class="form-group m-0">
+				<div>
+					<label style="visibility:hidden;">Search</label>
+					<button id="view_class_btn"
+						class="btn search-btn full-width" style="padding: 15px 25px;border-radius: 5px;">
+						Search
+					</button>
+					
+				</div>
 			</div>
 		</div>
+		{{ searchform.csrf_token }}
 	</div>
-	{{ searchform.csrf_token }}
-</div>
+</form>
+
 <!-- /Row -->
 
 <!-- Row -->

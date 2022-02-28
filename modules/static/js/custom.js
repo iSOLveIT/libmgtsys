@@ -544,8 +544,6 @@ $(function() {
 	});
 
 
-
-
 });
 
 // let searchInputs = document.querySelectorAll(".form-control");
@@ -561,48 +559,6 @@ $(function() {
 //     }
 // }
 
-// User Account Type 
-const admin_account =  document.querySelector("#admin_account[type='radio']");
-const teacher_account =  document.querySelector("#teacher_account[type='radio']");
-const student_account = document.querySelector("#student_account[type='radio']");
-
-admin_account.addEventListener('click', function(){
-	let admin_form = document.getElementById("admin_form");
-	let student_form = document.getElementById("student_form");
-	let teacher_form = document.getElementById("teacher_form");
-
-	student_form.classList.add("d-none");
-	teacher_form.classList.add("d-none");
-
-	admin_form.classList.add("slideInRight", "form-anime");
-	admin_form.classList.remove("d-none");
-	
-})
-
-student_account.addEventListener('click', function(){
-	let admin_form = document.getElementById("admin_form");
-	let student_form = document.getElementById("student_form");
-	let teacher_form = document.getElementById("teacher_form");
-
-	admin_form.classList.add("d-none");
-	teacher_form.classList.add("d-none");
-
-	student_form.classList.add("slideInRight", "form-anime");
-	student_form.classList.remove("d-none");
-	
-})
-teacher_account.addEventListener('click', function(){
-	let admin_form = document.getElementById("admin_form");
-	let student_form = document.getElementById("student_form");
-	let teacher_form = document.getElementById("teacher_form");
-
-	student_form.classList.add("d-none");
-	admin_form.classList.add("d-none");
-
-	teacher_form.classList.add("slideInRight", "form-anime");
-	teacher_form.classList.remove("d-none");
-	
-})
 
 $('#editrecord').on('shown.bs.modal', function () {
   $('select:first-child').trigger('focus')

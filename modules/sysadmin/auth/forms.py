@@ -16,7 +16,8 @@ class LoginForm(ModelForm):
                 'render_kw': {
                     'autocomplete': 'off',
                     'required': '',
-                    'class': 'form-control'
+                    'class': 'form-control',
+                    'placeholder': 'Student ID or Staff ID or Admin ID'
                 }
             },
             'password': {
