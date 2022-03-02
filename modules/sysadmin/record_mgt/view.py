@@ -4,7 +4,7 @@ from flask import Blueprint, request, redirect, render_template, url_for
 from pathlib import Path
 from sqlalchemy.exc import IntegrityError
 
-from project.modules.users.models import User, Class, Role, Staff
+from project.modules.users.models import Class, Role, Staff
 from .forms import AddClassForm, AddStaffForm, AddRoleForm, SearchStaffForm, SearchClassForm
 # from project.helpers.security import get_safe_redirect
 
@@ -208,9 +208,10 @@ def delete_staff(staff_id):
 def role_index():
     context = {}
     admin = True    # remove this when user login is implemented
+    user_log = True
     form = AddRoleForm()
     role_records = Role.query.all()
-    context.update(admin=admin, form=form, role_records=role_records)
+    context.update(admin=admin, form=form, role_records=role_records, user_log=user_log)
     return render_template("records_mgt/role.html", **context)
 
 

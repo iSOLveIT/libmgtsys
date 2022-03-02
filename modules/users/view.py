@@ -42,7 +42,7 @@ def user_index():
 
 
 # View to create student accounts
-@users_bp.route("/register/users/student", methods=['GET', 'POST'])
+@users_bp.route("/register/user/student", methods=['POST'])
 def add_student_account():
     role = Role.query.filter(Role.purpose == 'student').first()
     form = StudentForm()
@@ -65,7 +65,6 @@ def add_student_account():
             student_class.users.append(student_user)
 
             role.update()
-            # student_class.update()
 
     except IntegrityError:
         pass
@@ -73,12 +72,44 @@ def add_student_account():
 
 
 # View to create teacher accounts
-@users_bp.route("/register/users/teacher", methods=['GET', 'POST'])
+@users_bp.route("/register/user/teacher", methods=['POST'])
 def add_teacher_account():
-    pass
+    role = Role.query.filter(Role.purpose == 'teacher').first()
+    form = TeacherForm()
+    teacher_user = User()
+    form.populate_obj(teacher_user)
+    try:
+        if form.validate():
+            print(form.validate_on_submit(), form.data)
+            teacher_dept = form.department.data
+            # Append user to role and class
+            # TODO: teacher_user.password = form.password.data
+            role.users.append(teacher_user)
+            teacher_dept.users.append(teacher_user)
+
+            role.update()
+
+    except IntegrityError:
+        pass
+    return redirect(url_for(".user_index"))
 
 
 # View to create admin accounts
-@users_bp.route("/register/users/admin", methods=['GET', 'POST'])
+@users_bp.route("/register/user/admin", methods=['POST'])
 def add_admin_account():
-    pass
+    role = Role.query.filter(Role.purpose == 'admin').first()
+    form = AdminForm()
+    admin_user = User()
+    form.populate_obj(admin_user)
+    try:
+        if form.validate():
+            print(form.validate_on_submit(), form.data)
+            # Append user to role and class
+            # TODO: admin_user.password = form.password.data
+            role.users.append(admin_user)
+            role.update()
+
+    except IntegrityError:
+        pass
+    return redirect(url_for(".user_index"))
+

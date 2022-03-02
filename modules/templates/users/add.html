@@ -68,7 +68,10 @@
 					</form>
 				</div>								
 			</div>
-			
+			<div class="dashboard_container_header">
+				<a href="#" download style="color: #0000ff;">
+				<i class="fa fa-file-download"></i>	Download .xlsx example</a>
+			</div>	
 		</div>
 	</div>
 </div>
@@ -142,7 +145,7 @@
 								</form>
 							</div>
 							<div class="tab-pane fade" id="teacher" role="tabpanel" aria-labelledby="teacher-tab">
-								<form>
+								<form action="{{ url_for('users.add_teacher_account') }}" method="post">
 									<!-- Teacher form -->
 									<div class="form-row slideInRight form-anime" id="teacher_form">
 										{% for field in teacher_form %}
@@ -169,7 +172,7 @@
 								</form>
 							</div>
 							<div class="tab-pane fade" id="admin" role="tabpanel" aria-labelledby="admin-tab">
-								<form>
+								<form action="{{ url_for('users.add_admin_account') }}" method="post">
 									<!-- Admin form -->
 									<div class="form-row slideInRight form-anime" id="admin_form">
 										{% for field in admin_form %}
