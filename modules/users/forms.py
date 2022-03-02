@@ -131,3 +131,26 @@ class AdminForm(ModelForm):
 
     sid = StringField(u"Admin ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
                      render_kw={'class': "form-control", 'placeholder': "AD10318723"})
+
+
+class SearchUserForm(ModelForm):
+    """
+    TeacherForm - Form for adding teachers
+
+    """
+
+    class Meta:
+        model = User
+        only = ['sid']
+        field_args = {
+            'sid': {
+                'render_kw': {
+                    'autocomplete': 'off',
+                    'required': '',
+                    'class': 'form-control',
+                    'placeholder': 'Student ID or Staff ID or Admin ID',
+                    'id': 'userid'
+                }
+            }
+        }
+

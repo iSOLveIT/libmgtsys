@@ -1,13 +1,13 @@
 from functools import wraps
 
-from flask import Blueprint, redirect, url_for, render_template, flash
+from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user
 from pathlib import Path
 
 from sqlalchemy.exc import IntegrityError
 
 from .models import User, Class, Staff, Role
-from .forms import StudentForm, TeacherForm, AdminForm
+from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm
 
 
 # Activation needed. Move from here to dashboard folder
@@ -113,3 +113,69 @@ def add_admin_account():
         pass
     return redirect(url_for(".user_index"))
 
+
+# View to show page for searching users
+@users_bp.route("/list", methods=['GET', 'POST'])
+def list_users():
+    context = {}
+    user_log = True
+    admin = True  # remove this when user login is implemented
+    search_form = SearchUserForm()
+
+    if request.method == 'POST':
+        get_account = User.query.filter(User.sid == search_form.sid.data).first()
+        context.update(user_records=[get_account])
+        return render_template("users/records_output.html", **context)
+
+    context.update(admin=admin, search_form=search_form, user_log=user_log)
+    return render_template("users/view.html", **context)
+
+
+# View to Edit user records
+@users_bp.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+def edit_user(user_id):
+    context = {}
+    # admin = True  # remove this when user login is implemented
+    user_record = User.query.get(user_id)
+    if user_record.role_id == 1:
+        form = StudentForm(obj=user_record)
+    elif user_record.role_id == 2:
+        form = TeacherForm(obj=user_record)
+    else:
+        form = AdminForm(obj=user_record)
+    form.populate_obj(user_record)
+
+    if request.method == 'POST':
+        try:
+            if form.validate():
+                print(form.validate_on_submit(), form.data)
+                pass
+                # class_record.update()
+                # msg = "Updated class details successfully"
+        except IntegrityError:
+            # msg = "Class details already exists!"
+            pass
+        return redirect(url_for(".list_users"))
+    context.update(form=form, user_id=user_id)
+    return render_template("users/edit_record.html", **context)
+
+
+# View to Delete user records
+@users_bp.route('/delete_user/<user_id>', methods=['DELETE'])
+def delete_user(user_id):
+    # admin = True  # remove this when user login is implemented
+    # class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
+    # prog = class_record.programme
+    # yr_grp = class_record.year_group
+    # track = class_record.track
+    # class_record.delete()
+    #
+    # context = {}
+    # class_records = Class.query.filter(
+    #     Class.programme == prog,
+    #     Class.track == track,
+    #     Class.year_group == yr_grp).all()
+    # context.update(class_records=class_records, view=view)
+    # # msg = "Deleted class details successfully!"
+    # return render_template("records_mgt/records_output.html", **context)
+    pass

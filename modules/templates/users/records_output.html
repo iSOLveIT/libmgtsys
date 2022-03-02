@@ -1,0 +1,66 @@
+<div class="dashboard_container_body" id="results_box">
+    {% if user_records %}
+    <div class="table-responsive">
+        <table class="table">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">User ID</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Class/Department</th>
+                    <th scope="col">Gender</th>
+                    <th scope="col">Created At</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in user_records %}
+                    <tr>
+                        <th scope="row">{{ record.sid }}</th>
+                        <td>{{ record.name }} </td>
+                        {% if record.role.purpose.value == 'STUDENT' %}
+                            {% set s_prog = record.s_class.programme | get_course %}
+                            {% set s_form = record.s_class.year_group | get_current_class %}
+                            {% set s_track = record.s_class.track | get_track %}
+
+                            {% set s_class = [s_prog, s_form, record.s_class.current_class, s_track] | join('') %}
+                            <td>{{ s_class }} </td>
+                        {% elif record.role.purpose.value == 'TEACHER' %}
+                            <td>{{ record.staff.department | upper }} </td>
+                        {% else %}
+                            <td>ADMIN</td>
+                        {% endif %}
+
+                        <td>{{ record.gender }}</td>
+                        <td>{{ record.date_registered.strftime("%d-%m-%Y") }}</td>
+                        <td>
+                              <button hx-get="{{ url_for('users.edit_user', user_id=record.id ) }}" id="edit_btn"
+                                class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+                                hx-trigger="click"
+                                hx-target="#editrecord"
+                                hx-swap="outerHTML"
+                                onclick="modal_effects()">
+                                <i class="ti-plus"></i> Edit User
+                            </button>
+
+                        </td>
+                        <td>
+                            <button hx-delete="{{ url_for('users.delete_user', user_id=record.id ) }}" id="delete_btn"
+                                class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
+                                hx-trigger="click"
+                                hx-target="#results_box"
+                                hx-include="[name='csrf_token']"
+                                hx-swap="outerHTML">
+                                <i class="ti-trash"></i> Delete User
+                            </button>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <h4 class="p-3 text-center">No user records found!</h4>
+    {% endif %}
+</div>
