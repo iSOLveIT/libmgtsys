@@ -227,5 +227,5 @@ def delete_user(user_id):
         user_record.delete()
     # msg = "Deleted user details successfully!"
     context = {}
-    context.update(user_record=[])
+    # context.update(user_record=[])
     return render_template("users/records_output.html", **context)
