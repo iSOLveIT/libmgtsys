@@ -1,6 +1,6 @@
 {% if view == 'class' %}
     <div class="dashboard_container_body" id="results_box">
-    {% if class_records %}
+    {% if class_records | length != 0 %}
     <div class="table-responsive">
         <table class="table">
             <thead class="thead-dark">
@@ -110,7 +110,7 @@
 
 {% if view == 'role' %}
     <div class="dashboard_container_body" id="results_box">
-    {% if role_records %}
+    {% if role_records | length != 0 %}
     <div class="table-responsive">
         <table class="table">
             <thead class="thead-dark">

@@ -53,6 +53,9 @@ def edit_class(class_id):
     context = {}
     admin = True  # remove this when user login is implemented
     class_record = Class.query.get(class_id)
+    if class_record is None:
+        return redirect(url_for(".class_index"))
+
     form = AddClassForm(obj=class_record)
     form.populate_obj(class_record)
 
@@ -62,6 +65,9 @@ def edit_class(class_id):
                 print(form.validate_on_submit(), form.data)
                 tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
                 class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
+                if class_record is None:
+                    return redirect(url_for(".class_index"))
+
                 class_record.class_tag = tag
                 class_record.update()
                 # msg = "Updated class details successfully"
@@ -162,6 +168,8 @@ def edit_staff(staff_id):
                 print(form.validate_on_submit(), form.data)
                 # prevent changes in selected row until you commit changes to DB
                 staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
+                if staff_record is None:
+                    return redirect(url_for(".staff_index"))
                 staff_record.update()
                 # msg = "Created staff details successfully"
         except IntegrityError:
@@ -181,7 +189,9 @@ def search_staff():
     dept = int(request.args.get("department", default=None))
 
     staff_record = Staff.query.filter(Staff.id == dept).first()
-    context.update(dept_record=staff_record, view=view)
+    if staff_record is not None:
+        context.update(dept_record=staff_record)
+    context.update(view=view)
     return render_template("records_mgt/records_output.html", **context)
 
 
@@ -191,13 +201,11 @@ def delete_staff(staff_id):
     view = "staff"
     # admin = True  # remove this when user login is implemented
     staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
-    dept = staff_record.department
     staff_record.delete()
 
     context = {}
-    staff_record = Staff.query.filter(Staff.department == dept).first()
     # msg = "Deleted staff details successfully"
-    context.update(dept_record=staff_record, view=view)
+    context.update(view=view)
     return render_template("records_mgt/records_output.html", **context)
 
 
@@ -256,6 +264,8 @@ def edit_role(role_id):
                 print(form.validate(), form.data)
                 # prevent changes in selected row until you commit changes to DB
                 role_record = Role.query.filter(Role.id == role_id).with_for_update().first()
+                if role_record is None:
+                    return redirect(url_for(".role_index"))
                 role_record.permission_level = True if form.purpose.data == 'admin' else False
                 role_record.update()
                 # msg = "Updated role details successfully"

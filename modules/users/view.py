@@ -5,9 +5,10 @@ from flask_login import current_user
 from pathlib import Path
 
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy_utils.types import Choice
 
 from .models import User, Class, Staff, Role
-from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm
+from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
 
 
 # Activation needed. Move from here to dashboard folder
@@ -45,6 +46,8 @@ def user_index():
 @users_bp.route("/register/user/student", methods=['POST'])
 def add_student_account():
     role = Role.query.filter(Role.purpose == 'student').first()
+    if role is None:
+        return redirect(url_for(".user_index"))
     form = StudentForm()
     student_user = User()
     form.populate_obj(student_user)
@@ -58,6 +61,9 @@ def add_student_account():
                 Class.current_class == st_class,
                 Class.track == st_track
             ).first()
+
+            if student_class is None:
+                return redirect(url_for(".user_index"))
 
             # Append user to role and class
             # TODO: student_user.password = form.password.data
@@ -75,6 +81,8 @@ def add_student_account():
 @users_bp.route("/register/user/teacher", methods=['POST'])
 def add_teacher_account():
     role = Role.query.filter(Role.purpose == 'teacher').first()
+    if role is None:
+        return redirect(url_for(".user_index"))
     form = TeacherForm()
     teacher_user = User()
     form.populate_obj(teacher_user)
@@ -82,6 +90,8 @@ def add_teacher_account():
         if form.validate():
             print(form.validate_on_submit(), form.data)
             teacher_dept = form.department.data
+            if teacher_dept is None:
+                return redirect(url_for(".user_index"))
             # Append user to role and class
             # TODO: teacher_user.password = form.password.data
             role.users.append(teacher_user)
@@ -98,6 +108,9 @@ def add_teacher_account():
 @users_bp.route("/register/user/admin", methods=['POST'])
 def add_admin_account():
     role = Role.query.filter(Role.purpose == 'admin').first()
+    if role is None:
+        return redirect(url_for(".user_index"))
+
     form = AdminForm()
     admin_user = User()
     form.populate_obj(admin_user)
@@ -124,8 +137,9 @@ def list_users():
 
     if request.method == 'POST':
         get_account = User.query.filter(User.sid == search_form.sid.data).first()
-        context.update(user_records=[get_account])
-        return render_template("users/records_output.html", **context)
+        if get_account is not None:
+            context.update(user_records=[get_account])
+            return render_template("users/records_output.html", **context)
 
     context.update(admin=admin, search_form=search_form, user_log=user_log)
     return render_template("users/view.html", **context)
@@ -137,25 +151,69 @@ def edit_user(user_id):
     context = {}
     # admin = True  # remove this when user login is implemented
     user_record = User.query.get(user_id)
+
+    if user_record is None:
+        return redirect(url_for(".list_users"))
+    if request.method == 'POST':
+        if user_record.role_id == 1:
+            form = StudentForm(obj=user_record)
+            form.populate_obj(user_record)
+            try:
+                if form.validate():
+                    print(form.validate_on_submit(), form.data)
+                    st_class, st_track = str(form.class_track.data).split("_", 1)
+                    student_class = Class.query.filter(
+                        Class.programme == form.programme.data,
+                        Class.year_group == form.year_group.data,
+                        Class.current_class == st_class,
+                        Class.track == st_track
+                    ).first()
+                    if student_class is None:
+                        return redirect(url_for(".list_users"))
+                    student_class.users.append(user_record)
+                    student_class.update()
+                    # msg = "Updated class details successfully"
+            except IntegrityError:
+                # msg = "Class details already exists!"
+                pass
+        elif user_record.role_id == 2:
+            form = TeacherForm(obj=user_record)
+            form.populate_obj(user_record)
+            try:
+                if form.validate():
+                    print(form.validate_on_submit(), form.data)
+                    teacher_dept = form.department.data
+                    if teacher_dept is None:
+                        return redirect(url_for(".list_users"))
+                    # Append user to role and class
+                    # TODO: teacher_user.password = form.password.data
+                    teacher_dept.users.append(user_record)
+                    teacher_dept.update()
+            except IntegrityError:
+                pass
+        else:
+            form = EditAdminForm(obj=user_record)
+            form.populate_obj(user_record)
+            try:
+                if form.validate():
+                    print(form.validate(), form.data)
+                    user_record.update()
+            except IntegrityError:
+                pass
+
+        return redirect(url_for(".list_users"))
+
     if user_record.role_id == 1:
         form = StudentForm(obj=user_record)
+        form.programme.data = user_record.s_class.programme
+        form.year_group.data = user_record.s_class.year_group
+        class_track = f"{user_record.s_class.current_class.code}_{user_record.s_class.track.code}"
+        form.class_track.data = Choice(class_track, class_track.upper())
     elif user_record.role_id == 2:
         form = TeacherForm(obj=user_record)
+        form.department.data = user_record.staff
     else:
-        form = AdminForm(obj=user_record)
-    form.populate_obj(user_record)
-
-    if request.method == 'POST':
-        try:
-            if form.validate():
-                print(form.validate_on_submit(), form.data)
-                pass
-                # class_record.update()
-                # msg = "Updated class details successfully"
-        except IntegrityError:
-            # msg = "Class details already exists!"
-            pass
-        return redirect(url_for(".list_users"))
+        form = EditAdminForm(obj=user_record)
     context.update(form=form, user_id=user_id)
     return render_template("users/edit_record.html", **context)
 
@@ -164,18 +222,10 @@ def edit_user(user_id):
 @users_bp.route('/delete_user/<user_id>', methods=['DELETE'])
 def delete_user(user_id):
     # admin = True  # remove this when user login is implemented
-    # class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
-    # prog = class_record.programme
-    # yr_grp = class_record.year_group
-    # track = class_record.track
-    # class_record.delete()
-    #
-    # context = {}
-    # class_records = Class.query.filter(
-    #     Class.programme == prog,
-    #     Class.track == track,
-    #     Class.year_group == yr_grp).all()
-    # context.update(class_records=class_records, view=view)
-    # # msg = "Deleted class details successfully!"
-    # return render_template("records_mgt/records_output.html", **context)
-    pass
+    user_record = User.query.get(user_id)
+    if user_record is not None:
+        user_record.delete()
+    # msg = "Deleted user details successfully!"
+    context = {}
+    context.update(user_record=[])
+    return render_template("users/records_output.html", **context)

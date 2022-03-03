@@ -53,7 +53,7 @@ class User(UserMixin, PkModel):
         self._password = plaintext
 
     def check_password(self, password):
-        check = compare_digest(self._password, Password(value=password))
+        check = compare_digest(self._password, password)
         return check
 
     def is_admin(self):

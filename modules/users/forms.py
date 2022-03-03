@@ -133,6 +133,38 @@ class AdminForm(ModelForm):
                      render_kw={'class': "form-control", 'placeholder': "AD10318723"})
 
 
+class EditAdminForm(ModelForm):
+    """
+    AdminForm - Form for adding administrators
+
+    """
+
+    class Meta:
+        model = User
+        only = ['sid', 'name', 'gender']
+        field_args = {
+            'name': {
+                'render_kw': {
+                    'autocomplete': 'off',
+                    'required': '',
+                    'class': 'form-control',
+                    'placeholder': 'Lastname Firstname, e.g. Asebu Sophia'
+                }
+            },
+            'gender': {
+                'render_kw': {
+                    'autocomplete': 'off',
+                    'required': '',
+                    'class': 'form-control gender',
+                    'id': 'a_gender'
+                }
+            }
+        }
+
+    sid = StringField(u"Admin ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+                     render_kw={'class': "form-control", 'placeholder': "AD10318723"})
+
+
 class SearchUserForm(ModelForm):
     """
     TeacherForm - Form for adding teachers

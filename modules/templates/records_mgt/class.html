@@ -115,7 +115,7 @@
 		<div class="dashboard_container">
 			
 			<div class="dashboard_container_body" id="results_box">
-				{% if class_records %}
+				{% if class_records | length != 0 %}
 				<div class="table-responsive">
 					<table class="table">
 						<thead class="thead-dark">

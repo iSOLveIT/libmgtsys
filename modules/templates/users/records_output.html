@@ -1,5 +1,5 @@
 <div class="dashboard_container_body" id="results_box">
-    {% if user_records %}
+    {% if user_records | length != 0 %}
     <div class="table-responsive">
         <table class="table">
             <thead class="thead-dark">
@@ -9,6 +9,7 @@
                     <th scope="col">Class/Department</th>
                     <th scope="col">Gender</th>
                     <th scope="col">Created At</th>
+                    <th scope="col"></th>
                     <th scope="col"></th>
                     <th scope="col"></th>
                 </tr>
@@ -41,6 +42,14 @@
                                 hx-swap="outerHTML"
                                 onclick="modal_effects()">
                                 <i class="ti-plus"></i> Edit User
+                            </button>
+
+                        </td>
+                        <td>
+                            <button hx-get="#" id="reset_btn"
+                                class="result_btns" style="background-color:#019247; border: solid 1px #019247;"
+                                hx-trigger="click">
+                                <i class="ti-reload"></i> Reset Password
                             </button>
 
                         </td>

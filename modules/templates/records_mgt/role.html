@@ -81,7 +81,7 @@
 		<div class="dashboard_container">
 			
 			<div class="dashboard_container_body" id="results_box">
-				{% if role_records %}
+				{% if role_records | length != 0 %}
 				<div class="table-responsive">
 					<table class="table">
 						<thead class="thead-dark">
