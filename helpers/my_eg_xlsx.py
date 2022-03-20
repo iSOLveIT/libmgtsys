@@ -1,11 +1,9 @@
-from openpyxl import Workbook, load_workbook
+from openpyxl import load_workbook
 from tempfile import NamedTemporaryFile
-import os
 import re
-from flask import Flask, flash, request, redirect, url_for, render_template
+from flask import Flask, flash, request, redirect, render_template
 from werkzeug.utils import secure_filename
 
-# UPLOAD_FOLDER = '/path/to/the/uploads'
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'UPLOAD_FOLDER'
@@ -19,8 +17,7 @@ def allowed_file(filename):
 
 
 def process_data(header, file_data):
-    sorted(list(set(file_data)), key=lambda x: x[4])
-    return dict(tbl_head=header, tbl_content=sorted(list(set(file_data)), key=lambda x: x[4]))
+    return dict(tbl_head=header, tbl_content=sorted(list(set(file_data)), key=lambda x: x[1]))
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -37,6 +34,7 @@ def upload_file():
             flash('No selected file')
             return redirect(request.url)
         if file and allowed_file(file.filename):
+            total_rows = int(request.form.get('total_rows'))
             filename = secure_filename(file.filename)
             print(filename)
             wb = load_workbook(file)
@@ -49,9 +47,13 @@ def upload_file():
                 ws = wb2.active
                 # TODO: Remove the first row as header from the list of rows
                 #  then send it as a parameter with the new list
-                get_data = list(tuple(ws.iter_rows(max_col=6, min_row=1, values_only=True)))
-                data_header = get_data.pop(0)
-                content = process_data(data_header, get_data)
+                # get_data = list(tuple(ws.iter_rows(max_col=6, min_row=1, max_row=1382, values_only=True)))
+                # print(len(tuple(ws.iter_rows())))
+                data_header = list(tuple(ws.iter_rows(max_col=6, max_row=1, values_only=True))).pop(0)
+                content = process_data(data_header,
+                                       list(tuple(ws.iter_rows(
+                                           max_col=6, min_row=2, max_row=total_rows, values_only=True)))
+                                       )
 
             return render_template("upload_file.html", content=content)
 
