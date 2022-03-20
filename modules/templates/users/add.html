@@ -24,7 +24,7 @@
 					You can add/register users either by importing a file (must be an excel or csv file)
 					or by filling in the user registration form. 
 					You can download <a href="#" download style="color: #0000ff;">a sample of the import file</a>. <br>
-					The excel or csv file should have these column titles at the top row: 
+					The excel file should have these column titles at the top row: 
 					UserID, AccountType, Name, Gender, Class/Department, and AdmissionYear. <br>
 					<span style="font-weight:600;">Note:</span> AdmissionYear is not required for Admin & Teacher account types.
 				
@@ -52,9 +52,9 @@
 							<div class="form-group col-md-12">
 								<div class="input-group">
 								<div class="custom-file">
-									<input type="file" class="custom-file-input" id="inputGroupFile04" style="margin-top: 10px;" aria-describedby="inputGroupFileAddon04" accept=".xlsx .csv">
+									<input type="file" name="user_file" class="custom-file-input" id="inputGroupFile04" style="margin-top: 10px;" aria-describedby="inputGroupFileAddon04" accept=".xlsx">
 									<label class="custom-file-label" for="inputGroupFile04">
-									<i class="ti-plus"></i>	Add File
+									<i class="ti-plus"></i>	Add File with size < 2MB
 									</label>
 								</div>
 								<div class="input-group-append">
@@ -223,3 +223,5 @@
 		kk.setAttribute("placeholder", "****************")
 	</script>
 {% endblock  %}			
+
+
