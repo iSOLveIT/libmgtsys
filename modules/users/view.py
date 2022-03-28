@@ -1,14 +1,24 @@
 from functools import wraps
+from tempfile import NamedTemporaryFile
+import re
 
 from flask import Blueprint, redirect, url_for, render_template, flash, request
 from flask_login import current_user
 from pathlib import Path
-
+from openpyxl import load_workbook
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy_utils.types import Choice
+from werkzeug.utils import secure_filename
 
 from .models import User, Class, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
+from .helper_func import process_data
+
+
+def allowed_file(filename):
+    pattern = r"^[\w\-]+?.(xlsx)$"
+    check_file = re.search(pattern, filename)
+    return '.' in filename and check_file is not None
 
 
 # Activation needed. Move from here to dashboard folder
@@ -19,6 +29,7 @@ def activation_required(f):
             return redirect(url_for("reset_password"))
 
         return f(*args, **kwargs)
+
     return wrap
 
 
@@ -49,8 +60,11 @@ def add_student_account():
     if role is None:
         return redirect(url_for(".user_index"))
     form = StudentForm()
+    form.sid.data = str(form.sid.data).lower().replace("/", "_")
+    form.name.data = str(form.name.data).lower()
     student_user = User()
     form.populate_obj(student_user)
+
     try:
         if form.validate():
             print(form.validate_on_submit(), form.data)
@@ -229,3 +243,34 @@ def delete_user(user_id):
     context = {}
     # context.update(user_record=[])
     return render_template("users/records_output.html", **context)
+
+
+# View to create users via file imports
+@users_bp.route("/register/user/importusersfile", methods=['POST'])
+def upload_users_file():
+    if 'user_file' not in request.files:
+        # flash('No file part')
+        return redirect(url_for(".user_index"))
+    file = request.files['user_file']
+    if file.filename == '':
+        # flash('No selected file')
+        return redirect(url_for(".user_index"))
+    if file and allowed_file(file.filename):
+        total_rows = request.form.get('total_rows', type=int, default=10)
+        if total_rows is None:
+            return redirect(url_for(".user_index"))
+        # filename = secure_filename(file.filename)
+        wb = load_workbook(file)
+
+        with NamedTemporaryFile() as tmp:
+            wb.save(tmp.name)  # Save file in temporary file
+            tmp.seek(0)
+
+            wb2 = load_workbook(tmp)
+            ws = wb2.active
+            process_data(list(tuple(ws.iter_rows(
+                max_col=6, min_row=2, max_row=total_rows, values_only=True)))
+            )
+
+        return redirect(url_for(".user_index"))
+    return redirect(url_for(".user_index"))

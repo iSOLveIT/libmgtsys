@@ -40,30 +40,28 @@
 			<div class="dashboard_container_header">
 				<div class="dashboard_fl_1">
 					<h4>
-						Import File
+						Import File with size < 2MB
 					</h4>
 					
 				</div>
 			</div>
 			<div class="dashboard_container_body">
 				<div class="submit-section">
-					<form action="#" method="get" enctype="multipart/form-data">
+					<form action="{{ url_for('users.upload_users_file') }}" method="post" enctype="multipart/form-data">
 						<div class="form-row">
-							<div class="form-group col-md-12">
-								<div class="input-group">
-								<div class="custom-file">
-									<input type="file" name="user_file" class="custom-file-input" id="inputGroupFile04" style="margin-top: 10px;" aria-describedby="inputGroupFileAddon04" accept=".xlsx">
-									<label class="custom-file-label" for="inputGroupFile04">
-									<i class="ti-plus"></i>	Add File with size < 2MB
-									</label>
-								</div>
-								<div class="input-group-append">
-									<button class="btn" type="button" id="inputGroupFileAddon04" 
-									style="border-radius: 0 4px 4px 0;padding: 0 10px;background: #131b31;border: 1px solid #131b31;">
-										<i class="ti-thumb-up"></i> Submit</button>
-								</div>
-								</div>
-							</div>														
+							<div class="form-group col-md-6 col-sm-12">
+								<input class="form-control form-control-lg" type="file" name="user_file" accept=".xlsx" required>
+							</div>	
+							<div class="form-group col-md-3 col-sm-6">
+								<input class="form-control" type="number" name="total_rows" 
+								placeholder="Total number of rows" required>							
+							</div>
+							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+							<div class="form-group col-md-3">
+								<button type="submit" class="btn search-btn full-width rounded mt-1">
+									<i class="ti-thumb-up"></i> Submit
+								</button>
+							</div>													
 						</div>
 					</form>
 				</div>								

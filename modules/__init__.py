@@ -26,6 +26,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DEV_SQLALCHEMY_DATABASE_URI')
 app.config['SECRET_KEY'] = os.getenv('DEV_SECRET_KEY')
+app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
