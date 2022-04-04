@@ -1,6 +1,8 @@
 from .models import User, Class, Staff, Role
 from sqlalchemy.exc import IntegrityError
 
+from .. import db
+
 
 def process_data(file_data):
     parse_data(content=sorted(list(set(file_data)), key=lambda x: x[1]))
@@ -37,13 +39,13 @@ def add_students(user_data: list[tuple]):
 
     user_instances = []
     for item in user_data:
-        try:
-            student_user = User()
-            student_user.sid = str(item[1]).upper().replace("/", "_")
-            student_user.name = str(item[2]).lower()
-            student_user.gender = str(item[3]).upper()
-            track, prog, year, _ = str(item[1]).upper().split("/", 3)
+        student_user = User()
+        student_user.sid = str(item[1]).upper().replace("/", "_")
+        student_user.name = str(item[2]).lower()
+        student_user.gender = str(item[3]).upper()
+        track, prog, year, _ = str(item[1]).upper().split("/", 3)
 
+        try:
             student_class = Class.query.filter(
                 Class.programme == prog,
                 Class.year_group == str(2000 + int(year)),
@@ -52,19 +54,18 @@ def add_students(user_data: list[tuple]):
             ).first()
 
             if student_class is None:
-                pass
+                continue
 
-            student_class.users.append(student_user)    # Append user to class
+            student_class.users.append(student_user)  # Append user to class
             user_instances.append(student_user)
-        except IntegrityError:
-            pass
 
-    try:
-        role.users.extend(user_instances)
-        role.insert_many(user_instances)
-        print("Done")
-    except IntegrityError:
-        pass
+        except IntegrityError:
+            db.session.rollback()
+            continue
+
+    role.users.extend(user_instances)
+    role.insert_many(user_instances)
+    print("Done")
 
 
 def add_teachers(user_data: list[tuple]):
