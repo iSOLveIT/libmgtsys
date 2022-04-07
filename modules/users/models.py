@@ -76,7 +76,7 @@ class Class(PkModel):
                    ('i', 'I'), ('j', 'J'), ('k', 'K'), ('l', 'L'), ('m', 'M'), ('n', 'N'), ('o', 'O'), ('p', 'P'),
                    ('q', 'Q'), ('r', 'R'), ('s', 'S'), ('t', 'T'), ('u', 'U'), ('v', 'V'), ('w', 'W'), ('x', 'X'),
                    ('y', 'Y'), ('z', 'Z')]
-    TRACK = [('', ''), ('GD', 'Gold'), ('GR', 'Green')]
+    TRACK = [('', ''), ('GD', 'Gold'), ('GN', 'Green')]
     COURSES = [('', ''), ('GA', 'General Arts'), ('BU', 'Business'), ('SC', 'Science'),
                ('AG', 'Agriculture'), ('VA', 'Visual Arts'), ('HE', 'Home Economics')]
 

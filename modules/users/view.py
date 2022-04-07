@@ -13,6 +13,7 @@ from werkzeug.utils import secure_filename
 from .models import User, Class, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
 from .helper_func import process_data
+from .. import db
 
 
 def allowed_file(filename):
@@ -60,34 +61,42 @@ def add_student_account():
     if role is None:
         return redirect(url_for(".user_index"))
     form = StudentForm()
-    form.sid.data = str(form.sid.data).lower().replace("/", "_")
+    form.sid.data = str(form.sid.data).upper().replace("/", "_")
     form.name.data = str(form.name.data).lower()
+    track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
     student_user = User()
     form.populate_obj(student_user)
 
-    try:
-        if form.validate():
-            print(form.validate_on_submit(), form.data)
-            st_class, st_track = str(form.class_track.data).split("_", 1)
-            student_class = Class.query.filter(
-                Class.programme == form.programme.data,
-                Class.year_group == form.year_group.data,
-                Class.current_class == st_class,
-                Class.track == st_track
-            ).first()
+    if form.validate():
+        print(form.validate_on_submit(), form.data)
+        user_exist = User.query.filter(User.sid == form.sid.data).first()
+        if user_exist is not None:
+            flash("User not added.", "danger")
+            return redirect(url_for(".user_index"))
 
-            if student_class is None:
-                return redirect(url_for(".user_index"))
+        student_class = Class.query.filter(
+            Class.programme == prog,
+            Class.year_group == str(2000 + int(year)),
+            Class.current_class == form.current_class.data,
+            Class.track == track
+        ).first()
 
-            # Append user to role and class
-            # TODO: student_user.password = form.password.data
+        if student_class is None:
+            flash("Class hasn't been created.", "info")
+            return redirect(url_for(".user_index"))
+
+        # Append user to role and class
+        # TODO: student_user.password = form.password.data
+        try:
             role.users.append(student_user)
             student_class.users.append(student_user)
 
             role.update()
+            flash("User added successfully.", "success")
+        except IntegrityError:
+            db.session.rollback()
+            flash("User not added.", "danger")
 
-    except IntegrityError:
-        pass
     return redirect(url_for(".user_index"))
 
 

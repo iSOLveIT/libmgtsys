@@ -21,23 +21,23 @@
 ------------- List Of Table ----------*/
 
 /* CSS Document */
-@import url(../css/custom.css);
-@import url(../css/plugins/animation.css);
-@import url(../css/plugins/bootstrap.min.css);
-@import url(../css/plugins/date-picker.css);
-@import url(../css/plugins/dropzone.css);
-@import url(../css/plugins/light-box.css);
-@import url(../css/plugins/ion.rangeSlider.min.css);
-@import url(../css/plugins/magnifypopup.css);
-@import url(../css/plugins/select2.css);
-@import url(../css/plugins/slick.css);
-@import url(../css/plugins/slick-theme.css);
-@import url(../css/plugins/themify.css);
-@import url(../css/plugins/morris.css);
-@import url(../css/plugins/line-icons.css);
-@import url(../css/plugins/iconfont.css);
-@import url(../css/plugins/font-awesome.css);
-@import url(../css/plugins/flaticon.css);
+@import url(./custom.css);
+@import url(./plugins/animation.css);
+@import url(./plugins/bootstrap.min.css);
+@import url(./plugins/date-picker.css);
+@import url(./plugins/dropzone.css);
+@import url(./plugins/light-box.css);
+@import url(./plugins/ion.rangeSlider.min.css);
+@import url(./plugins/magnifypopup.css);
+@import url(./plugins/select2.css);
+@import url(./plugins/slick.css);
+@import url(./plugins/slick-theme.css);
+@import url(./plugins/themify.css);
+@import url(./plugins/morris.css);
+@import url(./plugins/line-icons.css);
+@import url(./plugins/iconfont.css);
+@import url(./plugins/font-awesome.css);
+@import url(./plugins/flaticon.css);
 
 /*------------------------------------
 	Fonts
@@ -10111,4 +10111,10 @@ ul.cources_facts_list li {
 	margin-right: 4px;
     padding:5px 10px;
 }
+}
+li#feedback{
+  float:right !important;
+}
+li#feedback::before {
+  content: "" !important;
 }

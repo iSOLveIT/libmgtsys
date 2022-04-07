@@ -39,33 +39,34 @@ def add_students(user_data: list[tuple]):
 
     user_instances = []
     for item in user_data:
+        user_exist = User.query.filter(User.sid == str(item[1]).upper().replace("/", "_")).first()
+        if user_exist is not None:
+            continue
+
         student_user = User()
         student_user.sid = str(item[1]).upper().replace("/", "_")
         student_user.name = str(item[2]).lower()
         student_user.gender = str(item[3]).upper()
         track, prog, year, _ = str(item[1]).upper().split("/", 3)
 
-        try:
-            student_class = Class.query.filter(
-                Class.programme == prog,
-                Class.year_group == str(2000 + int(year)),
-                Class.current_class == str(item[5]).lower(),
-                Class.track == track
-            ).first()
+        student_class = Class.query.filter(
+            Class.programme == prog,
+            Class.year_group == str(2000 + int(year)),
+            Class.current_class == str(item[5]).lower(),
+            Class.track == track
+        ).first()
 
-            if student_class is None:
-                continue
-
-            student_class.users.append(student_user)  # Append user to class
-            user_instances.append(student_user)
-
-        except IntegrityError:
-            db.session.rollback()
+        if student_class is None:
             continue
 
-    role.users.extend(user_instances)
-    role.insert_many(user_instances)
-    print("Done")
+        student_class.users.append(student_user)  # Append user to class
+        user_instances.append(student_user)
+    try:
+        role.users.extend(user_instances)
+        role.insert_many(user_instances)
+        print("Done")
+    except IntegrityError:
+        db.session.rollback()
 
 
 def add_teachers(user_data: list[tuple]):
