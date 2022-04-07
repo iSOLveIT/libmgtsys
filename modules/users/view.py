@@ -2,7 +2,7 @@ from functools import wraps
 from tempfile import NamedTemporaryFile
 import re
 
-from flask import Blueprint, redirect, url_for, render_template, flash, request
+from flask import Blueprint, redirect, url_for, render_template, flash, request, send_from_directory
 from flask_login import current_user
 from pathlib import Path
 from openpyxl import load_workbook
@@ -71,7 +71,7 @@ def add_student_account():
         print(form.validate_on_submit(), form.data)
         user_exist = User.query.filter(User.sid == form.sid.data).first()
         if user_exist is not None:
-            flash("User not added.", "danger")
+            flash(f"User with ID: {form.sid.data.replace('_', '/')} already exist.", "warning")
             return redirect(url_for(".user_index"))
 
         student_class = Class.query.filter(
@@ -92,10 +92,10 @@ def add_student_account():
             student_class.users.append(student_user)
 
             role.update()
-            flash("User added successfully.", "success")
+            flash("User details added successfully.", "success")
         except IntegrityError:
             db.session.rollback()
-            flash("User not added.", "danger")
+            flash("User details not added.", "danger")
 
     return redirect(url_for(".user_index"))
 
@@ -107,23 +107,30 @@ def add_teacher_account():
     if role is None:
         return redirect(url_for(".user_index"))
     form = TeacherForm()
+    form.sid.data = str(form.sid.data).upper().replace("/", "_")
+    form.name.data = str(form.name.data).lower()
     teacher_user = User()
     form.populate_obj(teacher_user)
-    try:
-        if form.validate():
-            print(form.validate_on_submit(), form.data)
-            teacher_dept = form.department.data
-            if teacher_dept is None:
-                return redirect(url_for(".user_index"))
-            # Append user to role and class
-            # TODO: teacher_user.password = form.password.data
+    if form.validate():
+        print(form.validate_on_submit(), form.data)
+        user_exist = User.query.filter(User.sid == form.sid.data).first()
+        if user_exist is not None:
+            flash(f"User with ID: {form.sid.data.replace('_', '/')} already exist.", "warning")
+            return redirect(url_for(".user_index"))
+        teacher_dept = form.department.data
+        if teacher_dept is None:
+            flash("Department hasn't been created.", "info")
+            return redirect(url_for(".user_index"))
+        # Append user to role and class
+        # TODO: teacher_user.password = form.password.data
+        try:
             role.users.append(teacher_user)
             teacher_dept.users.append(teacher_user)
-
             role.update()
-
-    except IntegrityError:
-        pass
+            flash("User details added successfully.", "success")
+        except IntegrityError:
+            db.session.rollback()
+            flash("User details not added.", "danger")
     return redirect(url_for(".user_index"))
 
 
@@ -135,18 +142,25 @@ def add_admin_account():
         return redirect(url_for(".user_index"))
 
     form = AdminForm()
+    form.name.data = str(form.name.data).lower()
     admin_user = User()
     form.populate_obj(admin_user)
-    try:
-        if form.validate():
-            print(form.validate_on_submit(), form.data)
-            # Append user to role and class
-            # TODO: admin_user.password = form.password.data
+    if form.validate():
+        user_exist = User.query.filter(User.sid == form.sid.data).first()
+        if user_exist is not None:
+            flash(f"User with ID: {form.sid.data} already exist.", "warning")
+            return redirect(url_for(".user_index"))
+
+        print(form.validate_on_submit(), form.data)
+        # Append user to role and class
+        # TODO: admin_user.password = form.password.data
+        try:
             role.users.append(admin_user)
             role.update()
-
-    except IntegrityError:
-        pass
+            flash("User details added successfully.", "success")
+        except IntegrityError:
+            db.session.rollback()
+            flash("User details not added.", "danger")
     return redirect(url_for(".user_index"))
 
 
@@ -181,62 +195,84 @@ def edit_user(user_id):
         if user_record.role_id == 1:
             form = StudentForm(obj=user_record)
             form.populate_obj(user_record)
-            try:
-                if form.validate():
-                    print(form.validate_on_submit(), form.data)
-                    st_class, st_track = str(form.class_track.data).split("_", 1)
-                    student_class = Class.query.filter(
-                        Class.programme == form.programme.data,
-                        Class.year_group == form.year_group.data,
-                        Class.current_class == st_class,
-                        Class.track == st_track
-                    ).first()
-                    if student_class is None:
-                        return redirect(url_for(".list_users"))
+            form.sid.data = str(form.sid.data).upper().replace("/", "_")
+            form.name.data = str(form.name.data).lower()
+            track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
+
+            if form.validate():
+                student_class = Class.query.filter(
+                    Class.programme == prog,
+                    Class.year_group == str(2000 + int(year)),
+                    Class.current_class == form.current_class.data,
+                    Class.track == track
+                ).first()
+
+                if student_class is None:
+                    flash("Class hasn't been created.", "info")
+                    return redirect(url_for(".user_index"))
+
+                # Append user to role and class
+                # TODO: student_user.password = form.password.data
+                try:
                     student_class.users.append(user_record)
                     student_class.update()
-                    # msg = "Updated class details successfully"
-            except IntegrityError:
-                # msg = "Class details already exists!"
-                pass
-        elif user_record.role_id == 2:
+                    flash("User details added successfully.", "success")
+                except IntegrityError:
+                    db.session.rollback()
+                    flash("User details not added.", "danger")
+
+        if user_record.role_id == 2:
             form = TeacherForm(obj=user_record)
             form.populate_obj(user_record)
-            try:
-                if form.validate():
-                    print(form.validate_on_submit(), form.data)
-                    teacher_dept = form.department.data
-                    if teacher_dept is None:
-                        return redirect(url_for(".list_users"))
-                    # Append user to role and class
-                    # TODO: teacher_user.password = form.password.data
-                    teacher_dept.users.append(user_record)
+
+            if form.validate():
+                teacher_dept = form.department.data
+                form.sid.data = str(form.sid.data).upper().replace("/", "_")
+                form.name.data = str(form.name.data).lower()
+                if teacher_dept is None:
+                    flash("Department hasn't been created.", "info")
+                    return redirect(url_for(".user_index"))
+                # Append user to role and class
+                # TODO: teacher_user.password = form.password.data
+                try:
                     teacher_dept.update()
-            except IntegrityError:
-                pass
-        else:
+                    flash("User details edited successfully.", "success")
+                except IntegrityError:
+                    db.session.rollback()
+                    flash("User details not edited.", "danger")
+
+        if user_record.role_id == 3:
             form = EditAdminForm(obj=user_record)
             form.populate_obj(user_record)
+            # user_exist = User.query.filter(User.sid == form.sid.data).first()
+            # if user_exist is not None:
+            #     flash(f"User with ID: {form.sid.data} already exist.", "warning")
+            #     return redirect(url_for(".user_index"))
+
+            print(form.validate_on_submit(), form.data)
+            # Append user to role and class
+            # TODO: admin_user.password = form.password.data
             try:
-                if form.validate():
-                    print(form.validate(), form.data)
-                    user_record.update()
+                user_record.update()
+                flash("User details edited successfully.", "success")
             except IntegrityError:
-                pass
+                db.session.rollback()
+                flash("User details not added.", "danger")
 
         return redirect(url_for(".list_users"))
 
     if user_record.role_id == 1:
         form = StudentForm(obj=user_record)
-        form.programme.data = user_record.s_class.programme
-        form.year_group.data = user_record.s_class.year_group
-        class_track = f"{user_record.s_class.current_class.code}_{user_record.s_class.track.code}"
-        form.class_track.data = Choice(class_track, class_track.upper())
+        form.sid.data = str(form.sid.data).upper().replace("_", "/")
+        form.name.data = str(form.name.data).capitalize()
     elif user_record.role_id == 2:
         form = TeacherForm(obj=user_record)
+        form.sid.data = str(form.sid.data).upper().replace("_", "/")
+        form.name.data = str(form.name.data).capitalize()
         form.department.data = user_record.staff
     else:
         form = EditAdminForm(obj=user_record)
+        form.name.data = str(form.name.data).capitalize()
     context.update(form=form, user_id=user_id)
     return render_template("users/edit_record.html", **context)
 
@@ -248,7 +284,8 @@ def delete_user(user_id):
     user_record = User.query.get(user_id)
     if user_record is not None:
         user_record.delete()
-    # msg = "Deleted user details successfully!"
+    msg = "Deleted user details successfully!"
+    flash(msg, "success")
     context = {}
     # context.update(user_record=[])
     return render_template("users/records_output.html", **context)
@@ -258,15 +295,16 @@ def delete_user(user_id):
 @users_bp.route("/register/user/importusersfile", methods=['POST'])
 def upload_users_file():
     if 'user_file' not in request.files:
-        # flash('No file part')
+        flash('No selected file', 'info')
         return redirect(url_for(".user_index"))
     file = request.files['user_file']
     if file.filename == '':
-        # flash('No selected file')
+        flash('No selected file', 'info')
         return redirect(url_for(".user_index"))
     if file and allowed_file(file.filename):
-        total_rows = request.form.get('total_rows', type=int, default=10)
+        total_rows = request.form.get('total_rows', type=int)
         if total_rows is None:
+            flash('Input the number of rows with data in file', 'warning')
             return redirect(url_for(".user_index"))
         # filename = secure_filename(file.filename)
         wb = load_workbook(file)
@@ -280,6 +318,11 @@ def upload_users_file():
             process_data(list(tuple(ws.iter_rows(
                 max_col=6, min_row=2, max_row=total_rows, values_only=True)))
             )
-
+        flash('Excel file imported successfully', 'success')
         return redirect(url_for(".user_index"))
     return redirect(url_for(".user_index"))
+
+
+@users_bp.route('/register/user/download_sample')
+def download_sample_file():
+    return send_from_directory(static_path.joinpath("download"), "users_sample.xlsx")

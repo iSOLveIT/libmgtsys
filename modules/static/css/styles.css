@@ -10118,3 +10118,12 @@ li#feedback{
 li#feedback::before {
   content: "" !important;
 }
+
+.disappear{animation: notification 2s ease-out 2s}
+
+@keyframes notification {
+    0%{opacity:1}
+    50%{opacity:0.75}
+    75%{opacity:0.5}
+    100%{opacity:0;}
+}

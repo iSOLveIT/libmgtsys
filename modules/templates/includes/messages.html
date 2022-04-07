@@ -13,11 +13,13 @@
 {% with messages = get_flashed_messages(with_categories=true) %}
   {% if messages %}
     {% for category, message in messages %}
-    <span class="alert alert-{{category}} fade show" role="alert">
+    <span class="alert alert-{{category}}" role="alert">
       {% if category == "success" %}
-        <svg width="24" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+        <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+      {% elif category == "info" %}
+        <svg width="30" height="20" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
       {% else %}
-        <svg width="24" height="20" role="img" aria-label="{{ category | capitalize }}:"><use xlink:href="#exclamation-triangle-fill"/></svg>
+        <svg width="30" height="20" role="img" aria-label="{{ category | capitalize }}:"><use xlink:href="#exclamation-triangle-fill"/></svg>
       {% endif %}
 
       <span>{{ message }}</span>

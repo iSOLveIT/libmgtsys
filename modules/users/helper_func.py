@@ -64,7 +64,6 @@ def add_students(user_data: list[tuple]):
     try:
         role.users.extend(user_instances)
         role.insert_many(user_instances)
-        print("Done")
     except IntegrityError:
         db.session.rollback()
 

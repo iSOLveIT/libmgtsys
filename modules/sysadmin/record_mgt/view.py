@@ -1,13 +1,13 @@
 import re
 
-from flask import Blueprint, request, redirect, render_template, url_for
+from flask import Blueprint, request, redirect, render_template, url_for, flash
 from pathlib import Path
 from sqlalchemy.exc import IntegrityError
 
 from project.modules.users.models import Class, Role, Staff
 from .forms import AddClassForm, AddStaffForm, AddRoleForm, SearchStaffForm, SearchClassForm
 # from project.helpers.security import get_safe_redirect
-
+from ... import db
 
 static_path = Path('.').parent.absolute() / 'modules/static'
 record_mgt_bp = Blueprint("record_mgt", __name__, url_prefix="/record_mgt", static_folder=static_path)
@@ -33,16 +33,23 @@ def add_class():
     form = AddClassForm()
     student_class = Class()
     form.populate_obj(student_class)
-    try:
-        if form.validate():
-            print(form.validate_on_submit(), form.data)
-            tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
+    if form.validate():
+        print(form.validate_on_submit(), form.data)
+        tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
+        class_exist = Class.query.filter(Class.class_tag == tag).first()
+        if class_exist is not None:
+            msg = "Class details already exist!"
+            flash(msg, 'warning')
+            return redirect(url_for(".class_index"))
+        try:
             student_class.class_tag = tag
             student_class.update()
-            # msg = "Created class details successfully"
-    except IntegrityError:
-        # msg = "Class details already exists!"
-        pass
+            msg = "Created class details successfully"
+            flash(msg, "success")
+        except IntegrityError:
+            db.session.rollback()
+            flash("Class details not added.", "danger")
+
     return redirect(url_for(".class_index"))
 
 
@@ -54,26 +61,31 @@ def edit_class(class_id):
     admin = True  # remove this when user login is implemented
     class_record = Class.query.get(class_id)
     if class_record is None:
+        msg = "Class details not found!"
+        flash(msg, 'warning')
         return redirect(url_for(".class_index"))
 
     form = AddClassForm(obj=class_record)
     form.populate_obj(class_record)
 
     if request.method == 'POST':
-        try:
-            if form.validate():
-                print(form.validate_on_submit(), form.data)
-                tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
-                class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
-                if class_record is None:
-                    return redirect(url_for(".class_index"))
-
+        if form.validate():
+            print(form.validate_on_submit(), form.data)
+            tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
+            class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
+            if class_record is None:
+                msg = "Class details not found!"
+                flash(msg, 'warning')
+                return redirect(url_for(".class_index"))
+            try:
                 class_record.class_tag = tag
                 class_record.update()
-                # msg = "Updated class details successfully"
-        except IntegrityError:
-            # msg = "Class details already exists!"
-            pass
+                msg = "Updated class details successfully"
+                flash(msg, 'success')
+            except IntegrityError:
+                db.session.rollback()
+                flash("Class details not edited.", "danger")
+
         return redirect(url_for(".class_index"))
     context.update(admin=admin, form=form, class_id=class_id, class_record=class_record, view=view)
     return render_template("records_mgt/edit_record.html", **context)
@@ -116,7 +128,8 @@ def delete_class(class_id):
         Class.track == track,
         Class.year_group == yr_grp).all()
     context.update(class_records=class_records, view=view)
-    # msg = "Deleted class details successfully!"
+    msg = "Deleted class details successfully!"
+    flash(msg, 'success')
     return render_template("records_mgt/records_output.html", **context)
 
 
@@ -138,17 +151,25 @@ def staff_index():
 @record_mgt_bp.route('/staff/add_staff', methods=['POST'])
 def add_staff():
     form = AddStaffForm()
+    staff_exist = Staff.query.filter(Staff.department == form.department.data).first()
+    if staff_exist is not None:
+        msg = "Staff details already exist!"
+        flash(msg, 'warning')
+        return redirect(url_for(".class_index"))
     teacher_dept = Staff()
+    form.department.data = str(form.department.data).capitalize()
     form.populate_obj(teacher_dept)
-    try:
-        if form.validate():
-            print(form.validate_on_submit(), form.data)
-            # msg = "Form details were incorrect!"
+
+    if form.validate():
+        print(form.validate_on_submit(), form.data)
+        try:
             teacher_dept.update()
-            # msg = "Created staff details successfully"
-    except IntegrityError:
-        # msg = "Staff details already exists!"
-        pass
+            msg = "Created staff details successfully"
+            flash(msg, "success")
+        except IntegrityError:
+            msg = "Staff details already exist!"
+            db.session.rollback()
+            flash(msg, "danger")
     return redirect(url_for(".staff_index"))
 
 
@@ -163,21 +184,25 @@ def edit_staff(staff_id):
     form.populate_obj(staff_record)
 
     if request.method == 'POST':
-        try:
-            if form.validate():
-                print(form.validate_on_submit(), form.data)
-                # prevent changes in selected row until you commit changes to DB
-                staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
-                if staff_record is None:
-                    return redirect(url_for(".staff_index"))
+        if form.validate():
+            print(form.validate_on_submit(), form.data)
+            # prevent changes in selected row until you commit changes to DB
+            staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
+            if staff_record is None:
+                msg = "Staff details not found!"
+                flash(msg, 'warning')
+                return redirect(url_for(".staff_index"))
+            try:
+                staff_record.department = str(staff_record.department).capitalize()
                 staff_record.update()
-                # msg = "Created staff details successfully"
-        except IntegrityError:
-            # msg = "Staff details already exists!"
-            pass
+                msg = "Updated staff details successfully"
+                flash(msg, "success")
+            except IntegrityError:
+                msg = "Staff details already exist!"
+                db.session.rollback()
+                flash(msg, "danger")
         return redirect(url_for(".staff_index"))
     context.update(admin=admin, form=form, staff_id=staff_id, staff_record=staff_record, view=view)
-    # msg = "Updated staff details successfully"
     return render_template("records_mgt/edit_record.html", **context)
 
 
@@ -204,7 +229,8 @@ def delete_staff(staff_id):
     staff_record.delete()
 
     context = {}
-    # msg = "Deleted staff details successfully"
+    msg = "Deleted staff details successfully"
+    flash(msg, "success")
     context.update(view=view)
     return render_template("records_mgt/records_output.html", **context)
 
@@ -229,22 +255,23 @@ def add_role():
     form = AddRoleForm()
     account_type = Role()
     form.populate_obj(account_type)
-    try:
-        if form.validate():
-            print(form.validate(), form.data)
-            account_type.permission_level = True if form.purpose.data == 'admin' else False
+    if form.validate():
+        print(form.validate(), form.data)
+        account_type.permission_level = True if form.purpose.data == 'admin' else False
+        try:
             account_type.update()
-            # msg = "Updated role details successfully"
-    except IntegrityError:
-        # msg = "Role details already exists!"
-        pass
+            msg = "Created role successfully"
+            flash(msg, "success")
+        except IntegrityError:
+            msg = "Role already exist!"
+            db.session.rollback()
+            flash(msg, "danger")
 
     view = "role"
     context = {}
     user_log = True
     role_records = Role.query.all()
     context.update(role_records=role_records, view=view, user_log=user_log)
-    # msg = "Form details were incorrect!"
     return render_template("records_mgt/records_output.html", **context)
 
 
@@ -259,19 +286,23 @@ def edit_role(role_id):
     form.populate_obj(role_record)
     # print(form.validate_on_submit(), form.data)
     if request.method == 'POST':
-        try:
-            if form.validate():
-                print(form.validate(), form.data)
-                # prevent changes in selected row until you commit changes to DB
-                role_record = Role.query.filter(Role.id == role_id).with_for_update().first()
-                if role_record is None:
-                    return redirect(url_for(".role_index"))
-                role_record.permission_level = True if form.purpose.data == 'admin' else False
+        if form.validate():
+            print(form.validate(), form.data)
+            # prevent changes in selected row until you commit changes to DB
+            role_record = Role.query.filter(Role.id == role_id).with_for_update().first()
+            if role_record is None:
+                msg = "Role already exist!"
+                flash(msg, "danger")
+                return redirect(url_for(".role_index"))
+            role_record.permission_level = True if form.purpose.data == 'admin' else False
+            try:
                 role_record.update()
-                # msg = "Updated role details successfully"
-        except IntegrityError:
-            # msg = "Role details already exists!"
-            pass
+                msg = "Updated role successfully"
+                flash(msg, "success")
+            except IntegrityError:
+                msg = "Role already exist!"
+                db.session.rollback()
+                flash(msg, "danger")
         return redirect(url_for(".role_index"))
     context.update(admin=admin, form=form, role_id=role_id, role_record=role_record, view=view)
     return render_template("records_mgt/edit_record.html", **context)
@@ -288,6 +319,7 @@ def delete_role(role_id):
     context = {}
     role_records = Role.query.all()
     context.update(role_records=role_records, view=view)
-    # msg = "Deleted role details successfully"
+    msg = "Deleted role successfully"
+    flash(msg, "success")
     return render_template("records_mgt/records_output.html", **context)
 

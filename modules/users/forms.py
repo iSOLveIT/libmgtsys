@@ -4,7 +4,7 @@ from project.modules import ModelForm
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms_alchemy import InputRequired, Length, DataRequired
 # from flask_wtf.file import FileField
-from wtforms.fields import SelectField, IntegerField, StringField
+from wtforms.fields import SelectField, StringField
 from string import ascii_uppercase
 
 
