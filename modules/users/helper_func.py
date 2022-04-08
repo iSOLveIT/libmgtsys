@@ -69,4 +69,34 @@ def add_students(user_data: list[tuple]):
 
 
 def add_teachers(user_data: list[tuple]):
-    pass
+    role = Role.query.filter(Role.purpose == 'teacher').first()
+    if role is None:
+        pass
+
+    user_instances = []
+    for item in user_data:
+        user_exist = User.query.filter(User.sid == str(item[1]).upper().replace("/", "_")).first()
+        if user_exist is not None:
+            continue
+
+        teacher_user = User()
+        teacher_user.sid = str(item[1]).upper().replace("/", "_")
+        teacher_user.name = str(item[2]).lower()
+        teacher_user.gender = str(item[3]).upper()
+        dept = str(item[4]).capitalize()
+
+        teacher_dept = Staff.query.filter(
+            Staff.department == dept
+        ).first()
+
+        if teacher_dept is None:
+            continue
+
+        teacher_dept.users.append(teacher_user)  # Append user to staff group
+        user_instances.append(teacher_user)
+    try:
+        role.users.extend(user_instances)
+        role.insert_many(user_instances)
+    except IntegrityError:
+        db.session.rollback()
+
