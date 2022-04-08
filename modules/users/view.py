@@ -196,10 +196,10 @@ def edit_user(user_id):
     if request.method == 'POST':
         if user_record.role_id == 1:
             form = StudentForm(obj=user_record)
-            form.populate_obj(user_record)
             form.sid.data = str(form.sid.data).upper().replace("/", "_")
             form.name.data = str(form.name.data).lower()
             track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
+            form.populate_obj(user_record)
 
             if form.validate():
                 student_class = Class.query.filter(
@@ -216,7 +216,6 @@ def edit_user(user_id):
                 # Append user to role and class
                 # TODO: student_user.password = form.password.data
                 try:
-                    student_class.users.append(user_record)
                     student_class.update()
                     flash("User details added successfully.", "success")
                 except IntegrityError:
@@ -225,12 +224,11 @@ def edit_user(user_id):
 
         if user_record.role_id == 2:
             form = TeacherForm(obj=user_record)
-            form.populate_obj(user_record)
-
             if form.validate():
                 teacher_dept = form.department.data
                 form.sid.data = str(form.sid.data).upper().replace("/", "_")
                 form.name.data = str(form.name.data).lower()
+                form.populate_obj(user_record)
                 if teacher_dept is None:
                     flash("Department hasn't been created.", "info")
                     return redirect(url_for(".user_index"))
