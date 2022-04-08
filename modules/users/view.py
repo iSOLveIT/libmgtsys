@@ -7,8 +7,9 @@ from flask_login import current_user
 from pathlib import Path
 from openpyxl import load_workbook
 from sqlalchemy.exc import IntegrityError
-from sqlalchemy_utils.types import Choice
-from werkzeug.utils import secure_filename
+from sqlalchemy import or_
+# from sqlalchemy_utils.types import Choice
+# from werkzeug.utils import secure_filename
 
 from .models import User, Class, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
@@ -173,10 +174,11 @@ def list_users():
     search_form = SearchUserForm()
 
     if request.method == 'POST':
-        get_account = User.query.filter(User.sid == search_form.sid.data).first()
-        if get_account is not None:
-            context.update(user_records=[get_account])
-            return render_template("users/records_output.html", **context)
+        search_keyword = str(search_form.search_term.data).replace('/', '_')
+        get_accounts = User.query.filter(or_(User.sid.regexp_match(search_keyword.upper()),
+                                             User.name.regexp_match(search_keyword.lower()))).all()
+        context.update(user_records=get_accounts)
+        return render_template("users/records_output.html", **context)
 
     context.update(admin=admin, search_form=search_form, user_log=user_log)
     return render_template("users/view.html", **context)
@@ -244,10 +246,6 @@ def edit_user(user_id):
         if user_record.role_id == 3:
             form = EditAdminForm(obj=user_record)
             form.populate_obj(user_record)
-            # user_exist = User.query.filter(User.sid == form.sid.data).first()
-            # if user_exist is not None:
-            #     flash(f"User with ID: {form.sid.data} already exist.", "warning")
-            #     return redirect(url_for(".user_index"))
 
             print(form.validate_on_submit(), form.data)
             # Append user to role and class
@@ -264,15 +262,15 @@ def edit_user(user_id):
     if user_record.role_id == 1:
         form = StudentForm(obj=user_record)
         form.sid.data = str(form.sid.data).upper().replace("_", "/")
-        form.name.data = str(form.name.data).capitalize()
+        form.name.data = str(form.name.data).title()
     elif user_record.role_id == 2:
         form = TeacherForm(obj=user_record)
         form.sid.data = str(form.sid.data).upper().replace("_", "/")
-        form.name.data = str(form.name.data).capitalize()
+        form.name.data = str(form.name.data).title()
         form.department.data = user_record.staff
     else:
         form = EditAdminForm(obj=user_record)
-        form.name.data = str(form.name.data).capitalize()
+        form.name.data = str(form.name.data).title()
     context.update(form=form, user_id=user_id)
     return render_template("users/edit_record.html", **context)
 
@@ -323,6 +321,7 @@ def upload_users_file():
     return redirect(url_for(".user_index"))
 
 
+# View to serve the Excel sample file so that they can be downloaded by users
 @users_bp.route('/register/user/download_sample')
 def download_sample_file():
     return send_from_directory(static_path.joinpath("download"), "users_sample.xlsx")

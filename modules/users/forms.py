@@ -1,11 +1,13 @@
+from string import ascii_uppercase
+
 from .models import User, Class, Role, Staff
 from project.modules import ModelForm
 
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms_alchemy import InputRequired, Length, DataRequired
 # from flask_wtf.file import FileField
-from wtforms.fields import SelectField, StringField
-from string import ascii_uppercase
+from wtforms.fields import SelectField, StringField, SearchField
+from flask import url_for
 
 
 class StudentForm(ModelForm):
@@ -157,21 +159,19 @@ class EditAdminForm(ModelForm):
 
 class SearchUserForm(ModelForm):
     """
-    TeacherForm - Form for adding teachers
+    SearchUserForm - Form for searching users
 
     """
 
-    class Meta:
-        model = User
-        only = ['sid']
-        field_args = {
-            'sid': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Student ID or Staff ID or Admin ID',
-                    'id': 'userid'
-                }
-            }
-        }
+    search_term = SearchField(u"Keyword", validators=[InputRequired(), DataRequired(), Length(min=4, max=30)],
+                              render_kw={
+                                  'autocomplete': 'off',
+                                  'required': '',
+                                  'class': 'form-control',
+                                  'placeholder': 'Type name or user ID',
+                                  'id': 'userid',
+                                  'hx-post': "/users/list",
+                                  'hx-trigger': "keyup changed delay:500ms, search",
+                                  'hx-target': "#results_box",
+                                  'hx-swap': "outerHTML"
+                              })

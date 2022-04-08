@@ -18,7 +18,7 @@
                 {% for record in user_records %}
                     <tr>
                         <th scope="row">{{ record.sid }}</th>
-                        <td>{{ record.name }} </td>
+                        <td>{{ record.name | title }} </td>
                         {% if record.role.purpose.value == 'STUDENT' %}
                             {% set s_prog = record.s_class.programme | get_course %}
                             {% set s_form = record.s_class.year_group | get_current_class %}
