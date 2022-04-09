@@ -10113,7 +10113,7 @@ ul.cources_facts_list li {
 }
 }
 li#feedback{
-  float:right !important;
+  float: right !important;
 }
 li#feedback::before {
   content: "" !important;

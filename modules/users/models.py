@@ -79,6 +79,7 @@ class Class(PkModel):
     TRACK = [('', ''), ('GD', 'Gold'), ('GN', 'Green')]
     COURSES = [('', ''), ('GA', 'General Arts'), ('BU', 'Business'), ('SC', 'Science'),
                ('AG', 'Agriculture'), ('VA', 'Visual Arts'), ('HE', 'Home Economics')]
+    COURSES.sort(key=lambda x: x[1])
 
     __tablename__ = "class"
 
@@ -112,6 +113,7 @@ class Role(PkModel):
 
     ACCESS = [('student', 'STUDENT'), ('teacher', 'TEACHER'),
               ('admin', 'ADMIN')]
+    ACCESS.sort(key=lambda x: x[1])
 
     __tablename__ = "role"
 

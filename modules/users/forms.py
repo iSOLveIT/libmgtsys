@@ -7,7 +7,6 @@ from wtforms_alchemy.fields import QuerySelectField
 from wtforms_alchemy import InputRequired, Length, DataRequired
 # from flask_wtf.file import FileField
 from wtforms.fields import SelectField, StringField, SearchField
-from flask import url_for
 
 
 class StudentForm(ModelForm):

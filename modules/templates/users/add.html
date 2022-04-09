@@ -24,7 +24,7 @@
 		<div class="content-box-01">
 			<div class="content-box-01-head mb-3">
 				<h5 class="mb-0 font-normal" style="text-transform: none;">
-					<span style="font-weight:600;">Note:</span> You can register student or teacher account either by importing a file (must be an excel file)
+					<span style="font-weight:600;">Note:</span> You can register student or teacher account either by importing a file (must be an Excel file)
 					or by filling in the user registration form. <br><br>				
 				</h5>
 			</div>
@@ -37,8 +37,8 @@
 		<div class="dashboard_container">
 			<div class="dashboard_container_header">
 				<div class="dashboard_fl_1">
-					<h4>
-						Import File with size < 2MB
+					<h4 style="text-transform: full-size-kana !important;">
+						Import .xlsx file with size < 2MB
 					</h4>
 					
 				</div>
@@ -65,7 +65,7 @@
 				</div>								
 			</div>
 			<div class="dashboard_container_header">
-				<a href="{{ url_for('users.download_sample_file') }}" download="users_sample.xlsx" style="color: #0000ff;">
+				<a href="{{ url_for('dashboard.download_sample_file', file_name='users_sample.xlsx') }}" download="users_sample.xlsx" style="color: #0000ff;">
 				<i class="fa fa-file-download"></i>	Download .xlsx example</a>
 			</div>	
 		</div>

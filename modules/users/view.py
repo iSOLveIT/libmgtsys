@@ -217,10 +217,10 @@ def edit_user(user_id):
                 # TODO: student_user.password = form.password.data
                 try:
                     student_class.update()
-                    flash("User details added successfully.", "success")
+                    flash("User details edited successfully.", "success")
                 except IntegrityError:
                     db.session.rollback()
-                    flash("User details not added.", "danger")
+                    flash("User details not edited.", "danger")
 
         if user_record.role_id == 2:
             form = TeacherForm(obj=user_record)
@@ -318,8 +318,3 @@ def upload_users_file():
         return redirect(url_for(".user_index"))
     return redirect(url_for(".user_index"))
 
-
-# View to serve the Excel sample file so that they can be downloaded by users
-@users_bp.route('/register/user/download_sample')
-def download_sample_file():
-    return send_from_directory(static_path.joinpath("download"), "users_sample.xlsx")

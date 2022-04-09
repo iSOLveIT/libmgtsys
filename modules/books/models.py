@@ -20,7 +20,11 @@ user_book = db.Table('user_book',
 class Books(PkModel):
     """Model for the books table"""
 
-    CATEGORY = [('maths', 'MATHS'), ('english', 'ENGLISH')]
+    CATEGORY = [('', ''), ('maths', 'MATHS'), ('english', 'ENGLISH'), ('science', 'SCIENCE'), ('social', 'SOCIAL STUDIES'),
+                ('ict', 'ICT'), ('physics', 'PHYSICS'), ('french', 'FRENCH'), ('bumgt', 'BUSINESS MANAGEMENT'),
+                ('gov', 'GOVERNMENT'), ('food', "FOOD 'N' NUTRITION"), ('gka', 'GKA'), ('anihusb', 'ANIMAL HUSBANDRY')
+                ]
+    CATEGORY.sort(key=lambda x: x[1])
 
     __tablename__ = "books"
 
@@ -30,12 +34,11 @@ class Books(PkModel):
     author = db.Column(db.String(300), nullable=False, info={'label': 'Author'})
     publication = db.Column(db.String(300), nullable=False, info={'label': 'Publication'})
     category = db.Column(ChoiceType(choices=CATEGORY), nullable=False, info={'label': 'Category'})
-    comments = db.Column(db.Text, info={'label': 'Comments'})
+    comments = db.Column(db.Text)
     date_recorded = db.Column(db.DateTime, nullable=False, default=dt.now())
-    # Overall qty = current_qty + spoilt
-    qty_added = db.Column(db.Integer, nullable=False)  # Number newly added
+    qty_added = db.Column(db.Integer, nullable=False, info={'label': 'Quantity of Books'})  # Number newly added
     qty_spoilt = db.Column(db.Integer, nullable=False)  # Number spoilt
-    current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added)
+    current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added) therefore Overall qty = current_qty + spoilt
 
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     books_recorded = db.relationship('User', backref=backref("recorded_by", uselist=False))
