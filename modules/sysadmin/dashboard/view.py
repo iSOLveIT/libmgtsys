@@ -5,7 +5,7 @@ from pathlib import Path
 from sqlalchemy import or_
 from werkzeug.utils import secure_filename
 
-from project.modules.users.models import User, Class
+from project.modules.users.models import User, StudentClass
 
 
 static_path = Path('.').parent.absolute() / 'modules/static'
@@ -27,7 +27,7 @@ def admin_dashboard():
     context = {}
     admin = True    # remove this when user login is implemented
     total_users = User.query.filter(or_(User.role_id == 1, User.role_id == 2)).count()
-    total_classes = Class.query.count()
+    total_classes = StudentClass.query.count()
     context.update(admin=admin, user_log=user_log, counts=[total_users, total_classes])
     return render_template("admin_dashboard.html", **context)
 

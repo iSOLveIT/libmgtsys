@@ -1,4 +1,4 @@
-from .models import User, Class, Staff, Role
+from .models import User, StudentClass, Staff, Role
 from sqlalchemy.exc import IntegrityError
 
 from .. import db
@@ -49,11 +49,11 @@ def add_students(user_data: list[tuple]):
         student_user.gender = str(item[3]).upper()
         track, prog, year, _ = str(item[1]).upper().split("/", 3)
 
-        student_class = Class.query.filter(
-            Class.programme == prog,
-            Class.year_group == str(2000 + int(year)),
-            Class.current_class == str(item[5]).lower(),
-            Class.track == track
+        student_class = StudentClass.query.filter(
+            StudentClass.programme == prog,
+            StudentClass.year_group == str(2000 + int(year)),
+            StudentClass.current_class == str(item[5]).lower(),
+            StudentClass.track == track
         ).first()
 
         if student_class is None:

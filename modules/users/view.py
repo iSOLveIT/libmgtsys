@@ -11,7 +11,7 @@ from sqlalchemy import or_
 # from sqlalchemy_utils.types import Choice
 # from werkzeug.utils import secure_filename
 
-from .models import User, Class, Staff, Role
+from .models import User, StudentClass, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
 from .helper_func import process_data
 from .. import db
@@ -75,11 +75,11 @@ def add_student_account():
             flash(f"User with ID: {form.sid.data.replace('_', '/')} already exist.", "warning")
             return redirect(url_for(".user_index"))
 
-        student_class = Class.query.filter(
-            Class.programme == prog,
-            Class.year_group == str(2000 + int(year)),
-            Class.current_class == form.current_class.data,
-            Class.track == track
+        student_class = StudentClass.query.filter(
+            StudentClass.programme == prog,
+            StudentClass.year_group == str(2000 + int(year)),
+            StudentClass.current_class == form.current_class.data,
+            StudentClass.track == track
         ).first()
 
         if student_class is None:
@@ -202,11 +202,11 @@ def edit_user(user_id):
             form.populate_obj(user_record)
 
             if form.validate():
-                student_class = Class.query.filter(
-                    Class.programme == prog,
-                    Class.year_group == str(2000 + int(year)),
-                    Class.current_class == form.current_class.data,
-                    Class.track == track
+                student_class = StudentClass.query.filter(
+                    StudentClass.programme == prog,
+                    StudentClass.year_group == str(2000 + int(year)),
+                    StudentClass.current_class == form.current_class.data,
+                    StudentClass.track == track
                 ).first()
 
                 if student_class is None:

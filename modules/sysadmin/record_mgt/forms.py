@@ -1,4 +1,4 @@
-from project.modules.users.models import User, Class, Role, Staff
+from project.modules.users.models import User, StudentClass, Role, Staff
 from project.modules import ModelForm
 
 from wtforms_alchemy.fields import QuerySelectField
@@ -14,7 +14,7 @@ class AddClassForm(ModelForm):
     """
 
     class Meta:
-        model = Class
+        model = StudentClass
         only = ['programme', 'current_class', 'track', 'year_group']
         field_args = {
             'programme': {
@@ -60,7 +60,7 @@ class SearchClassForm(ModelForm):
     """
 
     class Meta:
-        model = Class
+        model = StudentClass
         only = ['programme', 'track', 'year_group']
         field_args = {
             'programme': {

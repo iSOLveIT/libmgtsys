@@ -1,6 +1,6 @@
 from string import ascii_uppercase
 
-from .models import User, Class, Role, Staff
+from .models import User, Staff
 from project.modules import ModelForm
 
 from wtforms_alchemy.fields import QuerySelectField
@@ -168,7 +168,6 @@ class SearchUserForm(ModelForm):
                                   'required': '',
                                   'class': 'form-control',
                                   'placeholder': 'Type name or user ID',
-                                  'id': 'userid',
                                   'hx-post': "/users/list",
                                   'hx-trigger': "keyup changed delay:500ms, search",
                                   'hx-target': "#results_box",

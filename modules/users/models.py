@@ -1,9 +1,9 @@
 from datetime import datetime as dt
-from secrets import compare_digest
 
 from flask_login import UserMixin
 from sqlalchemy.ext.hybrid import hybrid_property
-from sqlalchemy_utils.types import PasswordType, ChoiceType, Password
+from sqlalchemy_utils.types import ChoiceType
+from passlib.hash import pbkdf2_sha512
 
 # from project.modules import db
 from .. import db, login_manager
@@ -25,8 +25,7 @@ class User(UserMixin, PkModel):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sid = db.Column(db.String(30), unique=True, nullable=False, info={'label': 'User ID'})
     name = db.Column(db.String(300), nullable=False, info={'label': 'Name'})
-    _password = db.Column(PasswordType(max_length=300, schemes=['pbkdf2_sha512']),
-                          nullable=False, default=f"SWESCO_{id}", info={'label': 'Password'})
+    _password = db.Column(db.String(30), nullable=False, default=f"SWESCO_{id}", info={'label': 'Password'})
     gender = db.Column(ChoiceType(choices=GENDER), nullable=False, info={'label': 'Gender'})
     date_registered = db.Column(db.DateTime, nullable=False, default=dt.now())
     last_seen = db.Column(db.DateTime, nullable=False, default=dt.now())
@@ -37,7 +36,7 @@ class User(UserMixin, PkModel):
     # books_recorded = db.relationship('Books', backref='recorded_by', lazy=True)
 
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
-    class_id = db.Column(db.Integer, db.ForeignKey('class.id'))
+    student_class_id = db.Column(db.Integer, db.ForeignKey('student_class.id'))
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
 
     def __repr__(self):
@@ -49,11 +48,11 @@ class User(UserMixin, PkModel):
 
     @password.setter
     def password(self, plaintext):
-        # the default hashing method is pbkdf2_sha512
-        self._password = plaintext
+        # the hashing method is pbkdf2_sha512
+        self._password = pbkdf2_sha512.hash(plaintext)
 
     def check_password(self, password):
-        check = compare_digest(self._password, password)
+        check = pbkdf2_sha512.verify(password, self._password)
         return check
 
     def is_admin(self):
@@ -69,7 +68,7 @@ def load_user(user_id):
 # login_manager.login_view = "auth.login"
 
 
-class Class(PkModel):
+class StudentClass(PkModel):
     """Model for information about various classes"""
 
     CLASS_RANGE = [('', ''), ('a', 'A'), ('b', 'B'), ('c', 'C'), ('d', 'D'), ('e', 'E'), ('f', 'F'), ('g', 'G'), ('h', 'H'),
@@ -81,7 +80,7 @@ class Class(PkModel):
                ('AG', 'Agriculture'), ('VA', 'Visual Arts'), ('HE', 'Home Economics')]
     COURSES.sort(key=lambda x: x[1])
 
-    __tablename__ = "class"
+    __tablename__ = "student_class"
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     programme = db.Column(ChoiceType(COURSES), nullable=False, info={'label': 'Programme'})

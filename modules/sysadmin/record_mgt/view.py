@@ -4,7 +4,7 @@ from flask import Blueprint, request, redirect, render_template, url_for, flash
 from pathlib import Path
 from sqlalchemy.exc import IntegrityError
 
-from project.modules.users.models import Class, Role, Staff
+from project.modules.users.models import StudentClass, Role, Staff
 from .forms import AddClassForm, AddStaffForm, AddRoleForm, SearchStaffForm, SearchClassForm
 # from project.helpers.security import get_safe_redirect
 from ... import db
@@ -31,12 +31,12 @@ def class_index():
 @record_mgt_bp.route('/class/add_class', methods=['POST'])
 def add_class():
     form = AddClassForm()
-    student_class = Class()
+    student_class = StudentClass()
     form.populate_obj(student_class)
     if form.validate():
         print(form.validate_on_submit(), form.data)
         tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
-        class_exist = Class.query.filter(Class.class_tag == tag).first()
+        class_exist = StudentClass.query.filter(StudentClass.class_tag == tag).first()
         if class_exist is not None:
             msg = "Class details already exist!"
             flash(msg, 'warning')
@@ -59,7 +59,7 @@ def edit_class(class_id):
     view = "class"
     context = {}
     admin = True  # remove this when user login is implemented
-    class_record = Class.query.get(class_id)
+    class_record = StudentClass.query.get(class_id)
     if class_record is None:
         msg = "Class details not found!"
         flash(msg, 'warning')
@@ -72,7 +72,7 @@ def edit_class(class_id):
         if form.validate():
             print(form.validate_on_submit(), form.data)
             tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
-            class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
+            class_record = StudentClass.query.filter(StudentClass.id == class_id).with_for_update().first()
             if class_record is None:
                 msg = "Class details not found!"
                 flash(msg, 'warning')
@@ -103,10 +103,10 @@ def search_class():
     check_yr_grp = re.search(r"^\d{4}$", yr_grp)
 
     if check_yr_grp is not None:
-        class_records = Class.query.filter(
-            Class.programme == prog,
-            Class.track == track,
-            Class.year_group == yr_grp).all()
+        class_records = StudentClass.query.filter(
+            StudentClass.programme == prog,
+            StudentClass.track == track,
+            StudentClass.year_group == yr_grp).all()
         context.update(class_records=class_records, view=view)
     return render_template("records_mgt/records_output.html", **context)
 
@@ -116,17 +116,17 @@ def search_class():
 def delete_class(class_id):
     view = "class"
     # admin = True  # remove this when user login is implemented
-    class_record = Class.query.filter(Class.id == class_id).with_for_update().first()
+    class_record = StudentClass.query.filter(StudentClass.id == class_id).with_for_update().first()
     prog = class_record.programme
     yr_grp = class_record.year_group
     track = class_record.track
     class_record.delete()
 
     context = {}
-    class_records = Class.query.filter(
-        Class.programme == prog,
-        Class.track == track,
-        Class.year_group == yr_grp).all()
+    class_records = StudentClass.query.filter(
+        StudentClass.programme == prog,
+        StudentClass.track == track,
+        StudentClass.year_group == yr_grp).all()
     context.update(class_records=class_records, view=view)
     msg = "Deleted class details successfully!"
     flash(msg, 'success')
@@ -322,4 +322,3 @@ def delete_role(role_id):
     msg = "Deleted role successfully"
     flash(msg, "success")
     return render_template("records_mgt/records_output.html", **context)
-
