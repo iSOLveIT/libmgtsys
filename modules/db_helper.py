@@ -69,7 +69,6 @@ class CRUDMixin:
             try:
                 db.session.commit()
             except:
-                db.session.rollback()
                 raise
         return self
 

@@ -76,7 +76,7 @@
 										<td>{{ record.current_qty }} </td>
 										<td>{{ record.date_recorded.strftime("%d-%m-%Y") }}</td>
 										<td>
-											<button hx-get="#" id="edit_btn" 
+											<button hx-get="{{ url_for('books.edit_book', book_id=record.id ) }}" id="edit_btn_{{record.id}}" 
 												class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
 												hx-trigger="click"
 												hx-target="#editrecord"
@@ -88,12 +88,13 @@
 										</td>
 								
 										<td>
-											<button hx-delete="#" id="delete_btn"
+											<button hx-delete="{{ url_for('books.delete_book', book_id=record.id ) }}" id="delete_btn_{{record.id}}"
 												class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
 												hx-trigger="click"
-												hx-target="#results_box"
+												hx-target="#feedback"
 												hx-include="[name='csrf_token']"
-												hx-swap="outerHTML">
+												hx-swap="outerHTML"
+												onclick="remove_row('delete_btn_{{record.id}}')">
 												<i class="ti-trash"></i> Delete Book
 											</button>
 										</td>

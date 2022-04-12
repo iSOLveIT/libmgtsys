@@ -195,7 +195,7 @@ def edit_user(user_id):
         return redirect(url_for(".list_users"))
     if request.method == 'POST':
         if user_record.role_id == 1:
-            form = StudentForm(obj=user_record)
+            form = StudentForm()
             form.sid.data = str(form.sid.data).upper().replace("/", "_")
             form.name.data = str(form.name.data).lower()
             track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
@@ -223,7 +223,7 @@ def edit_user(user_id):
                     flash("User details not edited.", "danger")
 
         if user_record.role_id == 2:
-            form = TeacherForm(obj=user_record)
+            form = TeacherForm()
             if form.validate():
                 teacher_dept = form.department.data
                 form.sid.data = str(form.sid.data).upper().replace("/", "_")
@@ -242,7 +242,7 @@ def edit_user(user_id):
                     flash("User details not edited.", "danger")
 
         if user_record.role_id == 3:
-            form = EditAdminForm(obj=user_record)
+            form = EditAdminForm()
             form.populate_obj(user_record)
 
             print(form.validate_on_submit(), form.data)
@@ -281,10 +281,21 @@ def delete_user(user_id):
     if user_record is not None:
         user_record.delete()
     msg = "Deleted user details successfully!"
-    flash(msg, "success")
-    context = {}
-    # context.update(user_record=[])
-    return render_template("users/records_output.html", **context)
+
+    return f"""
+    <li class="breadcrumb-item fade" id="feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </symbol>
+        </svg>
+
+        <span class="alert alert-success" role="alert">
+            <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <span>{msg}</span>
+        </span>
+    </li>
+    """
 
 
 # View to create users via file imports

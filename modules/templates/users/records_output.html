@@ -35,7 +35,7 @@
                         <td>{{ record.gender }}</td>
                         <td>{{ record.date_registered.strftime("%d-%m-%Y") }}</td>
                         <td>
-                              <button hx-get="{{ url_for('users.edit_user', user_id=record.id ) }}" id="edit_btn"
+                              <button hx-get="{{ url_for('users.edit_user', user_id=record.id ) }}" id="edit_btn_{{record.id}}"
                                 class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
                                 hx-trigger="click"
                                 hx-target="#editrecord"
@@ -54,12 +54,13 @@
 
                         </td>
                         <td>
-                            <button hx-delete="{{ url_for('users.delete_user', user_id=record.id ) }}" id="delete_btn"
+                            <button hx-delete="{{ url_for('users.delete_user', user_id=record.id ) }}" id="delete_btn_{{record.id}}"
                                 class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
                                 hx-trigger="click"
                                 hx-target="#results_box"
                                 hx-include="[name='csrf_token']"
-                                hx-swap="outerHTML">
+                                hx-swap="outerHTML"
+                                onclick="remove_row('delete_btn_{{record.id}}')">
                                 <i class="ti-trash"></i> Delete User
                             </button>
                         </td>

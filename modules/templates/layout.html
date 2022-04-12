@@ -93,8 +93,6 @@
 			{% endblock %}
 			
 			<a id="back2Top" class="top-scroll" title="Back to top" href="#"><i class="ti-arrow-up"></i></a>
-			
-
 		</div>
 		<!-- ============================================================== -->
 		<!-- End Wrapper -->
@@ -116,8 +114,8 @@
 			let feedback_msg = document.querySelector("li#feedback");
 			let alert_msg = document.querySelector("span.alert");
 			if(alert_msg){
-				feedback_msg.classList.add("disappear");
-				setTimeout(function(){feedback_msg.style.display="none";},4000);
+				feedback_msg.classList.add("fade");
+				// setTimeout(function(){feedback_msg.style.display="none";},4000);
 			}
 		</script>
 		<!-- ============================================================== -->

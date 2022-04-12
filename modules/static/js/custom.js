@@ -546,19 +546,6 @@ $(function() {
 
 });
 
-// let searchInputs = document.querySelectorAll(".form-control");
-
-// for (let searchInput of searchInputs) {
-//     if (searchInput.oninput == null){
-//         let btn = document.getElementById("view_user_btn");
-//         btn.innerHTML = "Search All";
-//     } 
-//     else {
-//         let btn = document.getElementById("view_user_btn");
-//         btn.innerHTML = "Search";
-//     }
-// }
-
 
 $('#editrecord').on('shown.bs.modal', function () {
   $('select:first-child').trigger('focus')
@@ -576,4 +563,12 @@ function close_modal() {
 	page_body.classList.remove("modal-open", "pr-2");
 	edit_modal.classList.remove("show");
 	edit_modal.style.display = "none";
+}
+
+
+function remove_row(id_value){
+    let row_btn = document.getElementById(`${id_value}`);
+    let row = row_btn.parentNode.parentElement;
+	row.classList.add("disappear");
+	row.style.display = "none";
 }

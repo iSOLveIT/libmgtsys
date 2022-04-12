@@ -31,8 +31,7 @@ def class_index():
 @record_mgt_bp.route('/class/add_class', methods=['POST'])
 def add_class():
     form = AddClassForm()
-    student_class = StudentClass()
-    form.populate_obj(student_class)
+
     if form.validate():
         print(form.validate_on_submit(), form.data)
         tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
@@ -42,11 +41,15 @@ def add_class():
             flash(msg, 'warning')
             return redirect(url_for(".class_index"))
         try:
+            student_class = StudentClass()
             student_class.class_tag = tag
+            form.populate_obj(student_class)
             student_class.update()
             msg = "Created class details successfully"
             flash(msg, "success")
         except IntegrityError:
+            # TODO: sqlalchemy.exc.IntegrityError: (psycopg2.errors.UniqueViolation) duplicate key value
+            #  violates unique constraint "student_class_pkey". DETAIL:  Key (id)=(5) already exists.
             db.session.rollback()
             flash("Class details not added.", "danger")
 
@@ -114,23 +117,26 @@ def search_class():
 # View to Delete class records
 @record_mgt_bp.route('/class/delete_class/<class_id>', methods=['DELETE'])
 def delete_class(class_id):
-    view = "class"
     # admin = True  # remove this when user login is implemented
-    class_record = StudentClass.query.filter(StudentClass.id == class_id).with_for_update().first()
-    prog = class_record.programme
-    yr_grp = class_record.year_group
-    track = class_record.track
-    class_record.delete()
+    class_record = StudentClass.query.get(class_id)
+    if class_record is not None:
+        class_record.delete()
 
-    context = {}
-    class_records = StudentClass.query.filter(
-        StudentClass.programme == prog,
-        StudentClass.track == track,
-        StudentClass.year_group == yr_grp).all()
-    context.update(class_records=class_records, view=view)
     msg = "Deleted class details successfully!"
-    flash(msg, 'success')
-    return render_template("records_mgt/records_output.html", **context)
+    return f"""
+    <li class="breadcrumb-item fade" id="feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </symbol>
+        </svg>
+
+        <span class="alert alert-success" role="alert">
+            <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <span>{msg}</span>
+        </span>
+    </li>
+    """
 
 
 # CRUD for staff records
@@ -223,16 +229,26 @@ def search_staff():
 # View to Delete staff records
 @record_mgt_bp.route('/staff/delete_staff/<staff_id>', methods=['DELETE'])
 def delete_staff(staff_id):
-    view = "staff"
     # admin = True  # remove this when user login is implemented
-    staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
-    staff_record.delete()
+    staff_record = Staff.query.get(staff_id)
+    if staff_record is not None:
+        staff_record.delete()
 
-    context = {}
     msg = "Deleted staff details successfully"
-    flash(msg, "success")
-    context.update(view=view)
-    return render_template("records_mgt/records_output.html", **context)
+    return f"""
+    <li class="breadcrumb-item fade" id="feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </symbol>
+        </svg>
+
+        <span class="alert alert-success" role="alert">
+            <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <span>{msg}</span>
+        </span>
+    </li>
+    """
 
 
 # CRUD for roles records
@@ -311,14 +327,23 @@ def edit_role(role_id):
 # View to Delete role records
 @record_mgt_bp.route('/role/delete_role/<role_id>', methods=['DELETE'])
 def delete_role(role_id):
-    view = "role"
     # admin = True  # remove this when user login is implemented
-    role_record = Role.query.filter(Role.id == role_id).with_for_update().first()
-    role_record.delete()
+    role_record = Role.query.get(role_id)
+    if role_record is not None:
+        role_record.delete()
 
-    context = {}
-    role_records = Role.query.all()
-    context.update(role_records=role_records, view=view)
     msg = "Deleted role successfully"
-    flash(msg, "success")
-    return render_template("records_mgt/records_output.html", **context)
+    return f"""
+    <li class="breadcrumb-item fade" id="feedback">
+        <svg xmlns="http://www.w3.org/2000/svg" style="display: none;">
+          <symbol id="check-circle-fill" fill="currentColor" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+          </symbol>
+        </svg>
+
+        <span class="alert alert-success" role="alert">
+            <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+            <span>{msg}</span>
+        </span>
+    </li>
+    """
