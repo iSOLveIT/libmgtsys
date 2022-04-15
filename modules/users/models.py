@@ -24,8 +24,8 @@ class User(UserMixin, PkModel):
 
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     sid = db.Column(db.String(30), unique=True, nullable=False, info={'label': 'User ID'})
-    name = db.Column(db.String(300), nullable=False, info={'label': 'Name'})
-    _password = db.Column(db.String(30), nullable=False, default=f"SWESCO_{id}", info={'label': 'Password'})
+    name = db.Column(db.String(255), nullable=False, info={'label': 'Name'})
+    _password = db.Column(db.String(255), nullable=False, info={'label': 'Password'})
     gender = db.Column(ChoiceType(choices=GENDER), nullable=False, info={'label': 'Gender'})
     date_registered = db.Column(db.DateTime, nullable=False, default=dt.now())
     last_seen = db.Column(db.DateTime, nullable=False, default=dt.now())

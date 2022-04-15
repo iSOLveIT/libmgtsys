@@ -17,14 +17,17 @@
             <tbody>
                 {% for record in user_records %}
                     <tr>
-                        <th scope="row">{{ record.sid }}</th>
+                        <th scope="row">{{ record.sid | replace('_', '/') }}</th>
                         <td>{{ record.name | title }} </td>
                         {% if record.role.purpose.value == 'STUDENT' %}
                             {% set s_prog = record.s_class.programme | get_course %}
                             {% set s_form = record.s_class.year_group | get_current_class %}
                             {% set s_track = record.s_class.track | get_track %}
-
-                            {% set s_class = [s_prog, s_form, record.s_class.current_class, s_track] | join('') %}
+                            {% if s_form > 3 %}
+                                {% set s_class = [s_prog, 3, record.s_class.current_class, s_track, " (completed)"] | join('') %}
+                            {% else %}
+                                {% set s_class = [s_prog, s_form, record.s_class.current_class, s_track] | join('') %}
+                            {% endif %}
                             <td>{{ s_class }} </td>
                         {% elif record.role.purpose.value == 'TEACHER' %}
                             <td>{{ record.staff.department | upper }} </td>

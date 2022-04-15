@@ -13,7 +13,7 @@ from sqlalchemy import or_
 
 from .models import User, StudentClass, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
-from .helper_func import process_data
+from .helper_func import process_data, pswd_gen
 from .. import db
 
 
@@ -66,6 +66,7 @@ def add_student_account():
     form.name.data = str(form.name.data).lower()
     track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
     student_user = User()
+    student_user.password = pswd_gen()
     form.populate_obj(student_user)
 
     if form.validate():
@@ -86,9 +87,8 @@ def add_student_account():
             flash("Class hasn't been created.", "info")
             return redirect(url_for(".user_index"))
 
-        # Append user to role and class
-        # TODO: student_user.password = form.password.data
         try:
+            # Append user to role and class
             role.users.append(student_user)
             student_class.users.append(student_user)
 
@@ -111,6 +111,7 @@ def add_teacher_account():
     form.sid.data = str(form.sid.data).upper().replace("/", "_")
     form.name.data = str(form.name.data).lower()
     teacher_user = User()
+    teacher_user.password = pswd_gen()
     form.populate_obj(teacher_user)
     if form.validate():
         print(form.validate_on_submit(), form.data)
@@ -122,9 +123,9 @@ def add_teacher_account():
         if teacher_dept is None:
             flash("Department hasn't been created.", "info")
             return redirect(url_for(".user_index"))
-        # Append user to role and class
-        # TODO: teacher_user.password = form.password.data
+
         try:
+            # Append user to role and department
             role.users.append(teacher_user)
             teacher_dept.users.append(teacher_user)
             role.update()
@@ -153,9 +154,9 @@ def add_admin_account():
             return redirect(url_for(".user_index"))
 
         print(form.validate_on_submit(), form.data)
-        # Append user to role and class
         # TODO: admin_user.password = form.password.data
         try:
+            # Append user to role and class
             role.users.append(admin_user)
             role.update()
             flash("User details added successfully.", "success")
@@ -211,7 +212,7 @@ def edit_user(user_id):
 
                 if student_class is None:
                     flash("Class hasn't been created.", "info")
-                    return redirect(url_for(".user_index"))
+                    return redirect(url_for(".list_users"))
 
                 # Append user to role and class
                 # TODO: student_user.password = form.password.data
@@ -261,6 +262,7 @@ def edit_user(user_id):
         form = StudentForm(obj=user_record)
         form.sid.data = str(form.sid.data).upper().replace("_", "/")
         form.name.data = str(form.name.data).title()
+        form.current_class.data = user_record.s_class.current_class.code
     elif user_record.role_id == 2:
         form = TeacherForm(obj=user_record)
         form.sid.data = str(form.sid.data).upper().replace("_", "/")
@@ -299,7 +301,7 @@ def delete_user(user_id):
 
 
 # View to create users via file imports
-@users_bp.route("/register/user/importusersfile", methods=['POST'])
+@users_bp.route("/register/user/importfile", methods=['POST'])
 def upload_users_file():
     if 'user_file' not in request.files:
         flash('No selected file', 'info')

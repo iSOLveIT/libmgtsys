@@ -1,7 +1,15 @@
-from .models import User, StudentClass, Staff, Role
+import random
+
 from sqlalchemy.exc import IntegrityError
 
 from .. import db
+from .models import User, StudentClass, Staff, Role
+
+
+def pswd_gen():
+    content = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$"
+    generated_list = random.choices(content, k=4)
+    return "SWESCO_" + "".join(generated_list)
 
 
 def process_data(file_data):
@@ -45,8 +53,9 @@ def add_students(user_data: list[tuple]):
 
         student_user = User()
         student_user.sid = str(item[1]).upper().replace("/", "_")
-        student_user.name = str(item[2]).lower()
-        student_user.gender = str(item[3]).upper()
+        student_user.name = str(item[2]).lower().rstrip()
+        student_user.gender = str(item[3]).upper().rstrip()
+        student_user.password = pswd_gen()
         track, prog, year, _ = str(item[1]).upper().split("/", 3)
 
         student_class = StudentClass.query.filter(
@@ -83,6 +92,7 @@ def add_teachers(user_data: list[tuple]):
         teacher_user.sid = str(item[1]).upper().replace("/", "_")
         teacher_user.name = str(item[2]).lower()
         teacher_user.gender = str(item[3]).upper()
+        teacher_user.password = pswd_gen()
         dept = str(item[4]).capitalize()
 
         teacher_dept = Staff.query.filter(
