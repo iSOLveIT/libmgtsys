@@ -93,8 +93,7 @@
 								<th scope="col">Permission Level</th>
 								<th scope="col">Total No. of Users</th>
 								<th scope="col"></th>
-								<th scope="col"></th>
-							</tr>
+								</tr>
 						</thead>
 						<tbody>
 							{% for record in role_records %}
@@ -117,17 +116,7 @@
 										</button>
 
 									</td>
-									<td>
-										<button hx-delete="{{ url_for('record_mgt.delete_role', role_id=record.id ) }}" id="delete_btn_{{record.id}}"
-												class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
-												hx-trigger="click"
-												hx-target="#feedback"
-												hx-include="[name='csrf_token']"
-												hx-swap="outerHTML"
-												onclick="remove_row('delete_btn_{{record.id}}')">
-											<i class="ti-trash"></i> Delete Role
-										</button>
-									</td>
+									
 								</tr>
 							{% endfor %}
 							<input type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>

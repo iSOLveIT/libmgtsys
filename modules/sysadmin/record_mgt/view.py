@@ -1,13 +1,16 @@
 import re
+from tempfile import NamedTemporaryFile
 
 from flask import Blueprint, request, redirect, render_template, url_for, flash
 from pathlib import Path
 from sqlalchemy.exc import IntegrityError
+from openpyxl import load_workbook
 
 from project.modules.users.models import StudentClass, Role, Staff
 from .forms import AddClassForm, AddStaffForm, AddRoleForm, SearchStaffForm, SearchClassForm
-# from project.helpers.security import get_safe_redirect
-from ... import db
+from ... import db, allowed_file
+from .helper_func import process_data
+
 
 static_path = Path('.').parent.absolute() / 'modules/static'
 record_mgt_bp = Blueprint("record_mgt", __name__, url_prefix="/record_mgt", static_folder=static_path)
@@ -69,7 +72,6 @@ def edit_class(class_id):
         return redirect(url_for(".class_index"))
 
     form = AddClassForm(obj=class_record)
-    form.populate_obj(class_record)
 
     if request.method == 'POST':
         if form.validate():
@@ -81,6 +83,7 @@ def edit_class(class_id):
                 flash(msg, 'warning')
                 return redirect(url_for(".class_index"))
             try:
+                form.populate_obj(class_record)
                 class_record.class_tag = tag
                 class_record.update()
                 msg = "Updated class details successfully"
@@ -137,6 +140,37 @@ def delete_class(class_id):
         </span>
     </li>
     """
+
+
+# View to create classes via file import
+@record_mgt_bp.route("/class/add_class/importfile", methods=['POST'])
+def upload_classes_file():
+    if 'classes_file' not in request.files:
+        flash('No selected file', 'info')
+        return redirect(url_for(".class_index"))
+    file = request.files['classes_file']
+    if file.filename == '':
+        flash('No selected file', 'info')
+        return redirect(url_for(".class_index"))
+    if file and allowed_file(file.filename):
+        total_rows = request.form.get('total_rows', type=int)
+        if total_rows is None:
+            flash('Input the number of rows with data in file', 'warning')
+            return redirect(url_for(".class_index"))
+        wb = load_workbook(file)
+
+        with NamedTemporaryFile() as tmp:
+            wb.save(tmp.name)  # Save file in temporary file
+            tmp.seek(0)
+
+            wb2 = load_workbook(tmp)
+            ws = wb2.active
+            process_data(list(tuple(ws.iter_rows(
+                max_col=4, min_row=2, max_row=total_rows, values_only=True)))
+            )
+        flash('Excel file imported successfully', 'success')
+        return redirect(url_for(".class_index"))
+    return redirect(url_for(".class_index"))
 
 
 # CRUD for staff records
@@ -268,11 +302,13 @@ def role_index():
 # View to Create role records
 @record_mgt_bp.route('/role/add_role', methods=['POST'])
 def add_role():
+    view = "role"
+    context = {}
+    user_log = True
     form = AddRoleForm()
     account_type = Role()
     form.populate_obj(account_type)
     if form.validate():
-        print(form.validate(), form.data)
         account_type.permission_level = True if form.purpose.data == 'admin' else False
         try:
             account_type.update()
@@ -283,11 +319,8 @@ def add_role():
             db.session.rollback()
             flash(msg, "danger")
 
-    view = "role"
-    context = {}
-    user_log = True
     role_records = Role.query.all()
-    context.update(role_records=role_records, view=view, user_log=user_log)
+    context.update(view=view, user_log=user_log, role_records=role_records)
     return render_template("records_mgt/records_output.html", **context)
 
 
@@ -304,10 +337,8 @@ def edit_role(role_id):
     if request.method == 'POST':
         if form.validate():
             print(form.validate(), form.data)
-            # prevent changes in selected row until you commit changes to DB
-            role_record = Role.query.filter(Role.id == role_id).with_for_update().first()
             if role_record is None:
-                msg = "Role already exist!"
+                msg = "Role does not exist!"
                 flash(msg, "danger")
                 return redirect(url_for(".role_index"))
             role_record.permission_level = True if form.purpose.data == 'admin' else False

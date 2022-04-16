@@ -10,6 +10,9 @@
 			<ol class="breadcrumb">
 				<li class="breadcrumb-item"><a href="#">Home</a></li>
 				<li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+				<li class="breadcrumb-item" id="feedback">
+					{% include 'includes/messages.html'%}
+				</li>
 			</ol>
 		</nav>
 	</div>
@@ -28,7 +31,7 @@
 	
 	<div class="col-xl-3 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">56324242</h4> <span>Books</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">{{ counts[2] }}</h4> <span>Books</span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-book"></i></div>
 		</div>	
 	</div>

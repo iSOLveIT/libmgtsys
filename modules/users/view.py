@@ -1,6 +1,5 @@
 from functools import wraps
 from tempfile import NamedTemporaryFile
-import re
 
 from flask import Blueprint, redirect, url_for, render_template, flash, request, send_from_directory
 from flask_login import current_user
@@ -14,13 +13,7 @@ from sqlalchemy import or_
 from .models import User, StudentClass, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
 from .helper_func import process_data, pswd_gen
-from .. import db
-
-
-def allowed_file(filename):
-    pattern = r"^[\w\-]+?.(xlsx)$"
-    check_file = re.search(pattern, filename)
-    return '.' in filename and check_file is not None
+from .. import db, allowed_file
 
 
 # Activation needed. Move from here to dashboard folder
@@ -300,7 +293,7 @@ def delete_user(user_id):
     """
 
 
-# View to create users via file imports
+# View to create users via file import
 @users_bp.route("/register/user/importfile", methods=['POST'])
 def upload_users_file():
     if 'user_file' not in request.files:

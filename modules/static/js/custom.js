@@ -569,6 +569,6 @@ function close_modal() {
 function remove_row(id_value){
     let row_btn = document.getElementById(`${id_value}`);
     let row = row_btn.parentNode.parentElement;
-	row.classList.add("disappear");
+	row.classList.add("fade");
 	row.style.display = "none";
 }

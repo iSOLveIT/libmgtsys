@@ -3,6 +3,7 @@ All initialisations like db = SQLAlchemy in this file
 """
 import os
 from zoneinfo import ZoneInfo
+import re
 
 from flask import Flask
 from flask_login import LoginManager
@@ -83,6 +84,12 @@ def get_current_class(eval_ctx, value):
     current_yr = dt.utcnow().year
     diff_year = current_yr - int(value)
     return diff_year
+
+
+def allowed_file(filename):
+    pattern = r"^[\w\-]+?.(xlsx)$"
+    check_file = re.search(pattern, filename)
+    return '.' in filename and check_file is not None
 
 
 # Blueprints

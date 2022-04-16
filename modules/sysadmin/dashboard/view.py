@@ -1,24 +1,16 @@
-import re
-
 from flask import Blueprint, request, redirect, render_template, url_for, send_from_directory
 from pathlib import Path
-from sqlalchemy import or_
+# from sqlalchemy import or_
 from werkzeug.utils import secure_filename
 
 from project.modules.users.models import User, StudentClass
+from project.modules.books.models import Books
+from ... import allowed_file
 
 
 static_path = Path('.').parent.absolute() / 'modules/static'
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
-
-def allowed_file(filename):
-    pattern = r"^[\w\-]+?.(xlsx)$"
-    check_file = re.search(pattern, filename)
-    return '.' in filename and check_file is not None
-
-
-# NOTE: All post requests should refresh page
 
 # Create and Read views for class records
 @dashboard_bp.route('/admin')
@@ -26,9 +18,10 @@ def admin_dashboard():
     user_log = True
     context = {}
     admin = True    # remove this when user login is implemented
-    total_users = User.query.filter(or_(User.role_id == 1, User.role_id == 2)).count()
+    total_users = User.query.count()
     total_classes = StudentClass.query.count()
-    context.update(admin=admin, user_log=user_log, counts=[total_users, total_classes])
+    total_books = Books.query.count()
+    context.update(admin=admin, user_log=user_log, counts=[total_users, total_classes, total_books])
     return render_template("admin_dashboard.html", **context)
 
 

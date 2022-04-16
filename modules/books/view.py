@@ -1,13 +1,16 @@
 from flask import Blueprint, render_template, flash, redirect, url_for, request
 from pathlib import Path
+from tempfile import NamedTemporaryFile
 
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
+from openpyxl import load_workbook
 
 from .models import Books
 from .forms import AddBooksForm, SearchBooksForm
-# from project.modules.books.models import Books, Book
-from .. import db
+from .. import db, allowed_file
+from .helper_func import process_data
+
 
 static_path = Path('.').parent.absolute() / 'modules/static'
 books_bp = Blueprint("books", __name__, url_prefix="/books", static_folder=static_path)
@@ -154,3 +157,34 @@ def delete_book(book_id):
     </span>
 </li>
 """
+
+
+# View to add books via file import
+@books_bp.route("/add/books/importfile", methods=['POST'])
+def upload_books_file():
+    if 'books_file' not in request.files:
+        flash('No selected file', 'info')
+        return redirect(url_for(".book_index"))
+    file = request.files['books_file']
+    if file.filename == '':
+        flash('No selected file', 'info')
+        return redirect(url_for(".book_index"))
+    if file and allowed_file(file.filename):
+        total_rows = request.form.get('total_rows', type=int)
+        if total_rows is None:
+            flash('Input the number of rows with data in file', 'warning')
+            return redirect(url_for(".book_index"))
+        wb = load_workbook(file)
+
+        with NamedTemporaryFile() as tmp:
+            wb.save(tmp.name)  # Save file in temporary file
+            tmp.seek(0)
+
+            wb2 = load_workbook(tmp)
+            ws = wb2.active
+            process_data(list(tuple(ws.iter_rows(
+                max_col=8, min_row=2, max_row=total_rows, values_only=True)))
+            )
+        flash('Excel file imported successfully', 'success')
+        return redirect(url_for(".book_index"))
+    return redirect(url_for(".book_index"))

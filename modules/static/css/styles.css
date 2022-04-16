@@ -10121,10 +10121,10 @@ li#feedback::before {
 
 .disappear{
   opacity: 0;
-  transition: opacity .2s linear !important;
+  transition: opacity 2s linear 2s !important;
 }
 
 .fade {
   opacity: 0;
-  transition: opacity 2s linear 2s !important;
+  transition: opacity .2s linear !important;
 }
