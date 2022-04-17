@@ -13,7 +13,7 @@ user_book = db.Table('user_book',
                      db.Column('books_id', db.Integer, db.ForeignKey('books.id')),
                      db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
                      db.Column('date_borrowed', db.DateTime, nullable=False, default=dt.now()),
-                     db.Column('return_date', db.DateTime, nullable=False)
+                     db.Column('return_date', db.DateTime, nullable=False, default=dt.now())
                      )
 
 
@@ -48,23 +48,4 @@ class Books(PkModel):
     readers = db.relationship('User', secondary=user_book, backref=db.backref('books_borrowed', lazy=True))
 
     def __repr__(self):
-        return f"<Books-id: {self.id}, Classification-No.: {self.classification_no}>, Title: {self.title}>"
-
-
-# class Book(PkModel):
-#     """Model for book table"""
-#     BOOK_STATUS = [('available', 'available'), ('unavailable', 'unavailable')]
-#
-#     __tablename__ = "book"
-#
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     catalogue_no = db.Column(db.String(50), info={'label': 'Catalogue No.'})
-#     access_no = db.Column(db.Integer, unique=True, nullable=False, info={'label': 'Access No.'})
-#     status = db.Column(ChoiceType(BOOK_STATUS), nullable=False)
-#     is_borrowed = db.Column(db.Boolean, nullable=False, default=False)
-#
-#     books_id = db.Column(db.Integer, db.ForeignKey('books.id'), nullable=False)
-#     readers = db.relationship('User', secondary=user_book, backref=db.backref('borrowed_books', lazy=True))
-#
-#     def __repr__(self):
-#         return f"<Book-id: {self.id}, Access No.: {self.access_no}>"
+        return f"<Books-id: {self.id}, Classification-No.: {self.classification_no}, Title: {self.title.rstrip()}>"
