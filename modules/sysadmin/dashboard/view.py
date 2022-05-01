@@ -48,8 +48,12 @@ def book_tags():
         If cancel_print == False and request.method is GET, then show the book tags page.
         Else if cancel_print == True and request.method is GET, then show the div with the book tags generator forms.
     """
-    if request.method == 'POST':
-        context.update(cancel_print=cancel_print, form=form)
+    if request.method == 'POST' and form.validate():
+        total_tags = (x + 3) // 2 if (x := int(form.total_tags.data)) % 2 != 0 else (x + 2) // 2
+        counter = range(0, total_tags)
+        bk_title, bk_class_no, bk_date = form.book_title.data, form.classification_no.data, form.tag_date.data
+        context.update(cancel_print=cancel_print, bk_title=bk_title, bk_class_no=bk_class_no,
+                       bk_date=bk_date, counter=counter)
         return render_template("others/tags_generated.html", **context)
     if not cancel_print:
         context.update(admin=admin, user_log=user_log, form=form)

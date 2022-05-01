@@ -38,11 +38,6 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
     background-color: #000033!important;
 }
 
-@page{
-	size:A4;
-	margin:1cm;
-	orientation:portrait
-}
 @media print{
 	*{
 		color:#000!important
@@ -52,10 +47,20 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
 		color:#000!important
     }
 
+    html {
+        margin: 0px!important;
+      }
+
     div.header, div#dashboard-menu, div#breadcrumb-div,
     .dashboard_container .dashboard_container_header, footer.dark-footer {
 	    display:none;
 	}
+
+	@page{
+	size: A4;
+	margin: 0mm;
+	orientation: portrait;
+}
 }
 
 .dashboard_fl_1 a.cancel_btn:hover, .dashboard_fl_1 a.cancel_btn:focus {

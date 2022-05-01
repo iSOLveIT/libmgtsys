@@ -68,36 +68,28 @@
 				</div>
 				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4">
 					<div class="tags-section">
-						<div class="row">
-							<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
-								<h3 class="mb-4 mt-3">SWEDRU SENIOR HIGH SCHOOL LIBRARY</h3>
-								<h5 class="mb-3">BOOK ONE TITLE</h5>
-								<div class="mb-3 dsktp">
-									<span><b>CLASSI. NO:</b>.................................</span> &nbsp;
-									<span><b>ACCESS NO:</b>..................................</span>
-								</div>
-								<div class="mbl">
-									<p class="mb-2"><b>CLASSI. NO:</b>........................................</p>
-									<p class="mb-2"><b>ACCESS NO:</b>.........................................</p>
-									<p class="mb-2"><b>DATE:</b>....................................</p>
-								</div>
-								<p class="mb-3 dsktp"><b>DATE:</b>...............................................................................</p>
-							</div>
-							<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
-								<h3 class="mb-4 mt-3">SWEDRU SENIOR HIGH SCHOOL LIBRARY</h3>
-								<h5 class="mb-3">BOOK TWO TITLE</h5>
-								<div class="mb-3 dsktp">
-									<span><b>CLASSI. NO:</b>.................................</span> &nbsp;
-									<span><b>ACCESS NO:</b>..................................</span>
-								</div>
-								<div class="mbl">
-									<p class="mb-2"><b>CLASSI. NO:</b>...............................................</p>
-									<p class="mb-2"><b>ACCESS NO:</b>................................................</p>
-									<p class="mb-2"><b>DATE:</b>.....................................................</p>
-								</div>
-								<p class="mb-3 dsktp"><b>DATE:</b>...............................................................................</p>
-							</div>
+						{% for item in counter %}
+							<div class="row mb-3">
+								{% for i in [0, 1] %}
+									<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
+										<h3 class="mb-4 mt-3">SWEDRU SENIOR HIGH SCHOOL LIBRARY</h3>
+										<h5 class="mb-3">{{ bk_title | upper }}</h5>
+										<div class="mb-3 dsktp">
+											<span><b>CLASSI. NO:</b> {{ bk_class_no | upper }}</span> &nbsp;
+											<span><b>ACCESS NO:</b>...........................</span>
+										</div>
+										<div class="mbl">
+											<p class="mb-2"><b>CLASSI. NO:</b> {{ bk_class_no | upper }}</p>
+											<p class="mb-2"><b>ACCESS NO:</b>...........................</p>
+											<p class="mb-2"><b>DATE:</b> {{ bk_date }}</p>
+										</div>
+										<p class="mb-3 dsktp"><b>DATE:</b> {{ bk_date }}</p>
+									</div>
+								{% endfor %}
+
 						</div>
+						{% endfor %}
+
 					</div>
 
 				</div>
