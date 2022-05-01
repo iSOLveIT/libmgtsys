@@ -572,3 +572,8 @@ function remove_row(id_value){
 	row.classList.add("fade");
 	row.style.display = "none";
 }
+
+function print_tag(){
+	window.print();
+	return false
+}

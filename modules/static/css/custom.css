@@ -37,3 +37,37 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
 .red-skin .btn.search-btn{
     background-color: #000033!important;
 }
+
+@page{
+	size:A4;
+	margin:1cm;
+	orientation:portrait
+}
+@media print{
+	*{
+		color:#000!important
+    }
+	html,body{
+		background-color:#fff!important;
+		color:#000!important
+    }
+
+    div.header, div#dashboard-menu, div#breadcrumb-div,
+    .dashboard_container .dashboard_container_header, footer.dark-footer {
+	    display:none;
+	}
+}
+
+.dashboard_fl_1 a.cancel_btn:hover, .dashboard_fl_1 a.cancel_btn:focus {
+	background-color: #fff !important;
+	color: #da0b4e !important;
+	border: 1px #da0b4e solid;
+	transition: all .1s ease-in-out;
+}
+
+.dashboard_fl_1 a.print_btn:hover, .dashboard_fl_1 a.print_btn:focus {
+	background-color: #fff !important;
+	color: #131b31 !important;
+	border: 1px #131b31 solid;
+	transition: all .1s ease-in-out;
+}

@@ -1,0 +1,110 @@
+{% if cancel_print %}
+	<!-- Row -->
+	<div class="row" id="bookTag_div">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<h4>Book Tags Generator Form</h4>
+					</div>
+				</div>
+				<div class="dashboard_container_body p-4">
+					<div class="submit-section">
+						<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#bookTag_div" hx-swap="outerHTML">
+								<!-- Book form -->
+									<div class="form-row slideInRight form-anime" id="bookTag_form">
+										{% for field in form %}
+											{% if field.name != 'csrf_token' %}
+												<div class="form-group col-md-6">
+													{% if field.id not in ['csrf_token'] %}
+														{{ field.label }}
+													{% endif %}
+													{{ field }}
+												</div>
+											{% endif %}
+										{%endfor%}
+
+										<div class="form-group col-md-2">
+											<div>
+												<button type="submit" class="btn search-btn full-width rounded">
+													<i class="ti-thumb-up"></i> Submit
+												</button>
+											</div>
+										</div>
+										{{ form.csrf_token }}
+									</div>
+								<!-- Book tags form -->
+								</form>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- /Row -->
+{% else %}
+	<!-- Row -->
+	<div class="row" id="tagPrint_div">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<a hx-get="{{ url_for('dashboard.book_tags', cancel_print=True) }}" hx-trigger="click"
+						   hx-target="#tagPrint_div" hx-swap="outerHTML"
+						   style="font-weight:500;font-size: medium;background-color: #da0b4e; transition: all .05s ease-in-out;"
+						class="p-2 text-white rounded cancel_btn">
+							<i class="ti-close"></i> &nbsp;Cancel
+						</a>
+					</div>
+
+					<div class="dashboard_fl_1" style="text-align: right;">
+						<a href="#" style="font-weight:500;font-size: medium;background-color: #131b31; transition: all .05s ease-in-out;"
+						class="p-2 text-white rounded print_btn"
+            onclick="print_tag()">
+							<i class="ti-printer"></i> &nbsp;Print
+						</a>
+					</div>
+				</div>
+				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4">
+					<div class="tags-section">
+						<div class="row">
+							<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
+								<h3 class="mb-4 mt-3">SWEDRU SENIOR HIGH SCHOOL LIBRARY</h3>
+								<h5 class="mb-3">BOOK ONE TITLE</h5>
+								<div class="mb-3 dsktp">
+									<span><b>CLASSI. NO:</b>.................................</span> &nbsp;
+									<span><b>ACCESS NO:</b>..................................</span>
+								</div>
+								<div class="mbl">
+									<p class="mb-2"><b>CLASSI. NO:</b>........................................</p>
+									<p class="mb-2"><b>ACCESS NO:</b>.........................................</p>
+									<p class="mb-2"><b>DATE:</b>....................................</p>
+								</div>
+								<p class="mb-3 dsktp"><b>DATE:</b>...............................................................................</p>
+							</div>
+							<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
+								<h3 class="mb-4 mt-3">SWEDRU SENIOR HIGH SCHOOL LIBRARY</h3>
+								<h5 class="mb-3">BOOK TWO TITLE</h5>
+								<div class="mb-3 dsktp">
+									<span><b>CLASSI. NO:</b>.................................</span> &nbsp;
+									<span><b>ACCESS NO:</b>..................................</span>
+								</div>
+								<div class="mbl">
+									<p class="mb-2"><b>CLASSI. NO:</b>...............................................</p>
+									<p class="mb-2"><b>ACCESS NO:</b>................................................</p>
+									<p class="mb-2"><b>DATE:</b>.....................................................</p>
+								</div>
+								<p class="mb-3 dsktp"><b>DATE:</b>...............................................................................</p>
+							</div>
+						</div>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<!-- /Row -->
+{% endif %}
+

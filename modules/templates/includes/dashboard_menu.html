@@ -1,5 +1,5 @@
 {% if admin %}
-	<div class="col-lg-3 col-md-3">
+	<div class="col-lg-3 col-md-3" id="dashboard-menu">
 		<div class="dashboard-navbar">
 
 			<div class="d-user-avater">
@@ -11,7 +11,7 @@
 			<div class="d-navigation">
 				<ul id="side-menu">
 					<li class="active">
-						<a href="/dashboard/admin">
+						<a href="{{ url_for('dashboard.admin_dashboard') }}">
 							<i class="ti-dashboard"></i>Dashboard</a>
 					</li>
 					<li class="dropdown">
@@ -49,7 +49,7 @@
 							<i class="ti-layers"></i>Track Books</a>
 					</li>
 					<li>
-						<a href="new_pages/book_tags.html">
+						<a href="{{ url_for('dashboard.book_tags') }}">
 							<i class="ti-tag"></i>Generate Book Tags</a>
 					</li>
 					<li class="dropdown">
@@ -83,7 +83,7 @@
 		</div>
 	</div>
 {% else %}
-	<div class="col-lg-3 col-md-3">
+	<div class="col-lg-3 col-md-3" id="dashboard-menu">
 		<div class="dashboard-navbar">
 			<div class="d-user-avater">
 				<img src="{{ url_for('static', filename='img/f_user.svg') }}" width="500" height="500" class="img-fluid avater" alt="">
