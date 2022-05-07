@@ -8,13 +8,15 @@ from werkzeug.utils import secure_filename
 from ... import allowed_file
 from project.modules.users.models import User, StudentClass
 from project.modules.books.models import Books
+from project.modules.books.forms import SearchBooksForm
 from .forms import BookTagForm
 
 static_path = Path('.').parent.absolute() / 'modules/static'
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
 
 
-# Create and Read views for class records
+# VIEWS FOR THE ADMIN
+# View for admin dashboard
 @dashboard_bp.route('/admin')
 def admin_dashboard():
     user_log = True
@@ -23,7 +25,9 @@ def admin_dashboard():
     total_users = User.query.count()
     total_classes = StudentClass.query.count()
     total_books = Books.query.count()
-    context.update(admin=admin, user_log=user_log, counts=[total_users, total_classes, total_books])
+    search_form = SearchBooksForm()
+    context.update(admin=admin, user_log=user_log, search_form=search_form,
+                   counts=[total_users, total_classes, total_books])
     return render_template("admin_dashboard.html", **context)
 
 
@@ -60,3 +64,29 @@ def book_tags():
         return render_template("others/book_tags.html", **context)
     context.update(cancel_print=cancel_print, form=form)
     return render_template("others/tags_generated.html", **context)
+
+
+# VIEWS FOR USER (STUDENT and TEACHER)
+# View for user dashboard
+@dashboard_bp.route('/user')
+def user_dashboard():
+    user_log = True
+    context = {}
+    admin = False  # remove this when user login is implemented
+    # total_users = User.query.count()
+    # total_classes = StudentClass.query.count()
+    # total_books = Books.query.count()
+    search_form = SearchBooksForm()
+    context.update(admin=admin, user_log=user_log, search_form=search_form)
+    return render_template("user_dashboard.html", **context)
+
+
+# View for user profile
+@dashboard_bp.route('/user/profile')
+def user_profile():
+    user_log = True
+    context = {}
+    admin = False  # remove this when user login is implemented
+    context.update(admin=admin, user_log=user_log)
+    return render_template("others/user_profile.html", **context)
+

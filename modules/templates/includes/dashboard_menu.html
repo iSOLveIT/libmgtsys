@@ -93,15 +93,9 @@
 			
 			<div class="d-navigation">
 				<ul id="side-menu">
-					<li class="active"><a href="#"><i class="ti-dashboard"></i>Dashboard</a></li>
-					<li><a href="new_pages/profile.html"><i class="ti-user"></i>My Profile</a></li>
-					<li class="dropdown">
-						<a href="#"><i class="ti-book"></i>Books History<span class="ti-angle-left"></span></a>
-						<ul class="nav nav-second-level">
-							<li><a href="new_pages/books_history/borrowed.html"><i class="ti-layers"></i>Borrowed Books</a></li>
-							<li><a href="new_pages/books_history/returned.html"><i class="ti-reload"></i>Returned Books</a></li>
-						</ul>
-					</li>
+					<li class="active"><a href="{{ url_for('dashboard.user_dashboard') }}"><i class="ti-dashboard"></i>Dashboard</a></li>
+					<li><a href="{{ url_for('dashboard.user_profile') }}"><i class="ti-user"></i>My Profile</a></li>
+					<li><a href="#"><i class="ti-book"></i>Books History</a></li>
 				</ul>
 			</div>
 			
