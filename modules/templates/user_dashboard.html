@@ -19,24 +19,33 @@
 
 <!-- Row -->
 <div class="row">
-
+	{% set s_prog = user_info.s_class.programme | get_course %}
+	{% set s_form = user_info.s_class.year_group | get_current_class %}
+	{% set s_track = user_info.s_class.track | get_track %}
+	
+	{% if s_form > 3 %}
+		{% set s_status = "completed" %}
+		{% set s_class = [s_prog, 3, user_info.s_class.current_class, s_track] | join('') %}
+	{% else %}
+		{% set s_class = [s_prog, s_form, user_info.s_class.current_class, s_track] | join('') %}
+	{% endif %}
 	<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-success">BU3AGD</h4> <span>Class</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-success">{{ s_class }} <span class="text-muted">{{ s_status }}</span> </h4> <span>Class</span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-home"></i></div>
 		</div>	
 	</div>
 	
 	<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">56324</h4> <span>Books Read</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">{{ user_info.books_borrowed | length }}</h4> <span>Books Currently Borrowed</span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-book"></i></div>
 		</div>	
 	</div>
 	
 	<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-danger">2000</h4> <span>Books Borrowed</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-danger">20212</h4> <span>Total Books Borrowed</span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-layers"></i></div>
 		</div>	
 	</div>

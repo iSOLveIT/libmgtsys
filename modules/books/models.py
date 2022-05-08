@@ -11,10 +11,26 @@ from ..users.models import User
 
 user_book = db.Table('user_book',
                      db.Column('books_id', db.Integer, db.ForeignKey('books.id')),
-                     db.Column('user_id', db.Integer, db.ForeignKey(User.id)),
-                     db.Column('date_borrowed', db.DateTime, nullable=False, default=dt.now()),
-                     db.Column('return_date', db.DateTime, nullable=False, default=dt.now())
+                     db.Column('user_id', db.Integer, db.ForeignKey(User.id))
                      )
+
+
+class UserBooksHistory(PkModel):
+    """Model for recording users history with books"""
+
+    __tablename__ = "user_books_history"
+
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+    date_borrowed = db.Column(db.DateTime, nullable=False, default=dt.now())
+    return_date = db.Column(db.DateTime, nullable=False, default=dt.now())
+
+    user_history = db.relationship('User', backref='history', lazy=True)    # Links with the User model
+    book_history = db.relationship('Books', backref='history', lazy=True)  # Links with the Books model
+
+    def __repr__(self):
+        return f"<Issue Date: {self.date_borrowed}, Return Date: {self.return_date}>"
 
 
 class Books(PkModel):
@@ -42,8 +58,8 @@ class Books(PkModel):
     qty_added = db.Column(db.Integer, nullable=False, info={'label': 'Quantity of Books'})  # Number newly added
     qty_spoilt = db.Column(db.Integer, nullable=False)  # Number spoilt
     current_qty = db.Column(db.Integer, nullable=False)  # The current number in-stock (Current + Added) therefore Overall qty = current_qty + spoilt
-
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
+
     recorded_by = db.relationship('User', backref=backref("books_recorded", uselist=False))
     readers = db.relationship('User', secondary=user_book, backref=db.backref('books_borrowed', lazy=True))
 

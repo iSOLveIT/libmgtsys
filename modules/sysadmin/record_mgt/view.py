@@ -312,12 +312,8 @@ def add_role():
         account_type.permission_level = True if form.purpose.data == 'admin' else False
         try:
             account_type.update()
-            msg = "Created role successfully"
-            flash(msg, "success")
         except IntegrityError:
-            msg = "Role already exist!"
             db.session.rollback()
-            flash(msg, "danger")
 
     role_records = Role.query.all()
     context.update(view=view, user_log=user_log, role_records=role_records)
@@ -344,12 +340,9 @@ def edit_role(role_id):
             role_record.permission_level = True if form.purpose.data == 'admin' else False
             try:
                 role_record.update()
-                msg = "Updated role successfully"
-                flash(msg, "success")
             except IntegrityError:
-                msg = "Role already exist!"
                 db.session.rollback()
-                flash(msg, "danger")
+
         return redirect(url_for(".role_index"))
     context.update(admin=admin, form=form, role_id=role_id, role_record=role_record, view=view)
     return render_template("records_mgt/edit_record.html", **context)

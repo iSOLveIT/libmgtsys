@@ -68,16 +68,17 @@ def book_tags():
 
 # VIEWS FOR USER (STUDENT and TEACHER)
 # View for user dashboard
-@dashboard_bp.route('/user')
-def user_dashboard():
+@dashboard_bp.route('/user/<string:user_id>')
+def user_dashboard(user_id):
     user_log = True
     context = {}
     admin = False  # remove this when user login is implemented
-    # total_users = User.query.count()
+    user_info = User.query.filter(User.sid == user_id).first()
     # total_classes = StudentClass.query.count()
     # total_books = Books.query.count()
     search_form = SearchBooksForm()
-    context.update(admin=admin, user_log=user_log, search_form=search_form)
+    context.update(admin=admin, user_log=user_log,
+                   search_form=search_form, user_info=user_info)
     return render_template("user_dashboard.html", **context)
 
 

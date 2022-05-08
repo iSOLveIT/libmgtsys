@@ -41,7 +41,6 @@ def class_recursive(data: list[tuple]):
 
 
 def add_classes(class_data: list[tuple]):
-    student_class = StudentClass()
     student_class_instances = []
 
     for item in class_data:
@@ -55,6 +54,7 @@ def add_classes(class_data: list[tuple]):
         if class_exist is not None:
             continue
 
+        student_class = StudentClass()
         student_class.programme = course
         student_class.track = track
         student_class.current_class = current_class
@@ -63,7 +63,8 @@ def add_classes(class_data: list[tuple]):
         student_class_instances.append(student_class)
 
     try:
-        student_class.insert_many(student_class_instances)
+        update_student_class = StudentClass()
+        update_student_class.insert_many(student_class_instances)
     except IntegrityError:
         db.session.rollback()
 

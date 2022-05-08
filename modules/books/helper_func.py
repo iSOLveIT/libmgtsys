@@ -41,7 +41,6 @@ def books_recursive(data: list[tuple]):
 
 
 def add_books(books_data: list[tuple]):
-    books = Books()
     books_instances = []
 
     for item in books_data:
@@ -67,6 +66,7 @@ def add_books(books_data: list[tuple]):
             books_exist.download_link = book_download_link
             books_instances.append(books_exist)
         else:
+            books = Books()
             books.classification_no = book_classification_no
             books.title = book_title
             books.author = book_author
@@ -76,12 +76,13 @@ def add_books(books_data: list[tuple]):
             books.catalogue_no = book_catalogue_no
             books.download_link = book_download_link
             last_book = Books.query.order_by(Books.id.desc()).first()
-            access_no = last_book.access_no + book_qty_added
+            access_no = 0 + book_qty_added if last_book is None else last_book.access_no + book_qty_added
             books.qty_spoilt, books.current_qty, books.access_no = (0, book_qty_added, access_no)
             books_instances.append(books)
 
     try:
-        books.insert_many(books_instances)
+        update_books = Books()
+        update_books.insert_many(books_instances)
     except IntegrityError:
         db.session.rollback()
 

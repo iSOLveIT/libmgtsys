@@ -33,8 +33,6 @@ class User(UserMixin, PkModel):
     has_activated = db.Column(db.Boolean(), nullable=False, default=False)
     is_active = db.Column(db.Boolean, nullable=False, default=False)
 
-    # books_recorded = db.relationship('Books', backref='recorded_by', lazy=True)
-
     role_id = db.Column(db.Integer, db.ForeignKey('role.id'))
     student_class_id = db.Column(db.Integer, db.ForeignKey('student_class.id'))
     staff_id = db.Column(db.Integer, db.ForeignKey('staff.id'))
