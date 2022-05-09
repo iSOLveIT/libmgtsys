@@ -8,7 +8,7 @@ from werkzeug.utils import secure_filename
 from ... import allowed_file
 from project.modules.users.models import User, StudentClass
 from project.modules.books.models import Books
-from project.modules.books.forms import SearchBooksForm
+from project.modules.tracking.forms import SearchBooksForm
 from .forms import BookTagForm
 
 static_path = Path('.').parent.absolute() / 'modules/static'

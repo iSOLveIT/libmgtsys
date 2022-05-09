@@ -482,7 +482,7 @@ $(function() {
 		}
 	  ]
 	});
-		
+
 	
 	// Select Book category
 	$('#c-category').select2({
@@ -537,13 +537,6 @@ $(function() {
 		allowClear: true
 	});
 
-	// account_type
-	$('.account_type').select2({
-		placeholder: "Choose Account Type",
-		allowClear: true
-	});
-
-
 });
 
 
@@ -577,3 +570,4 @@ function print_tag(){
 	window.print();
 	return false
 }
+

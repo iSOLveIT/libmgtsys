@@ -11,7 +11,6 @@ from .forms import AddBooksForm, SearchBooksForm
 from .. import db, allowed_file
 from .helper_func import process_data
 
-
 static_path = Path('.').parent.absolute() / 'modules/static'
 books_bp = Blueprint("books", __name__, url_prefix="/books", static_folder=static_path)
 
@@ -43,12 +42,12 @@ def list_books():
 
     if request.method == 'POST':
         search_keyword = str(search_form.search_term.data).lower()
-        get_accounts = Books.query.filter(or_(Books.title.regexp_match(search_keyword),
-                                              Books.author.regexp_match(search_keyword),
-                                              Books.classification_no.regexp_match(search_keyword),
-                                              Books.category.regexp_match(search_keyword)
-                                              )).all()
-        context.update(book_records=get_accounts)
+        get_books = Books.query.filter(or_(Books.title.regexp_match(search_keyword),
+                                           Books.author.regexp_match(search_keyword),
+                                           Books.classification_no.regexp_match(search_keyword),
+                                           Books.category.regexp_match(search_keyword)
+                                           )).all()
+        context.update(book_records=get_books)
         return render_template("books/records_output.html", **context)
 
     context.update(admin=admin, search_form=search_form, user_log=user_log)
@@ -153,7 +152,7 @@ def delete_book(book_id):
         
     <span class="alert alert-success" role="alert">
         <svg width="30" height="20" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-        <span>{ msg }</span>
+        <span>{msg}</span>
     </span>
 </li>
 """

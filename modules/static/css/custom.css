@@ -76,3 +76,6 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
 	border: 1px #131b31 solid;
 	transition: all .1s ease-in-out;
 }
+.nice-select, .nice-select span {
+	line-height: normal!important;
+}

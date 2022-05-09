@@ -57,6 +57,10 @@ class User(UserMixin, PkModel):
         r = self.role
         return any([r.purpose == "ADMIN" and r.permission_level is True])
 
+    def label_for_user_sid(self):
+        user_sid = self.sid
+        return user_sid.replace('_', '/')
+
 
 @login_manager.user_loader
 def load_user(user_id):

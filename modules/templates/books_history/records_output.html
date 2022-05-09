@@ -1,0 +1,54 @@
+<div class="dashboard_container_body" id="results_box">
+{% if book_records %}
+    <div class="table-responsive">
+    <table class="table">
+        <thead class="thead-dark">
+            <tr>
+                <th scope="col">Classi. No.</th>
+                <th scope="col">Title</th>
+                <th scope="col">Author</th>
+                <th scope="col">Category</th>
+                <th scope="col">Borrowed By</th>
+                <th scope="col">Return Date</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for record in book_records %}
+                <tr id="issue_feedback_{{ record.id }}">
+                    <th scope="row">{{ record.classification_no | upper }}</th>
+                    <td>{{ record.title | upper }} </td>
+                    <td>{{ record.author | title }} </td>
+                    <td>{{ record.category | title }} </td>
+                    {% for field in issue_form %}
+                        {% if field.name != 'csrf_token' %}
+                            <td>
+                                {% set attr_class = "form-control user_select " + ['issue_form_input', record.id] | join('_') %}
+                                <div class="form-group m-0">
+                                    {{ field(class_=attr_class) }}
+                                </div>
+                            </td>
+                        {% endif %}
+                    {%endfor%}
+                    <td>
+                        <div class="form-group m-0">
+                            <input class="form-control result_btns"
+                                   hx-include=".issue_form_input_{{ record.id }}" hx-post="{{ url_for('tracking.issue_book') }}"
+                                   hx-swap="outerHTML" hx-target="#issue_feedback_{{ record.id }}" hx-trigger="click"
+                                   id="assign_btn" name="assign_btn" required
+                                   style="height: calc(2.25rem + 2px); background-color:#019247; color:#fff; border:solid 1px #019247;"
+                                   type="submit" value="Assign">
+                        </div>
+                    </td>
+                </tr>
+
+            <input type="hidden" name="bk_id" class="issue_form_input_{{ record.id }}" value="{{ record.id }}"/>
+            <input type="hidden" name="csrf_token" class="issue_form_input_{{ record.id }}" value="{{ csrf_token() }}"/>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+    <h4 class="p-3 text-center">No book records found!</h4>
+{% endif %}
+</div>

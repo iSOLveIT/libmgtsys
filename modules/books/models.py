@@ -24,7 +24,7 @@ class UserBooksHistory(PkModel):
     book_id = db.Column(db.Integer, db.ForeignKey('books.id'))
     user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     date_borrowed = db.Column(db.DateTime, nullable=False, default=dt.now())
-    return_date = db.Column(db.DateTime, nullable=False, default=dt.now())
+    return_date = db.Column(db.DateTime, nullable=False)
 
     user_history = db.relationship('User', backref='history', lazy=True)    # Links with the User model
     book_history = db.relationship('Books', backref='history', lazy=True)  # Links with the Books model

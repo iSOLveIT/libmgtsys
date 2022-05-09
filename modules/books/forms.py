@@ -89,7 +89,7 @@ class AddBooksForm(ModelForm):
 
 class SearchBooksForm(ModelForm):
     """
-    SearchUserForm - Form for searching users
+    SearchBooksForm - Form for searching books
 
     """
 
