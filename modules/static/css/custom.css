@@ -79,3 +79,7 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
 .nice-select, .nice-select span {
 	line-height: normal!important;
 }
+
+.nice-select .list {
+	max-height: 135px !important;
+}

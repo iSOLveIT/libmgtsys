@@ -34,7 +34,7 @@
                         <div class="form-group m-0">
                             <input class="form-control result_btns"
                                    hx-include=".issue_form_input_{{ record.id }}" hx-post="{{ url_for('tracking.issue_book') }}"
-                                   hx-swap="outerHTML" hx-target="#issue_feedback_{{ record.id }}" hx-trigger="click"
+                                   hx-swap="outerHTML" hx-target="#feedback" hx-trigger="click"
                                    id="assign_btn" name="assign_btn" required
                                    style="height: calc(2.25rem + 2px); background-color:#019247; color:#fff; border:solid 1px #019247;"
                                    type="submit" value="Assign">

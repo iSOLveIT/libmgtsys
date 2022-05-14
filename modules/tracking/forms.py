@@ -44,4 +44,8 @@ class IssueBookForm(FlaskForm):
     )
 
     return_date = DateField(u"Return Date", validators=[InputRequired()], default=dt.utcnow(),
-                            render_kw={'style': "height: calc(2.25rem + 2px);"})
+                            render_kw={'style': "height: calc(2.25rem + 2px);",
+                                       'min': dt.utcnow()})
+
+    def validate_return_date(self):
+        return False if self.return_date.data < dt.utcnow() else True

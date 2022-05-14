@@ -7,7 +7,7 @@ from werkzeug.utils import secure_filename
 
 from ... import allowed_file
 from project.modules.users.models import User, StudentClass
-from project.modules.books.models import Books
+from project.modules.books.models import Books, UserBooksHistory
 from project.modules.tracking.forms import SearchBooksForm
 from .forms import BookTagForm
 
@@ -23,11 +23,12 @@ def admin_dashboard():
     context = {}
     admin = True  # remove this when user login is implemented
     total_users = User.query.count()
-    total_classes = StudentClass.query.count()
     total_books = Books.query.count()
+    total_borrowed_books = Books.query.filter(Books.readers).count()
+    total_classes = StudentClass.query.count()
     search_form = SearchBooksForm()
     context.update(admin=admin, user_log=user_log, search_form=search_form,
-                   counts=[total_users, total_classes, total_books])
+                   counts=[total_users, total_books, total_classes, total_borrowed_books,])
     return render_template("admin_dashboard.html", **context)
 
 
@@ -74,10 +75,11 @@ def user_dashboard(user_id):
     context = {}
     admin = False  # remove this when user login is implemented
     user_info = User.query.filter(User.sid == user_id).first()
-    # total_classes = StudentClass.query.count()
-    # total_books = Books.query.count()
+    total_books_borrowed = UserBooksHistory.query.filter(
+        UserBooksHistory.user_id == user_info.id
+    ).count()
     search_form = SearchBooksForm()
-    context.update(admin=admin, user_log=user_log,
+    context.update(admin=admin, user_log=user_log, books_borrowed=total_books_borrowed,
                    search_form=search_form, user_info=user_info)
     return render_template("user_dashboard.html", **context)
 

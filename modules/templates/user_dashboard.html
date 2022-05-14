@@ -38,14 +38,14 @@
 	
 	<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">{{ user_info.books_borrowed | length }}</h4> <span>Books Currently Borrowed</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-warning">{{ user_info.books_borrowed | length }}</h4> <span>Books Borrowed Currently </span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-book"></i></div>
 		</div>	
 	</div>
 	
 	<div class="col-xl-4 col-lg-6 col-md-6 col-sm-12">
 		<div class="dashboard_stats_wrap">
-			<div class="dashboard_stats_wrap_content"><h4 class="text-danger">20212</h4> <span>Total Books Borrowed</span></div>
+			<div class="dashboard_stats_wrap_content"><h4 class="text-danger">{{ books_borrowed }}</h4> <span>Total Books Borrowed</span></div>
 			<div class="dashboard_stats_wrap-icon"><i class="ti-layers"></i></div>
 		</div>	
 	</div>
