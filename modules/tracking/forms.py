@@ -15,17 +15,20 @@ class SearchBooksForm(ModelForm):
 
     """
 
-    search_term = SearchField(u"Keyword", validators=[InputRequired(), Length(min=4, max=30)],
-                              render_kw={
-                                  'autocomplete': 'off',
-                                  'required': '',
-                                  'class': 'form-control',
-                                  'placeholder': 'Type Book Title or Author or Classification No. or Category',
-                                  'hx-post': "/tracking/get_books",
-                                  'hx-trigger': "keyup changed delay:500ms, search",
-                                  'hx-target': "#results_box",
-                                  'hx-swap': "outerHTML"
-                              })
+    search_term = SearchField(
+        "Keyword",
+        validators=[InputRequired(), Length(min=4, max=30)],
+        render_kw={
+            "autocomplete": "off",
+            "required": "",
+            "class": "form-control",
+            "placeholder": "Type Book Title or Author or Classification No. or Category",
+            "hx-post": "/tracking/get_books",
+            "hx-trigger": "keyup changed delay:500ms, search",
+            "hx-target": "#results_box",
+            "hx-swap": "outerHTML",
+        },
+    )
 
 
 class IssueBookForm(FlaskForm):
@@ -35,17 +38,21 @@ class IssueBookForm(FlaskForm):
     """
 
     borrowed_by = QuerySelectField(
-        'Borrowed By:',
+        "Borrowed By:",
         validators=[InputRequired()],
-        query_factory=lambda: User.query.order_by(User.role_id == 1,
-                                                  User.role_id == 2).all(),
+        query_factory=lambda: User.query.order_by(
+            User.role_id == 1, User.role_id == 2
+        ).all(),
         get_label=User.label_for_user_sid,
-        render_kw={'style': "height: calc(2.25rem + 2px);"}
+        render_kw={"style": "height: calc(2.25rem + 2px);"},
     )
 
-    return_date = DateField(u"Return Date", validators=[InputRequired()], default=dt.utcnow(),
-                            render_kw={'style': "height: calc(2.25rem + 2px);",
-                                       'min': dt.utcnow()})
+    return_date = DateField(
+        "Return Date",
+        validators=[InputRequired()],
+        default=dt.utcnow(),
+        render_kw={"style": "height: calc(2.25rem + 2px);", "min": dt.utcnow()},
+    )
 
     def validate_return_date(self):
         return False if self.return_date.data < dt.utcnow() else True

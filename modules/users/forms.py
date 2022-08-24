@@ -5,6 +5,7 @@ from project.modules import ModelForm
 
 from wtforms_alchemy.fields import QuerySelectField
 from wtforms_alchemy import InputRequired, Length, DataRequired
+
 # from flask_wtf.file import FileField
 from wtforms.fields import SelectField, StringField, SearchField
 
@@ -17,32 +18,37 @@ class StudentForm(ModelForm):
 
     class Meta:
         model = User
-        only = ['sid', 'name', 'gender']
+        only = ["sid", "name", "gender"]
         field_args = {
-
-            'name': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Lastname Firstname, e.g. Asebu Sophia'
+            "name": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control",
+                    "placeholder": "Lastname Firstname, e.g. Asebu Sophia",
                 }
             },
-            'gender': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control gender',
-                    'id': 's_gender'
+            "gender": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control gender",
+                    "id": "s_gender",
                 }
-            }
+            },
         }
 
-    sid = StringField(u"Student ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
-                      render_kw={'class': "form-control", 'placeholder': "GD/GA/19/116"})
-    current_class = SelectField(u"Current Class", choices=[(ct.lower(), ct) for ct in ascii_uppercase],
-                                validators=[InputRequired(), DataRequired()],
-                                render_kw={'class': 'form-control', 'id': 'current_class'})
+    sid = StringField(
+        "Student ID",
+        validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+        render_kw={"class": "form-control", "placeholder": "GD/GA/19/116"},
+    )
+    current_class = SelectField(
+        "Current Class",
+        choices=[(ct.lower(), ct) for ct in ascii_uppercase],
+        validators=[InputRequired(), DataRequired()],
+        render_kw={"class": "form-control", "id": "current_class"},
+    )
 
 
 class TeacherForm(ModelForm):
@@ -53,36 +59,37 @@ class TeacherForm(ModelForm):
 
     class Meta:
         model = User
-        only = ['sid', 'name', 'gender']
+        only = ["sid", "name", "gender"]
         field_args = {
-            'name': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Lastname Firstname, e.g. Asebu Sophia'
+            "name": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control",
+                    "placeholder": "Lastname Firstname, e.g. Asebu Sophia",
                 }
             },
-            'gender': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control gender',
-                    'id': 't_gender'
+            "gender": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control gender",
+                    "id": "t_gender",
                 }
-            }
+            },
         }
 
-    sid = StringField(u"Staff ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
-                      render_kw={'class': "form-control", 'placeholder': "TA10218761"})
+    sid = StringField(
+        "Staff ID",
+        validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+        render_kw={"class": "form-control", "placeholder": "TA10218761"},
+    )
     department = QuerySelectField(
-        'Department:',
+        "Department:",
         validators=[InputRequired()],
         query_factory=lambda: Staff.query.order_by(Staff.department).all(),
         get_label="department",
-        render_kw={
-            'class': "form-control dept"
-        }
+        render_kw={"class": "form-control dept"},
     )
 
 
@@ -94,34 +101,32 @@ class AdminForm(ModelForm):
 
     class Meta:
         model = User
-        only = ['sid', 'name', 'password', 'gender']
+        only = ["sid", "name", "password", "gender"]
         field_args = {
-            'password': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': ''
+            "password": {"render_kw": {"autocomplete": "off", "required": ""}},
+            "name": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control",
+                    "placeholder": "Lastname Firstname, e.g. Asebu Sophia",
                 }
             },
-            'name': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Lastname Firstname, e.g. Asebu Sophia'
+            "gender": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control gender",
+                    "id": "a_gender",
                 }
             },
-            'gender': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control gender',
-                    'id': 'a_gender'
-                }
-            }
         }
 
-    sid = StringField(u"Admin ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
-                      render_kw={'class': "form-control", 'placeholder': "AD10318723"})
+    sid = StringField(
+        "Admin ID",
+        validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+        render_kw={"class": "form-control", "placeholder": "AD10318723"},
+    )
 
 
 class EditAdminForm(ModelForm):
@@ -132,28 +137,31 @@ class EditAdminForm(ModelForm):
 
     class Meta:
         model = User
-        only = ['sid', 'name', 'gender']
+        only = ["sid", "name", "gender"]
         field_args = {
-            'name': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Lastname Firstname, e.g. Asebu Sophia'
+            "name": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control",
+                    "placeholder": "Lastname Firstname, e.g. Asebu Sophia",
                 }
             },
-            'gender': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control gender',
-                    'id': 'a_gender'
+            "gender": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control gender",
+                    "id": "a_gender",
                 }
-            }
+            },
         }
 
-    sid = StringField(u"Admin ID", validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
-                      render_kw={'class': "form-control", 'placeholder': "AD10318723"})
+    sid = StringField(
+        "Admin ID",
+        validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+        render_kw={"class": "form-control", "placeholder": "AD10318723"},
+    )
 
 
 class SearchUserForm(ModelForm):
@@ -162,14 +170,17 @@ class SearchUserForm(ModelForm):
 
     """
 
-    search_term = SearchField(u"Keyword", validators=[InputRequired(), DataRequired(), Length(min=4, max=30)],
-                              render_kw={
-                                  'autocomplete': 'off',
-                                  'required': '',
-                                  'class': 'form-control',
-                                  'placeholder': 'Type name or user ID',
-                                  'hx-post': "/users/list",
-                                  'hx-trigger': "keyup changed delay:500ms, search",
-                                  'hx-target': "#results_box",
-                                  'hx-swap': "outerHTML"
-                              })
+    search_term = SearchField(
+        "Keyword",
+        validators=[InputRequired(), DataRequired(), Length(min=4, max=30)],
+        render_kw={
+            "autocomplete": "off",
+            "required": "",
+            "class": "form-control",
+            "placeholder": "Type name or user ID",
+            "hx-post": "/users/list",
+            "hx-trigger": "keyup changed delay:500ms, search",
+            "hx-target": "#results_box",
+            "hx-swap": "outerHTML",
+        },
+    )

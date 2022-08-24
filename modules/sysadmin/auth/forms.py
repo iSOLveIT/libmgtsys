@@ -10,28 +10,25 @@ from project.modules import ModelForm
 class LoginForm(ModelForm):
     class Meta:
         model = User
-        only = ['sid', 'password']
+        only = ["sid", "password"]
         field_args = {
-            'sid': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': '',
-                    'class': 'form-control',
-                    'placeholder': 'Student ID or Staff ID or Admin ID'
+            "sid": {
+                "render_kw": {
+                    "autocomplete": "off",
+                    "required": "",
+                    "class": "form-control",
+                    "placeholder": "Student ID or Staff ID or Admin ID",
                 }
             },
-            'password': {
-                'render_kw': {
-                    'autocomplete': 'off',
-                    'required': ''
-                }
-            }
+            "password": {"render_kw": {"autocomplete": "off", "required": ""}},
         }
 
 
 class RegistrationForm(ModelForm):
     class Meta:
         model = User
+
+
 #
 # class TalkActivityForm(ModelForm):
 #     class Meta:

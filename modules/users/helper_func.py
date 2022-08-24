@@ -41,13 +41,15 @@ def teacher_recursive(data: list[tuple]):
 
 
 def add_students(user_data: list[tuple]):
-    role = Role.query.filter(Role.purpose == 'student').first()
+    role = Role.query.filter(Role.purpose == "student").first()
     if role is None:
         pass
 
     user_instances = []
     for item in user_data:
-        user_exist = User.query.filter(User.sid == str(item[1]).upper().replace("/", "_")).first()
+        user_exist = User.query.filter(
+            User.sid == str(item[1]).upper().replace("/", "_")
+        ).first()
         if user_exist is not None:
             continue
 
@@ -62,7 +64,7 @@ def add_students(user_data: list[tuple]):
             StudentClass.programme == prog,
             StudentClass.year_group == str(2000 + int(year)),
             StudentClass.current_class == str(item[5]).lower(),
-            StudentClass.track == track
+            StudentClass.track == track,
         ).first()
 
         if student_class is None:
@@ -78,13 +80,15 @@ def add_students(user_data: list[tuple]):
 
 
 def add_teachers(user_data: list[tuple]):
-    role = Role.query.filter(Role.purpose == 'teacher').first()
+    role = Role.query.filter(Role.purpose == "teacher").first()
     if role is None:
         pass
 
     user_instances = []
     for item in user_data:
-        user_exist = User.query.filter(User.sid == str(item[1]).upper().replace("/", "_")).first()
+        user_exist = User.query.filter(
+            User.sid == str(item[1]).upper().replace("/", "_")
+        ).first()
         if user_exist is not None:
             continue
 
@@ -95,9 +99,7 @@ def add_teachers(user_data: list[tuple]):
         teacher_user.password = pswd_gen()
         dept = str(item[4]).capitalize()
 
-        teacher_dept = Staff.query.filter(
-            Staff.department == dept
-        ).first()
+        teacher_dept = Staff.query.filter(Staff.department == dept).first()
 
         if teacher_dept is None:
             continue
@@ -109,4 +111,3 @@ def add_teachers(user_data: list[tuple]):
         role.insert_many(user_instances)
     except IntegrityError:
         db.session.rollback()
-

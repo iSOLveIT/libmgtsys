@@ -7,23 +7,31 @@ from sqlalchemy.exc import IntegrityError
 from openpyxl import load_workbook
 
 from project.modules.users.models import StudentClass, Role, Staff
-from .forms import AddClassForm, AddStaffForm, AddRoleForm, SearchStaffForm, SearchClassForm
+from .forms import (
+    AddClassForm,
+    AddStaffForm,
+    AddRoleForm,
+    SearchStaffForm,
+    SearchClassForm,
+)
 from ... import db, allowed_file
 from .helper_func import process_data
 
 
-static_path = Path('.').parent.absolute() / 'modules/static'
-record_mgt_bp = Blueprint("record_mgt", __name__, url_prefix="/record_mgt", static_folder=static_path)
+static_path = Path(".").parent.absolute() / "modules/static"
+record_mgt_bp = Blueprint(
+    "record_mgt", __name__, url_prefix="/record_mgt", static_folder=static_path
+)
 
 
 # CRUD for class records
 
 # View to show class page
-@record_mgt_bp.route('/class')
+@record_mgt_bp.route("/class")
 def class_index():
     context = {}
     user_log = True
-    admin = True    # remove this when user login is implemented
+    admin = True  # remove this when user login is implemented
     form = AddClassForm()
     searchform = SearchClassForm()
     context.update(admin=admin, form=form, searchform=searchform, user_log=user_log)
@@ -31,7 +39,7 @@ def class_index():
 
 
 # View to Create class records
-@record_mgt_bp.route('/class/add_class', methods=['POST'])
+@record_mgt_bp.route("/class/add_class", methods=["POST"])
 def add_class():
     form = AddClassForm()
 
@@ -41,7 +49,7 @@ def add_class():
         class_exist = StudentClass.query.filter(StudentClass.class_tag == tag).first()
         if class_exist is not None:
             msg = "Class details already exist!"
-            flash(msg, 'warning')
+            flash(msg, "warning")
             return redirect(url_for(".class_index"))
         try:
             student_class = StudentClass()
@@ -60,7 +68,7 @@ def add_class():
 
 
 # View to Edit class records
-@record_mgt_bp.route('/class/edit_class/<class_id>', methods=['GET', 'POST'])
+@record_mgt_bp.route("/class/edit_class/<class_id>", methods=["GET", "POST"])
 def edit_class(class_id):
     view = "class"
     context = {}
@@ -68,37 +76,43 @@ def edit_class(class_id):
     class_record = StudentClass.query.get(class_id)
     if class_record is None:
         msg = "Class details not found!"
-        flash(msg, 'warning')
+        flash(msg, "warning")
         return redirect(url_for(".class_index"))
 
     form = AddClassForm(obj=class_record)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         if form.validate():
             print(form.validate_on_submit(), form.data)
             tag = f"{form.programme.data}{str(form.current_class.data).upper()}{form.track.data}{form.year_group.data}"
-            class_record = StudentClass.query.filter(StudentClass.id == class_id).with_for_update().first()
+            class_record = (
+                StudentClass.query.filter(StudentClass.id == class_id)
+                .with_for_update()
+                .first()
+            )
             if class_record is None:
                 msg = "Class details not found!"
-                flash(msg, 'warning')
+                flash(msg, "warning")
                 return redirect(url_for(".class_index"))
             try:
                 form.populate_obj(class_record)
                 class_record.class_tag = tag
                 class_record.update()
                 msg = "Updated class details successfully"
-                flash(msg, 'success')
+                flash(msg, "success")
             except IntegrityError:
                 db.session.rollback()
                 flash("Class details not edited.", "danger")
 
         return redirect(url_for(".class_index"))
-    context.update(admin=admin, form=form, class_id=class_id, class_record=class_record, view=view)
+    context.update(
+        admin=admin, form=form, class_id=class_id, class_record=class_record, view=view
+    )
     return render_template("records_mgt/edit_record.html", **context)
 
 
 # View to Search class records
-@record_mgt_bp.route('/class/search_class')
+@record_mgt_bp.route("/class/search_class")
 def search_class():
     view = "class"
     context = {}
@@ -112,13 +126,14 @@ def search_class():
         class_records = StudentClass.query.filter(
             StudentClass.programme == prog,
             StudentClass.track == track,
-            StudentClass.year_group == yr_grp).all()
+            StudentClass.year_group == yr_grp,
+        ).all()
         context.update(class_records=class_records, view=view)
     return render_template("records_mgt/records_output.html", **context)
 
 
 # View to Delete class records
-@record_mgt_bp.route('/class/delete_class/<class_id>', methods=['DELETE'])
+@record_mgt_bp.route("/class/delete_class/<class_id>", methods=["DELETE"])
 def delete_class(class_id):
     # admin = True  # remove this when user login is implemented
     class_record = StudentClass.query.get(class_id)
@@ -143,19 +158,19 @@ def delete_class(class_id):
 
 
 # View to create classes via file import
-@record_mgt_bp.route("/class/add_class/importfile", methods=['POST'])
+@record_mgt_bp.route("/class/add_class/importfile", methods=["POST"])
 def upload_classes_file():
-    if 'classes_file' not in request.files:
-        flash('No selected file', 'info')
+    if "classes_file" not in request.files:
+        flash("No selected file", "info")
         return redirect(url_for(".class_index"))
-    file = request.files['classes_file']
-    if file.filename == '':
-        flash('No selected file', 'info')
+    file = request.files["classes_file"]
+    if file.filename == "":
+        flash("No selected file", "info")
         return redirect(url_for(".class_index"))
     if file and allowed_file(file.filename):
-        total_rows = request.form.get('total_rows', type=int)
+        total_rows = request.form.get("total_rows", type=int)
         if total_rows is None:
-            flash('Input the number of rows with data in file', 'warning')
+            flash("Input the number of rows with data in file", "warning")
             return redirect(url_for(".class_index"))
         wb = load_workbook(file)
 
@@ -165,10 +180,16 @@ def upload_classes_file():
 
             wb2 = load_workbook(tmp)
             ws = wb2.active
-            process_data(list(tuple(ws.iter_rows(
-                max_col=4, min_row=2, max_row=total_rows, values_only=True)))
+            process_data(
+                list(
+                    tuple(
+                        ws.iter_rows(
+                            max_col=4, min_row=2, max_row=total_rows, values_only=True
+                        )
+                    )
+                )
             )
-        flash('Excel file imported successfully', 'success')
+        flash("Excel file imported successfully", "success")
         return redirect(url_for(".class_index"))
     return redirect(url_for(".class_index"))
 
@@ -176,11 +197,11 @@ def upload_classes_file():
 # CRUD for staff records
 
 # View to show staff page
-@record_mgt_bp.route('/staff')
+@record_mgt_bp.route("/staff")
 def staff_index():
     context = {}
     user_log = True
-    admin = True    # remove this when user login is implemented
+    admin = True  # remove this when user login is implemented
     form = AddStaffForm()
     searchform = SearchStaffForm()
     context.update(admin=admin, form=form, searchform=searchform, user_log=user_log)
@@ -188,13 +209,13 @@ def staff_index():
 
 
 # View to Create staff records
-@record_mgt_bp.route('/staff/add_staff', methods=['POST'])
+@record_mgt_bp.route("/staff/add_staff", methods=["POST"])
 def add_staff():
     form = AddStaffForm()
     staff_exist = Staff.query.filter(Staff.department == form.department.data).first()
     if staff_exist is not None:
         msg = "Staff details already exist!"
-        flash(msg, 'warning')
+        flash(msg, "warning")
         return redirect(url_for(".class_index"))
     teacher_dept = Staff()
     form.department.data = str(form.department.data).capitalize()
@@ -214,7 +235,7 @@ def add_staff():
 
 
 # View to Edit staff records
-@record_mgt_bp.route('/staff/edit_staff/<staff_id>', methods=['GET', 'POST'])
+@record_mgt_bp.route("/staff/edit_staff/<staff_id>", methods=["GET", "POST"])
 def edit_staff(staff_id):
     view = "staff"
     context = {}
@@ -223,14 +244,16 @@ def edit_staff(staff_id):
     form = AddStaffForm(obj=staff_record)
     form.populate_obj(staff_record)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         if form.validate():
             print(form.validate_on_submit(), form.data)
             # prevent changes in selected row until you commit changes to DB
-            staff_record = Staff.query.filter(Staff.id == staff_id).with_for_update().first()
+            staff_record = (
+                Staff.query.filter(Staff.id == staff_id).with_for_update().first()
+            )
             if staff_record is None:
                 msg = "Staff details not found!"
-                flash(msg, 'warning')
+                flash(msg, "warning")
                 return redirect(url_for(".staff_index"))
             try:
                 staff_record.department = str(staff_record.department).capitalize()
@@ -242,12 +265,14 @@ def edit_staff(staff_id):
                 db.session.rollback()
                 flash(msg, "danger")
         return redirect(url_for(".staff_index"))
-    context.update(admin=admin, form=form, staff_id=staff_id, staff_record=staff_record, view=view)
+    context.update(
+        admin=admin, form=form, staff_id=staff_id, staff_record=staff_record, view=view
+    )
     return render_template("records_mgt/edit_record.html", **context)
 
 
 # View to Search staff records
-@record_mgt_bp.route('/staff/search_staff')
+@record_mgt_bp.route("/staff/search_staff")
 def search_staff():
     view = "staff"
     context = {}
@@ -261,7 +286,7 @@ def search_staff():
 
 
 # View to Delete staff records
-@record_mgt_bp.route('/staff/delete_staff/<staff_id>', methods=['DELETE'])
+@record_mgt_bp.route("/staff/delete_staff/<staff_id>", methods=["DELETE"])
 def delete_staff(staff_id):
     # admin = True  # remove this when user login is implemented
     staff_record = Staff.query.get(staff_id)
@@ -288,10 +313,10 @@ def delete_staff(staff_id):
 # CRUD for roles records
 
 # View to show roles page
-@record_mgt_bp.route('/role')
+@record_mgt_bp.route("/role")
 def role_index():
     context = {}
-    admin = True    # remove this when user login is implemented
+    admin = True  # remove this when user login is implemented
     user_log = True
     form = AddRoleForm()
     role_records = Role.query.all()
@@ -300,7 +325,7 @@ def role_index():
 
 
 # View to Create role records
-@record_mgt_bp.route('/role/add_role', methods=['POST'])
+@record_mgt_bp.route("/role/add_role", methods=["POST"])
 def add_role():
     view = "role"
     context = {}
@@ -309,7 +334,7 @@ def add_role():
     account_type = Role()
     form.populate_obj(account_type)
     if form.validate():
-        account_type.permission_level = True if form.purpose.data == 'admin' else False
+        account_type.permission_level = True if form.purpose.data == "admin" else False
         try:
             account_type.update()
         except IntegrityError:
@@ -321,7 +346,7 @@ def add_role():
 
 
 # View to Edit role records
-@record_mgt_bp.route('/role/edit_role/<role_id>', methods=['GET', 'POST'])
+@record_mgt_bp.route("/role/edit_role/<role_id>", methods=["GET", "POST"])
 def edit_role(role_id):
     view = "role"
     context = {}
@@ -330,26 +355,30 @@ def edit_role(role_id):
     form = AddRoleForm(obj=role_record)
     form.populate_obj(role_record)
     # print(form.validate_on_submit(), form.data)
-    if request.method == 'POST':
+    if request.method == "POST":
         if form.validate():
             print(form.validate(), form.data)
             if role_record is None:
                 msg = "Role does not exist!"
                 flash(msg, "danger")
                 return redirect(url_for(".role_index"))
-            role_record.permission_level = True if form.purpose.data == 'admin' else False
+            role_record.permission_level = (
+                True if form.purpose.data == "admin" else False
+            )
             try:
                 role_record.update()
             except IntegrityError:
                 db.session.rollback()
 
         return redirect(url_for(".role_index"))
-    context.update(admin=admin, form=form, role_id=role_id, role_record=role_record, view=view)
+    context.update(
+        admin=admin, form=form, role_id=role_id, role_record=role_record, view=view
+    )
     return render_template("records_mgt/edit_record.html", **context)
 
 
 # View to Delete role records
-@record_mgt_bp.route('/role/delete_role/<role_id>', methods=['DELETE'])
+@record_mgt_bp.route("/role/delete_role/<role_id>", methods=["DELETE"])
 def delete_role(role_id):
     # admin = True  # remove this when user login is implemented
     role_record = Role.query.get(role_id)

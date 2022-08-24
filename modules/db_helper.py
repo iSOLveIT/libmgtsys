@@ -38,7 +38,11 @@ class CRUDMixin:
             return self
         return None
 
-    def insert_many(self, records: list, commit=True,):
+    def insert_many(
+        self,
+        records: list,
+        commit=True,
+    ):
         """Insert multiple records
 
         Args:

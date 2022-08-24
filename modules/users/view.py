@@ -1,12 +1,21 @@
 from functools import wraps
 from tempfile import NamedTemporaryFile
 
-from flask import Blueprint, redirect, url_for, render_template, flash, request, send_from_directory
+from flask import (
+    Blueprint,
+    redirect,
+    url_for,
+    render_template,
+    flash,
+    request,
+    send_from_directory,
+)
 from flask_login import current_user
 from pathlib import Path
 from openpyxl import load_workbook
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy import or_
+
 # from sqlalchemy_utils.types import Choice
 # from werkzeug.utils import secure_filename
 
@@ -28,7 +37,7 @@ def activation_required(f):
     return wrap
 
 
-static_path = Path('.').parent.absolute() / 'modules/static'
+static_path = Path(".").parent.absolute() / "modules/static"
 users_bp = Blueprint("users", __name__, url_prefix="/users", static_folder=static_path)
 
 
@@ -43,15 +52,20 @@ def user_index():
     student_form = StudentForm()
     teacher_form = TeacherForm()
     admin_form = AdminForm()
-    context.update(admin=admin, student_form=student_form, user_log=user_log,
-                   teacher_form=teacher_form, admin_form=admin_form)
+    context.update(
+        admin=admin,
+        student_form=student_form,
+        user_log=user_log,
+        teacher_form=teacher_form,
+        admin_form=admin_form,
+    )
     return render_template("users/add.html", **context)
 
 
 # View to create student accounts
-@users_bp.route("/register/user/student", methods=['POST'])
+@users_bp.route("/register/user/student", methods=["POST"])
 def add_student_account():
-    role = Role.query.filter(Role.purpose == 'student').first()
+    role = Role.query.filter(Role.purpose == "student").first()
     if role is None:
         return redirect(url_for(".user_index"))
     form = StudentForm()
@@ -66,14 +80,17 @@ def add_student_account():
         print(form.validate_on_submit(), form.data)
         user_exist = User.query.filter(User.sid == form.sid.data).first()
         if user_exist is not None:
-            flash(f"User with ID: {form.sid.data.replace('_', '/')} already exist.", "warning")
+            flash(
+                f"User with ID: {form.sid.data.replace('_', '/')} already exist.",
+                "warning",
+            )
             return redirect(url_for(".user_index"))
 
         student_class = StudentClass.query.filter(
             StudentClass.programme == prog,
             StudentClass.year_group == str(2000 + int(year)),
             StudentClass.current_class == form.current_class.data,
-            StudentClass.track == track
+            StudentClass.track == track,
         ).first()
 
         if student_class is None:
@@ -95,9 +112,9 @@ def add_student_account():
 
 
 # View to create teacher accounts
-@users_bp.route("/register/user/teacher", methods=['POST'])
+@users_bp.route("/register/user/teacher", methods=["POST"])
 def add_teacher_account():
-    role = Role.query.filter(Role.purpose == 'teacher').first()
+    role = Role.query.filter(Role.purpose == "teacher").first()
     if role is None:
         return redirect(url_for(".user_index"))
     form = TeacherForm()
@@ -110,7 +127,10 @@ def add_teacher_account():
         print(form.validate_on_submit(), form.data)
         user_exist = User.query.filter(User.sid == form.sid.data).first()
         if user_exist is not None:
-            flash(f"User with ID: {form.sid.data.replace('_', '/')} already exist.", "warning")
+            flash(
+                f"User with ID: {form.sid.data.replace('_', '/')} already exist.",
+                "warning",
+            )
             return redirect(url_for(".user_index"))
         teacher_dept = form.department.data
         if teacher_dept is None:
@@ -130,9 +150,9 @@ def add_teacher_account():
 
 
 # View to create admin accounts
-@users_bp.route("/register/user/admin", methods=['POST'])
+@users_bp.route("/register/user/admin", methods=["POST"])
 def add_admin_account():
-    role = Role.query.filter(Role.purpose == 'admin').first()
+    role = Role.query.filter(Role.purpose == "admin").first()
     if role is None:
         return redirect(url_for(".user_index"))
 
@@ -160,17 +180,23 @@ def add_admin_account():
 
 
 # View to show page for searching users
-@users_bp.route("/list", methods=['GET', 'POST'])
+@users_bp.route("/list", methods=["GET", "POST"])
 def list_users():
     context = {}
     user_log = True
     admin = True  # remove this when user login is implemented
     search_form = SearchUserForm()
 
-    if request.method == 'POST':
-        search_keyword = str(search_form.search_term.data).replace('/', '_')
-        get_accounts = User.query.filter(or_(User.sid.regexp_match(search_keyword.upper()),
-                                             User.name.regexp_match(search_keyword.lower()))).all()
+    if request.method == "POST":
+        search_keyword = str(search_form.search_term.data).replace("/", "_")
+        get_accounts = []
+        if len(search_keyword) != 0:
+            get_accounts = User.query.filter(
+                or_(
+                    User.sid.regexp_match(search_keyword.upper()),
+                    User.name.regexp_match(search_keyword.lower()),
+                )
+            ).all()
         context.update(user_records=get_accounts)
         return render_template("users/records_output.html", **context)
 
@@ -179,7 +205,7 @@ def list_users():
 
 
 # View to Edit user records
-@users_bp.route('/edit_user/<user_id>', methods=['GET', 'POST'])
+@users_bp.route("/edit_user/<user_id>", methods=["GET", "POST"])
 def edit_user(user_id):
     context = {}
     # admin = True  # remove this when user login is implemented
@@ -187,7 +213,7 @@ def edit_user(user_id):
 
     if user_record is None:
         return redirect(url_for(".list_users"))
-    if request.method == 'POST':
+    if request.method == "POST":
         if user_record.role_id == 1:
             form = StudentForm()
             form.sid.data = str(form.sid.data).upper().replace("/", "_")
@@ -200,7 +226,7 @@ def edit_user(user_id):
                     StudentClass.programme == prog,
                     StudentClass.year_group == str(2000 + int(year)),
                     StudentClass.current_class == form.current_class.data,
-                    StudentClass.track == track
+                    StudentClass.track == track,
                 ).first()
 
                 if student_class is None:
@@ -269,7 +295,7 @@ def edit_user(user_id):
 
 
 # View to Delete user records
-@users_bp.route('/delete_user/<user_id>', methods=['DELETE'])
+@users_bp.route("/delete_user/<user_id>", methods=["DELETE"])
 def delete_user(user_id):
     # admin = True  # remove this when user login is implemented
     user_record = User.query.get(user_id)
@@ -294,19 +320,19 @@ def delete_user(user_id):
 
 
 # View to create users via file import
-@users_bp.route("/register/user/importfile", methods=['POST'])
+@users_bp.route("/register/user/importfile", methods=["POST"])
 def upload_users_file():
-    if 'user_file' not in request.files:
-        flash('No selected file', 'info')
+    if "user_file" not in request.files:
+        flash("No selected file", "info")
         return redirect(url_for(".user_index"))
-    file = request.files['user_file']
-    if file.filename == '':
-        flash('No selected file', 'info')
+    file = request.files["user_file"]
+    if file.filename == "":
+        flash("No selected file", "info")
         return redirect(url_for(".user_index"))
     if file and allowed_file(file.filename):
-        total_rows = request.form.get('total_rows', type=int)
+        total_rows = request.form.get("total_rows", type=int)
         if total_rows is None:
-            flash('Input the number of rows with data in file', 'warning')
+            flash("Input the number of rows with data in file", "warning")
             return redirect(url_for(".user_index"))
         # filename = secure_filename(file.filename)
         wb = load_workbook(file)
@@ -317,10 +343,15 @@ def upload_users_file():
 
             wb2 = load_workbook(tmp)
             ws = wb2.active
-            process_data(list(tuple(ws.iter_rows(
-                max_col=6, min_row=2, max_row=total_rows, values_only=True)))
+            process_data(
+                list(
+                    tuple(
+                        ws.iter_rows(
+                            max_col=6, min_row=2, max_row=total_rows, values_only=True
+                        )
+                    )
+                )
             )
-        flash('Excel file imported successfully', 'success')
+        flash("Excel file imported successfully", "success")
         return redirect(url_for(".user_index"))
     return redirect(url_for(".user_index"))
-

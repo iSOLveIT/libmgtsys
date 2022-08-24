@@ -11,7 +11,7 @@ from .forms import AddBooksForm, SearchBooksForm
 from .. import db, allowed_file
 from .helper_func import process_data
 
-static_path = Path('.').parent.absolute() / 'modules/static'
+static_path = Path(".").parent.absolute() / "modules/static"
 books_bp = Blueprint("books", __name__, url_prefix="/books", static_folder=static_path)
 
 
@@ -33,20 +33,25 @@ def book_index():
 
 
 # View to show page for searching books
-@books_bp.route("/list", methods=['GET', 'POST'])
+@books_bp.route("/list", methods=["GET", "POST"])
 def list_books():
     context = {}
     user_log = True
     admin = True  # remove this when user login is implemented
     search_form = SearchBooksForm()
 
-    if request.method == 'POST':
+    if request.method == "POST":
         search_keyword = str(search_form.search_term.data).lower()
-        get_books = Books.query.filter(or_(Books.title.regexp_match(search_keyword),
-                                           Books.author.regexp_match(search_keyword),
-                                           Books.classification_no.regexp_match(search_keyword),
-                                           Books.category.regexp_match(search_keyword)
-                                           )).all()
+        get_books = []
+        if len(search_keyword) != 0:
+            get_books = Books.query.filter(
+                or_(
+                    Books.title.regexp_match(search_keyword),
+                    Books.author.regexp_match(search_keyword),
+                    Books.classification_no.regexp_match(search_keyword),
+                    Books.category.regexp_match(search_keyword),
+                )
+            ).all()
         context.update(book_records=get_books)
         return render_template("books/records_output.html", **context)
 
@@ -55,7 +60,7 @@ def list_books():
 
 
 # View to add books
-@books_bp.route("/add/books", methods=['POST'])
+@books_bp.route("/add/books", methods=["POST"])
 def add_books():
     form = AddBooksForm()
 
@@ -67,7 +72,9 @@ def add_books():
         form.author.data = str(form.author.data).lower()
         form.publication.data = str(form.publication.data).lower()
 
-        book_exist = Books.query.filter(Books.classification_no == form.classification_no.data).first()
+        book_exist = Books.query.filter(
+            Books.classification_no == form.classification_no.data
+        ).first()
         if book_exist is not None:
             book_exist.current_qty = book_exist.current_qty + int(form.qty_added.data)
             form.populate_obj(book_exist)
@@ -81,7 +88,11 @@ def add_books():
             form.populate_obj(books)
             last_book = Books.query.order_by(Books.id.desc()).first()
             access_no = last_book.access_no + int(form.qty_added.data)
-            books.qty_spoilt, books.current_qty, books.access_no = (0, int(form.qty_added.data), access_no)
+            books.qty_spoilt, books.current_qty, books.access_no = (
+                0,
+                int(form.qty_added.data),
+                access_no,
+            )
 
             try:
                 books.update()
@@ -94,7 +105,7 @@ def add_books():
 
 
 # View to Edit book records
-@books_bp.route('/edit_book/<book_id>', methods=['GET', 'POST'])
+@books_bp.route("/edit_book/<book_id>", methods=["GET", "POST"])
 def edit_book(book_id):
     context = {}
     # admin = True  # remove this when user login is implemented
@@ -102,7 +113,7 @@ def edit_book(book_id):
 
     if book_record is None:
         return redirect(url_for(".list_books"))
-    if request.method == 'POST':
+    if request.method == "POST":
         form = AddBooksForm()
         if form.validate():
             form.title.data = str(form.title.data).lower()
@@ -134,7 +145,7 @@ def edit_book(book_id):
 
 
 # View to Delete book records
-@books_bp.route('/delete_book/<book_id>', methods=['DELETE'])
+@books_bp.route("/delete_book/<book_id>", methods=["DELETE"])
 def delete_book(book_id):
     # admin = True  # remove this when user login is implemented
     book_record = Books.query.get(book_id)
@@ -159,19 +170,19 @@ def delete_book(book_id):
 
 
 # View to add books via file import
-@books_bp.route("/add/books/importfile", methods=['POST'])
+@books_bp.route("/add/books/importfile", methods=["POST"])
 def upload_books_file():
-    if 'books_file' not in request.files:
-        flash('No selected file', 'info')
+    if "books_file" not in request.files:
+        flash("No selected file", "info")
         return redirect(url_for(".book_index"))
-    file = request.files['books_file']
-    if file.filename == '':
-        flash('No selected file', 'info')
+    file = request.files["books_file"]
+    if file.filename == "":
+        flash("No selected file", "info")
         return redirect(url_for(".book_index"))
     if file and allowed_file(file.filename):
-        total_rows = request.form.get('total_rows', type=int)
+        total_rows = request.form.get("total_rows", type=int)
         if total_rows is None:
-            flash('Input the number of rows with data in file', 'warning')
+            flash("Input the number of rows with data in file", "warning")
             return redirect(url_for(".book_index"))
         wb = load_workbook(file)
 
@@ -181,9 +192,15 @@ def upload_books_file():
 
             wb2 = load_workbook(tmp)
             ws = wb2.active
-            process_data(list(tuple(ws.iter_rows(
-                max_col=8, min_row=2, max_row=total_rows, values_only=True)))
+            process_data(
+                list(
+                    tuple(
+                        ws.iter_rows(
+                            max_col=8, min_row=2, max_row=total_rows, values_only=True
+                        )
+                    )
+                )
             )
-        flash('Excel file imported successfully', 'success')
+        flash("Excel file imported successfully", "success")
         return redirect(url_for(".book_index"))
     return redirect(url_for(".book_index"))

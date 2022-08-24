@@ -17,8 +17,12 @@ def get_course(value):
     # If the course value is one word, then the function will return the first 2 characters
     # or if the course value is two words, then the function will return the first character of each word
     # E.g.: BUSINESS = BU, GENERAL ARTS = GA
-    new_text = str(value).split(' ', 1)
-    shorthand = f"{new_text[0][0]}{new_text[1][0]}".upper() if len(new_text) == 2 else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    new_text = str(value).split(" ", 1)
+    shorthand = (
+        f"{new_text[0][0]}{new_text[1][0]}".upper()
+        if len(new_text) == 2
+        else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    )
     return shorthand
 
 
@@ -67,4 +71,3 @@ def add_classes(class_data: list[tuple]):
         update_student_class.insert_many(student_class_instances)
     except IntegrityError:
         db.session.rollback()
-

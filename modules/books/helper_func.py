@@ -17,8 +17,12 @@ def get_course(value):
     # If the course value is one word, then the function will return the first 2 characters
     # or if the course value is two words, then the function will return the first character of each word
     # E.g.: BUSINESS = BU, GENERAL ARTS = GA
-    new_text = str(value).split(' ', 1)
-    shorthand = f"{new_text[0][0]}{new_text[1][0]}".upper() if len(new_text) == 2 else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    new_text = str(value).split(" ", 1)
+    shorthand = (
+        f"{new_text[0][0]}{new_text[1][0]}".upper()
+        if len(new_text) == 2
+        else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    )
     return shorthand
 
 
@@ -53,7 +57,9 @@ def add_books(books_data: list[tuple]):
         book_catalogue_no = str(item[6]).upper()
         book_download_link = str(item[7])
 
-        books_exist = Books.query.filter(Books.classification_no == book_classification_no).first()
+        books_exist = Books.query.filter(
+            Books.classification_no == book_classification_no
+        ).first()
         if books_exist is not None:
             books_exist.current_qty = books_exist.current_qty + book_qty_added
             books_exist.classification_no = book_classification_no
@@ -76,8 +82,16 @@ def add_books(books_data: list[tuple]):
             books.catalogue_no = book_catalogue_no
             books.download_link = book_download_link
             last_book = Books.query.order_by(Books.id.desc()).first()
-            access_no = 0 + book_qty_added if last_book is None else last_book.access_no + book_qty_added
-            books.qty_spoilt, books.current_qty, books.access_no = (0, book_qty_added, access_no)
+            access_no = (
+                0 + book_qty_added
+                if last_book is None
+                else last_book.access_no + book_qty_added
+            )
+            books.qty_spoilt, books.current_qty, books.access_no = (
+                0,
+                book_qty_added,
+                access_no,
+            )
             books_instances.append(books)
 
     try:
@@ -85,4 +99,3 @@ def add_books(books_data: list[tuple]):
         update_books.insert_many(books_instances)
     except IntegrityError:
         db.session.rollback()
-

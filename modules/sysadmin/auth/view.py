@@ -15,10 +15,11 @@ from project.helpers.security import get_safe_redirect
 
 from project.modules.users.models import User
 from .forms import LoginForm
+
 # from .forms import RegistrationForm
 
 
-static_path = Path('.').parent.absolute() / 'modules/static'
+static_path = Path(".").parent.absolute() / "modules/static"
 auth_bp = Blueprint("auth", __name__, url_prefix="/auth", static_folder=static_path)
 
 #
@@ -77,7 +78,9 @@ def login():
         print(request.form)
         user = User.query.filter(User.id == username).first()
         if user is None or not user.check_password(password):
-            flash("Please ensure your User ID and password are correct", category="danger")
+            flash(
+                "Please ensure your User ID and password are correct", category="danger"
+            )
             return redirect(url_for("auth.login"))
         login_user(user)
 
@@ -125,4 +128,3 @@ def login():
 #         next_url = get_safe_redirect(redirect_url)
 
 #     return redirect(next_url)
-

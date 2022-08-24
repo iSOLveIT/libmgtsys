@@ -5,6 +5,7 @@ from project.modules.books.models import Books, UserBooksHistory, User
 
 from flask import Blueprint, render_template, request
 from sqlalchemy import or_
+
 # from sqlalchemy.exc import IntegrityError
 
 tracking_bp = Blueprint("tracking", __name__, url_prefix="/tracking")
@@ -19,27 +20,32 @@ tracking_bp = Blueprint("tracking", __name__, url_prefix="/tracking")
 #  search by user name and sid, or show all results).
 #  With the show all results, when the user clicks on the tab, it should send a request for all borrowed books.
 
-# View to return books record after search
-@tracking_bp.route("/get_books", methods=['POST'])
+# View to get books record after search
+@tracking_bp.route("/get_books", methods=["POST"])
 def tracking_index():
     context = {}
     search_form = SearchBooksForm()
     issue_form = IssueBookForm()
     search_keyword = str(search_form.search_term.data).lower()
-    get_books = Books.query.filter(or_(Books.title.regexp_match(search_keyword),
-                                       Books.author.regexp_match(search_keyword),
-                                       Books.classification_no.regexp_match(search_keyword),
-                                       Books.category.regexp_match(search_keyword)
-                                       )).all()
+    get_books = []
+    if len(search_keyword) != 0:
+        get_books = Books.query.filter(
+            or_(
+                Books.title.regexp_match(search_keyword),
+                Books.author.regexp_match(search_keyword),
+                Books.classification_no.regexp_match(search_keyword),
+                Books.category.regexp_match(search_keyword),
+            )
+        ).all()
     context.update(book_records=get_books, issue_form=issue_form)
     return render_template("books_history/records_output.html", **context)
 
 
 # View to assign book(s) to users
-@tracking_bp.route("/issue_book", methods=['POST'])
+@tracking_bp.route("/issue_book", methods=["POST"])
 def issue_book():
     issue_form = IssueBookForm()
-    book_id = request.form.get('bk_id', type=int)
+    book_id = request.form.get("bk_id", type=int)
 
     if book_id is not None and issue_form.validate():
         user: User = issue_form.borrowed_by.data
@@ -49,7 +55,7 @@ def issue_book():
         user_book_history.book_id = book_id
         user_book_history.user_id = user.id
         user_book_history.return_date = issue_form.return_date.data
-        # Add issued book record to user_book table which is a M2M relationship between User and Books models
+        # Add issued book record to user_book table which is an M2M relationship between User and Books models
         book.readers.append(user)
         book.update()
         user_book_history.update()
@@ -105,4 +111,3 @@ def issue_book():
 # View to search user_book history by issue or return date
 
 # View to search user_book history by book title
-

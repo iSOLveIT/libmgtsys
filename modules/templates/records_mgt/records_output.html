@@ -79,7 +79,7 @@
                         <td>{{ dept_record.users | length }}</td>
                         <td>
                               <button hx-get="{{ url_for('record_mgt.edit_staff', staff_id=dept_record.id ) }}"
-                                      id="edit_btn_{{record.id}}" class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
+                                      id="edit_btn_{{dept_record.id}}" class="result_btns" style="background-color:#0018a0; border: solid 1px #0018a0;"
                                       hx-trigger="click"
                                       hx-target="#editrecord"
                                       hx-swap="outerHTML"
@@ -89,13 +89,13 @@
 
                         </td>
                         <td>
-                            <button hx-delete="{{ url_for('record_mgt.delete_staff', staff_id=dept_record.id ) }}" id="delete_btn_{{record.id}}"
+                            <button hx-delete="{{ url_for('record_mgt.delete_staff', staff_id=dept_record.id ) }}" id="delete_btn_{{dept_record.id}}"
                                     class="result_btns" style="background-color:#be0000; border: solid 1px #be0000;"
                                     hx-trigger="click"
                                     hx-target="#feedback"
                                     hx-include="[name='csrf_token']"
                                     hx-swap="outerHTML"
-                                    onclick="remove_row('delete_btn_{{record.id}}')">
+                                    onclick="remove_row('delete_btn_{{dept_record.id}}')">
                                 <i class="ti-trash"></i> Delete Staff
                             </button>
                         </td>

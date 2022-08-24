@@ -19,15 +19,17 @@ from dotenv import load_dotenv
 # Load .env file
 # env_path = Path('.').parent.absolute() / 'env_vars/.env'
 
-env_path = "/home/isolveit/Documents/myCodes/Codes/Work/libmgtsystem/project/env_vars/.env"
+env_path = (
+    "/home/isolveit/Documents/myCodes/Codes/Work/libmgtsystem/project/env_vars/.env"
+)
 load_dotenv(dotenv_path=env_path)
 app = Flask(__name__)
 
 # app configs
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DEV_SQLALCHEMY_DATABASE_URI')
-app.config['SECRET_KEY'] = os.getenv('DEV_SECRET_KEY')
-app.config['MAX_CONTENT_LENGTH'] = 2 * 1000 * 1000
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DEV_SQLALCHEMY_DATABASE_URI")
+app.config["SECRET_KEY"] = os.getenv("DEV_SECRET_KEY")
+app.config["MAX_CONTENT_LENGTH"] = 2 * 1000 * 1000
 
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
@@ -71,8 +73,12 @@ def get_course(eval_ctx, value):
     # or if the course value is two words, then the function will return the first character of each word
     # E.g.: BUSINESS = BU, GENERAL ARTS = GA
     text = value
-    new_text = str(text.value).split(' ', 1)
-    shorthand = f"{new_text[0][0]}{new_text[1][0]}".upper() if len(new_text) == 2 else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    new_text = str(text.value).split(" ", 1)
+    shorthand = (
+        f"{new_text[0][0]}{new_text[1][0]}".upper()
+        if len(new_text) == 2
+        else f"{new_text[0][0]}{new_text[0][1]}".upper()
+    )
     return shorthand
 
 
@@ -81,6 +87,7 @@ def get_course(eval_ctx, value):
 def get_current_class(eval_ctx, value):
     # Custom filter to return the current class of a student
     from datetime import datetime as dt
+
     current_yr = dt.utcnow().year
     diff_year = current_yr - int(value)
     return diff_year
@@ -89,7 +96,7 @@ def get_current_class(eval_ctx, value):
 def allowed_file(filename):
     pattern = r"^[\w\-]+?.(xlsx)$"
     check_file = re.search(pattern, filename)
-    return '.' in filename and check_file is not None
+    return "." in filename and check_file is not None
 
 
 # Blueprints
