@@ -5,7 +5,7 @@ import os
 from zoneinfo import ZoneInfo
 import re
 
-from flask import Flask
+from flask import Flask, redirect, url_for
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect, FlaskForm
@@ -114,3 +114,9 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(dashboard_bp)
 app.register_blueprint(record_mgt_bp)
 app.register_blueprint(tracking_bp)
+
+
+# Login page as home
+@app.route('/')
+def home():
+    return redirect(url_for("auth.login"))

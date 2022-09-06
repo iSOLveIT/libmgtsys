@@ -38,6 +38,10 @@ a#admin-tab.active, a#student-tab.active, a#teacher-tab.active{
     background-color: #000033!important;
 }
 
+select.collapse_is_hidden{
+    display: none;
+}
+
 @media print{
 	*{
 		color:#000!important

@@ -54,7 +54,6 @@ class StudentForm(ModelForm):
 class TeacherForm(ModelForm):
     """
     TeacherForm - Form for adding teachers
-
     """
 
     class Meta:

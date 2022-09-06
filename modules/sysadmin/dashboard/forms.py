@@ -29,7 +29,7 @@ class BookTagForm(FlaskForm):
         render_kw={"class": "form-control", "placeholder": "e.g. LIT101"},
     )
     total_tags = IntegerField(
-        "Number of Tags <= 1000",
+        "Number of Tags (less than 1000)",
         validators=[InputRequired(), DataRequired()],
         render_kw={
             "class": "form-control",

@@ -537,6 +537,24 @@ $(function() {
 		allowClear: true
 	});
 
+    // report generation
+	$('#select_report').select2({
+		placeholder: "Select Report",
+		allowClear: true
+	});
+
+    // user reports
+	$('#select_user_type').select2({
+		placeholder: "Select User Type",
+		allowClear: true
+	});
+
+    // book reports
+	$('#select_book_category').select2({
+		placeholder: "Select Book Category",
+		allowClear: true
+	});
+
 });
 
 
@@ -571,3 +589,21 @@ function print_tag(){
 	return false
 }
 
+// Report Generation JS
+let choose_report = document.getElementById("select_report");
+
+choose_report.addEventListener("click", function(){
+    report_option_selected = choose_report.value;
+    let show_users_div = document.getElementById("select_user_type");
+    let show_books_div = document.getElementById("select_book_category");
+
+    if (report_option_selected == "users"){
+        show_users_div.style.display = "block";
+        show_books_div.style.display = "none";
+    }
+    if (report_option_selected == "books"){
+        show_books_div.style.display = "block";
+        show_users_div.style.display = "none";
+    }
+
+})

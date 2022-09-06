@@ -102,6 +102,17 @@ def book_tags():
     return render_template("others/tags_generated.html", **context)
 
 
+# View for admin reports
+@dashboard_bp.route("/admin/reports", methods=["GET"])
+def generate_reports():
+    user_log = True
+    context = {}
+    admin = True  # remove this when user login is implemented
+    context.update(admin=admin, user_log=user_log)
+    # Use same interface as the one used for user registration.
+    return render_template("others/reports.html", **context)
+
+
 # VIEWS FOR USER (STUDENT and TEACHER)
 # View for user dashboard
 @dashboard_bp.route("/user/<string:user_id>")
