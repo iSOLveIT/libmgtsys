@@ -87,3 +87,7 @@ select.collapse_is_hidden{
 .nice-select .list {
 	max-height: 135px !important;
 }
+
+select#select_report_type{
+    transition: all 1s ease-out;
+}

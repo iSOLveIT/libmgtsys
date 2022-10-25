@@ -2,7 +2,7 @@ from datetime import datetime as dt
 
 from wtforms_alchemy import InputRequired, Length, DataRequired
 from flask_wtf import FlaskForm
-from wtforms.fields import DateField, StringField, IntegerField, SubmitField
+from wtforms.fields import DateField, StringField, IntegerField, SelectField
 
 
 class BookTagForm(FlaskForm):
@@ -44,4 +44,49 @@ class BookTagForm(FlaskForm):
         validators=[InputRequired(), DataRequired()],
         default=dt.utcnow(),
         render_kw={"class": "form-control"},
+    )
+
+
+class ReportForm(FlaskForm):
+    """
+    ReportForm - Form for generating reports
+    """
+
+    select_report = SelectField(
+        "Report",
+        choices=[
+            ("", "Select Report"),
+            ("users", "Users Report"),
+            ("books", "Books Report"),
+            ("books_issued", "Books Issued Report"),
+        ],
+        validators=[InputRequired(), DataRequired()],
+        render_kw={
+            "class": "form-control",
+            "id": "select_report",
+            "hx-get": "/dashboard/admin/reports",
+            "hx-target": "#select_report_type",
+            "hx-indicator": ".htmx-indicator",
+        },
+    )
+
+    report_type = SelectField(
+        "Report Type",
+        choices=[("", "Select Report Type")],
+        validators=[InputRequired()],
+        render_kw={"class": "form-control", "id": "select_report_type"},
+    )
+
+    start_date = DateField(
+        "Start Date",
+        validators=[InputRequired(), DataRequired()],
+        default=dt.utcnow(),
+        render_kw={"class": "form-control", "max": dt.utcnow()},
+    )
+
+    end_date = DateField(
+        "End Date",
+        validators=[InputRequired(), DataRequired()],
+        default=dt.utcnow(),
+        render_kw={"class": "form-control", "max": dt.utcnow()},
     )

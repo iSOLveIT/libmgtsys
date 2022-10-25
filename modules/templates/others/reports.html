@@ -30,30 +30,26 @@
 					<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#reports_div" hx-swap="outerHTML">
 						<!-- Report form -->
 						<div class="form-row slideInRight form-anime" id="report_form">
-							<div class="form-group col-md-5">
-								<select name="select_report" id="select_report" class="form-control">
-									<option value="users">Users Report</option>
-									<option value="books">Books Report</option>
-									<option value="books_issued">Books Issued Report</option>
-								</select>
+							{% for field in report_form %}
+								{% if field.name != 'csrf_token' %}
+									<div class="form-group col-md-3">
+										{% if field.id not in ['csrf_token'] %}
+											{{ field.label }}
+										{% endif %}
+										{{ field }}
+									</div>
+								{% endif %}
+							{%endfor%}
+
+							<div class="form-group col-md-2">
+								<div>
+									<button type="submit" class="btn search-btn full-width rounded">
+										<i class="ti-thumb-up"></i> Submit
+									</button>
+								</div>
 							</div>
 
-							<div class="form-group col-md-5">
-								<select name="select_user_type" id="select_user_type"
-										class="form-control collapse_is_hidden">
-									<option value="all">All</option>
-									<option value="student">Student</option>
-									<option value="teacher">Teacher</option>
-									<option value="admin">Admin</option>
-								</select>
-								<select name="select_book_category" id="select_book_category"
-										class="form-control collapse_is_hidden">
-									<option value="all">All</option>
-									<option value="english">English</option>
-									<option value="maths">Mathematics</option>
-									<option value="science">Science</option>
-								</select>
-							</div>
+							{{ report_form.csrf_token }}
 						</div>
 						<!-- Report form -->
 					</form>

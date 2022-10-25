@@ -1,48 +1,48 @@
 {% if cancel_print %}
 	<!-- Row -->
-	<div class="row" id="bookTag_div">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="dashboard_container">
-				<div class="dashboard_container_header">
-					<div class="dashboard_fl_1">
-						<h4>Book Tags Generator Form</h4>
-					</div>
+	<div class="row" id="reports_div">
+	<div class="col-lg-12 col-md-12 col-sm-12">
+		<div class="dashboard_container">
+			<div class="dashboard_container_header">
+				<div class="dashboard_fl_1">
+					<h4>Generate Reports</h4>
 				</div>
-				<div class="dashboard_container_body p-4">
-					<div class="submit-section">
-						<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#bookTag_div" hx-swap="outerHTML">
-						<!-- Book form -->
-							<div class="form-row slideInRight form-anime" id="bookTag_form">
-								{% for field in form %}
-									{% if field.name != 'csrf_token' %}
-										<div class="form-group col-md-6">
-											{% if field.id not in ['csrf_token'] %}
-												{{ field.label }}
-											{% endif %}
-											{{ field }}
-										</div>
-									{% endif %}
-								{%endfor%}
-
-								<div class="form-group col-md-2">
-									<div>
-										<label for="submit-btn-ex" class="invisible">Button</label>
-										<button type="submit" id="submit-btn-ex" class="btn search-btn full-width rounded">
-											<i class="ti-thumb-up"></i> Submit
-										</button>
-									</div>
-								</div>
-								{{ form.csrf_token }}
-							</div>
-						<!-- Book tags form -->
-						</form>
-					</div>
-
-				</div>
-
 			</div>
+			<div class="dashboard_container_body p-4">
+				<div class="submit-section">
+					<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#reports_div" hx-swap="outerHTML">
+						<!-- Report form -->
+						<div class="form-row slideInRight form-anime" id="report_form">
+							{% for field in report_form %}
+								{% if field.name != 'csrf_token' %}
+									<div class="form-group col-md-3">
+										{% if field.id not in ['csrf_token'] %}
+											{{ field.label }}
+										{% endif %}
+										{{ field }}
+									</div>
+								{% endif %}
+							{%endfor%}
+
+							<div class="form-group col-md-2">
+								<div>
+									<button type="submit" class="btn search-btn full-width rounded">
+										<i class="ti-thumb-up"></i> Submit
+									</button>
+								</div>
+							</div>
+
+							{{ report_form.csrf_token }}
+						</div>
+						<!-- Report form -->
+					</form>
+
+				</div>
+			</div>
+
 		</div>
 	</div>
+</div>
 	<!-- /Row -->
 {% else %}
 	<!-- Row -->
@@ -100,3 +100,4 @@
 	</div>
 	<!-- /Row -->
 {% endif %}
+

@@ -14,10 +14,10 @@ from pathlib import Path
 from werkzeug.utils import secure_filename
 
 from ... import allowed_file
-from project.modules.users.models import User, StudentClass
+from project.modules.users.models import User, StudentClass, Role, Staff
 from project.modules.books.models import Books, UserBooksHistory
 from project.modules.tracking.forms import SearchBooksForm
-from .forms import BookTagForm
+from .forms import BookTagForm, ReportForm
 
 static_path = Path(".").parent.absolute() / "modules/static"
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
@@ -103,14 +103,40 @@ def book_tags():
 
 
 # View for admin reports
-@dashboard_bp.route("/admin/reports", methods=["GET"])
+@dashboard_bp.route("/admin/reports", methods=["GET", "POST"])
 def generate_reports():
+    cancel_print = request.args.get("cancel_print", default=False)
     user_log = True
     context = {}
     admin = True  # remove this when user login is implemented
-    context.update(admin=admin, user_log=user_log)
-    # Use same interface as the one used for user registration.
-    return render_template("others/reports.html", **context)
+    report_type = request.args.get("select_report", default=None, type=str)
+    report_form = ReportForm()
+    context.update(admin=admin, user_log=user_log, report_form=report_form)
+
+    if request.method == "POST" and report_form.validate():
+        # TODO: Write logic for getting report data here.
+        pass
+    if report_type is None:
+        return render_template("others/reports.html", **context)
+
+    if not cancel_print:
+        return render_template("others/reports.html", **context)
+
+    report_type_context = {}
+    if report_type == "users":
+        user_roles = Role.query.all()
+        report_type_context.update(roles=user_roles, report_type=report_type)
+        return render_template("others/report_type.html", **report_type_context)
+    elif report_type == "books":
+        book_category = Staff.query.all()
+        report_type_context.update(categories=book_category, report_type=report_type)
+        return render_template("others/report_type.html", **report_type_context)
+    elif report_type == "books_issued":
+        book_category = Staff.query.all()
+        report_type_context.update(categories=book_category, report_type=report_type)
+        return render_template("others/report_type.html", **report_type_context)
+    else:
+        return render_template("others/report_type.html", **report_type_context)
 
 
 # VIEWS FOR USER (STUDENT and TEACHER)

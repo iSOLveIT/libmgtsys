@@ -538,22 +538,22 @@ $(function() {
 	});
 
     // report generation
-	$('#select_report').select2({
-		placeholder: "Select Report",
-		allowClear: true
-	});
+//	$('#select_report').select2({
+//		placeholder: "Select Report",
+//		allowClear: true
+//	});
 
-    // user reports
-	$('#select_user_type').select2({
-		placeholder: "Select User Type",
-		allowClear: true
-	});
-
-    // book reports
-	$('#select_book_category').select2({
-		placeholder: "Select Book Category",
-		allowClear: true
-	});
+//    // user reports
+//	$('#select_report_type').select2({
+//		placeholder: "Select Report Type",
+//		allowClear: true
+//	});
+//
+//    // book reports
+//	$('#select_book_category').select2({
+//		placeholder: "Select Book Category",
+//		allowClear: true
+//	});
 
 });
 
