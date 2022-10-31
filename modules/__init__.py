@@ -117,6 +117,6 @@ app.register_blueprint(tracking_bp)
 
 
 # Login page as home
-@app.route('/')
+@app.route("/")
 def home():
     return redirect(url_for("auth.login"))

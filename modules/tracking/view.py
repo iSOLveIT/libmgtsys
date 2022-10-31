@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 
-from .forms import IssueBookForm, SearchBooksForm
+from .forms import IssueBookForm, SearchAvailableBooksForm
 from project.modules.books.models import Books, UserBooksHistory, User
 
 from flask import Blueprint, render_template, request
@@ -24,7 +24,7 @@ tracking_bp = Blueprint("tracking", __name__, url_prefix="/tracking")
 @tracking_bp.route("/get_books", methods=["POST"])
 def tracking_index():
     context = {}
-    search_form = SearchBooksForm()
+    search_form = SearchAvailableBooksForm()
     issue_form = IssueBookForm()
     search_keyword = str(search_form.search_term.data).lower()
     get_books = []

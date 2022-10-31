@@ -46,7 +46,7 @@ select.collapse_is_hidden{
 	*{
 		color:#000!important
     }
-	html,body{
+	html, body{
 		background-color:#fff!important;
 		color:#000!important
     }
@@ -55,16 +55,25 @@ select.collapse_is_hidden{
         margin: 0px!important;
       }
 
-    div.header, div#dashboard-menu, div#breadcrumb-div,
+    div.header, div#dashboard-menu, div#breadcrumb-div, #report-breadcrumb-nav,
     .dashboard_container .dashboard_container_header, footer.dark-footer {
-	    display:none;
+	    display: none;
 	}
 
-	@page{
-	size: A4;
-	margin: 0mm;
-	orientation: portrait;
-}
+	.dashboard_container_body{
+	    max-height: 100%!important;
+	    overflow-y: auto;
+	}
+
+	.table tr th, .table tr td{
+	    border: 1px solid #000 !important;
+	}
+
+    @page{
+        size: A4;
+        margin: 0mm;
+        orientation: portrait;
+    }
 }
 
 .dashboard_fl_1 a.cancel_btn:hover, .dashboard_fl_1 a.cancel_btn:focus {

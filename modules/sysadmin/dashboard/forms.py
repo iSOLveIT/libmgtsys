@@ -1,4 +1,4 @@
-from datetime import datetime as dt
+from datetime import datetime as dt, timedelta
 
 from wtforms_alchemy import InputRequired, Length, DataRequired
 from flask_wtf import FlaskForm
@@ -63,24 +63,21 @@ class ReportForm(FlaskForm):
         validators=[InputRequired(), DataRequired()],
         render_kw={
             "class": "form-control",
-            "id": "select_report",
             "hx-get": "/dashboard/admin/reports",
-            "hx-target": "#select_report_type",
-            "hx-indicator": ".htmx-indicator",
+            "hx-target": "#report_type",
         },
     )
 
     report_type = SelectField(
         "Report Type",
         choices=[("", "Select Report Type")],
-        validators=[InputRequired()],
-        render_kw={"class": "form-control", "id": "select_report_type"},
+        render_kw={"class": "form-control"},
     )
 
     start_date = DateField(
         "Start Date",
         validators=[InputRequired(), DataRequired()],
-        default=dt.utcnow(),
+        default=dt.utcnow() - timedelta(days=30),
         render_kw={"class": "form-control", "max": dt.utcnow()},
     )
 

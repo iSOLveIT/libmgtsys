@@ -9,7 +9,7 @@ from wtforms.fields import DateField, SearchField
 from flask_wtf import FlaskForm
 
 
-class SearchBooksForm(ModelForm):
+class SearchAvailableBooksForm(ModelForm):
     """
     SearchBooksForm - Form for searching books
 

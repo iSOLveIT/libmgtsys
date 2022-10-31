@@ -4,7 +4,7 @@
 
 {% block content %}
 <!-- Row -->
-	<div class="row">
+	<div class="row" id="report-breadcrumb-nav">
 		<div class="col-lg-12 col-md-12 col-sm-12 pb-4">
 			<nav aria-label="breadcrumb">
 				<ol class="breadcrumb">
@@ -27,7 +27,7 @@
 			</div>
 			<div class="dashboard_container_body p-4">
 				<div class="submit-section">
-					<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#reports_div" hx-swap="outerHTML">
+					<form hx-post="{{ url_for('dashboard.print_reports') }}" hx-target="#reports_div" hx-swap="outerHTML">
 						<!-- Report form -->
 						<div class="form-row slideInRight form-anime" id="report_form">
 							{% for field in report_form %}

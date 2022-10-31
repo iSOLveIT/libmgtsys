@@ -2,7 +2,7 @@ flask
 flask-compress
 flask-session
 flask-socketio
-flask-sqlalchemy
+flask-sqlalchemy==2.5.1
 flask-migrate
 flask-pydantic
 flask-wtf

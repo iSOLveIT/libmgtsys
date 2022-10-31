@@ -1,16 +1,218 @@
-{% if cancel_print %}
+{% if report_type == 'users' %}
 	<!-- Row -->
+	<div class="row" id="reports_div">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<a hx-get="{{ url_for('dashboard.print_reports', cancel_print='True') }}"
+						   hx-trigger="click" hx-target="#reports_div" hx-swap="outerHTML"
+						   style="font-weight:500;font-size: medium;background-color: #da0b4e; transition: all .05s ease-in-out;cursor: pointer;"
+						class="p-2 text-white rounded cancel_btn">
+							<i class="ti-close"></i> &nbsp;Cancel
+						</a>
+					</div>
+
+					<div class="dashboard_fl_1" style="text-align: right;">
+						<a href="#" style="font-weight:500;font-size: medium;background-color: #131b31; transition: all .05s ease-in-out;"
+						class="p-2 text-white rounded print_btn"
+			onclick="print_tag()">
+							<i class="ti-printer"></i> &nbsp;Print
+						</a>
+					</div>
+				</div>
+				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4"
+					 style="max-height:300px; overflow-y:scroll;">
+					{% if users_results %}
+						<div class="table-responsive">
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">User ID</th>
+										<th scope="col">Name</th>
+										<th scope="col">Class/Department</th>
+										<th scope="col">Gender</th>
+										<th scope="col">Created At</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for record in users_results %}
+										<tr>
+											<th scope="row">{{ record.sid | replace('_', '/') }}</th>
+											<td>{{ record.name | title }} </td>
+											{% if record.role.purpose.value == 'STUDENT' %}
+												{% set s_prog = record.s_class.programme | get_course %}
+												{% set s_form = record.s_class.year_group | get_current_class %}
+												{% set s_track = record.s_class.track | get_track %}
+												{% if s_form > 3 %}
+													{% set s_class = [s_prog, 3, record.s_class.current_class, s_track, " (completed)"] | join('') %}
+												{% else %}
+													{% set s_class = [s_prog, s_form, record.s_class.current_class, s_track] | join('') %}
+												{% endif %}
+												<td>{{ s_class }} </td>
+											{% elif record.role.purpose.value == 'TEACHER' %}
+												<td>{{ record.staff.department | upper }} </td>
+											{% else %}
+												<td>ADMIN</td>
+											{% endif %}
+
+											<td>{{ record.gender }}</td>
+											<td>{{ record.date_registered.strftime("%d-%m-%Y") }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					{% else %}
+						<h4 class="p-3 text-center">No user records found!</h4>
+					{% endif %}
+				</div>
+			</div>
+
+			</div>
+	</div>
+	<!-- /Row -->
+{% elif report_type == 'books' %}
+	<!-- Row -->
+	<div class="row" id="reports_div">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<a hx-get="{{ url_for('dashboard.print_reports', cancel_print='True') }}"
+						   hx-trigger="click" hx-target="#reports_div" hx-swap="outerHTML"
+						   style="font-weight:500;font-size: medium;background-color: #da0b4e; transition: all .05s ease-in-out;cursor: pointer;"
+						class="p-2 text-white rounded cancel_btn">
+							<i class="ti-close"></i> &nbsp;Cancel
+						</a>
+					</div>
+
+					<div class="dashboard_fl_1" style="text-align: right;">
+						<a href="#" style="font-weight:500;font-size: medium;background-color: #131b31; transition: all .05s ease-in-out;"
+						class="p-2 text-white rounded print_btn"
+			onclick="print_tag()">
+							<i class="ti-printer"></i> &nbsp;Print
+						</a>
+					</div>
+				</div>
+				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4"
+					 style="max-height:300px; overflow-y:scroll;">
+					{% if books_results %}
+						<div class="table-responsive">
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">Classification No.</th>
+										<th scope="col">Title</th>
+										<th scope="col">Author</th>
+										<th scope="col">Category</th>
+										<th scope="col">Current Qty.</th>
+										<th scope="col">Date Recorded</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for record in books_results %}
+										<tr>
+											<th scope="row">{{ record.classification_no | upper }}</th>
+											<td>{{ record.title | upper }} </td>
+											<td>{{ record.author | title }} </td>
+											<td>{{ record.category | title }} </td>
+											<td>{{ record.current_qty }} </td>
+											<td>{{ record.date_recorded.strftime("%d-%m-%Y") }}</td>
+										</tr>
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					{% else %}
+						<h4 class="p-3 text-center">No book records found!</h4>
+					{% endif %}
+				</div>
+			</div>
+
+			</div>
+	</div>
+	<!-- /Row -->
+{% elif report_type == 'books_issued' %}
+	<!-- Row -->
+	<div class="row" id="reports_div">
+		<div class="col-lg-12 col-md-12 col-sm-12">
+			<div class="dashboard_container">
+				<div class="dashboard_container_header">
+					<div class="dashboard_fl_1">
+						<a hx-get="{{ url_for('dashboard.print_reports', cancel_print='True') }}"
+						   hx-trigger="click" hx-target="#reports_div" hx-swap="outerHTML"
+						   style="font-weight:500;font-size: medium;background-color: #da0b4e; transition: all .05s ease-in-out;cursor: pointer;"
+						class="p-2 text-white rounded cancel_btn">
+							<i class="ti-close"></i> &nbsp;Cancel
+						</a>
+					</div>
+
+					<div class="dashboard_fl_1" style="text-align: right;">
+						<a href="#" style="font-weight:500;font-size: medium;background-color: #131b31; transition: all .05s ease-in-out;"
+						class="p-2 text-white rounded print_btn"
+			onclick="print_tag()">
+							<i class="ti-printer"></i> &nbsp;Print
+						</a>
+					</div>
+				</div>
+				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4"
+					 style="max-height:300px; overflow-y:scroll;">
+					{% if books_issued_results %}
+						<div class="table-responsive">
+							<table class="table">
+								<thead class="thead-dark">
+									<tr>
+										<th scope="col">User Name</th>
+										<th scope="col">User ID.</th>
+										<th scope="col">Book Classification No.</th>
+										<th scope="col">Book Title</th>
+										<th scope="col">Book Category</th>
+										<th scope="col">Date Issued</th>
+										<th scope="col">Return Date</th>
+									</tr>
+								</thead>
+								<tbody>
+									{% for record in books_issued_results %}
+										{% if record.book_history.category.value == category %}
+											<tr>
+												<th scope="row">{{ record.user_history.sid | replace('_', '/') }}</th>
+												<td>{{ record.user_history.name | upper }} </td>
+												<td>{{ record.book_history.classification_no | upper}} </td>
+												<td>{{ record.book_history.title | upper }} </td>
+												<td>{{ category | title }} </td>
+												<td>{{ record.date_borrowed.strftime("%d-%m-%Y") }}</td>
+												<td>{{ record.return_date.strftime("%d-%m-%Y") }}</td>
+											</tr>
+										{% endif %}
+									{% endfor %}
+								</tbody>
+							</table>
+						</div>
+					{% else %}
+						<h4 class="p-3 text-center">No issued book records found!</h4>
+					{% endif %}
+				</div>
+			</div>
+
+			</div>
+	</div>
+	<!-- /Row -->
+{% else %}
 	<div class="row" id="reports_div">
 	<div class="col-lg-12 col-md-12 col-sm-12">
 		<div class="dashboard_container">
 			<div class="dashboard_container_header">
 				<div class="dashboard_fl_1">
 					<h4>Generate Reports</h4>
+					<span class="breadcrumb-item" id="report_form-feedback" style="float: right;">
+						{% include 'includes/messages.html'%}
+					</span>
 				</div>
 			</div>
 			<div class="dashboard_container_body p-4">
 				<div class="submit-section">
-					<form hx-post="{{ url_for('dashboard.book_tags') }}" hx-target="#reports_div" hx-swap="outerHTML">
+					<form hx-post="{{ url_for('dashboard.print_reports', select_report='users') }}" hx-target="#reports_div" hx-swap="outerHTML">
 						<!-- Report form -->
 						<div class="form-row slideInRight form-anime" id="report_form">
 							{% for field in report_form %}
@@ -43,61 +245,5 @@
 		</div>
 	</div>
 </div>
-	<!-- /Row -->
-{% else %}
-	<!-- Row -->
-	<div class="row" id="tagPrint_div">
-		<div class="col-lg-12 col-md-12 col-sm-12">
-			<div class="dashboard_container">
-				<div class="dashboard_container_header">
-					<div class="dashboard_fl_1">
-						<a hx-get="{{ url_for('dashboard.book_tags', cancel_print=True) }}" hx-trigger="click"
-						   hx-target="#tagPrint_div" hx-swap="outerHTML"
-						   style="font-weight:500;font-size: medium;background-color: #da0b4e; transition: all .05s ease-in-out;"
-						class="p-2 text-white rounded cancel_btn">
-							<i class="ti-close"></i> &nbsp;Cancel
-						</a>
-					</div>
-
-					<div class="dashboard_fl_1" style="text-align: right;">
-						<a href="#" style="font-weight:500;font-size: medium;background-color: #131b31; transition: all .05s ease-in-out;"
-						class="p-2 text-white rounded print_btn"
-            onclick="print_tag()">
-							<i class="ti-printer"></i> &nbsp;Print
-						</a>
-					</div>
-				</div>
-				<div class="dashboard_container_body pb-3 pt-3 pl-4 pr-4">
-					<div class="tags-section">
-						{% for item in counter %}
-							<div class="row mb-3">
-								{% for i in [0, 1] %}
-									<div class="col-lg-6 col-md-6 col-sm-6 tag-card text-center border border-dark border-2" style="border: dotted !important;">
-										<h3 class="mb-4 mt-3">{{ bk_sch | upper }} LIBRARY</h3>
-										<h5 class="mb-3">{{ bk_title | upper }}</h5>
-										<div class="mb-3 dsktp">
-											<span><b>CLASSI. NO:</b> {{ bk_class_no | upper }}</span> &nbsp;
-											<span><b>ACCESS NO:</b>...........................</span>
-										</div>
-										<div class="mbl">
-											<p class="mb-2"><b>CLASSI. NO:</b> {{ bk_class_no | upper }}</p>
-											<p class="mb-2"><b>ACCESS NO:</b>...........................</p>
-											<p class="mb-2"><b>DATE:</b> {{ bk_date }}</p>
-										</div>
-										<p class="mb-3 dsktp"><b>DATE:</b> {{ bk_date }}</p>
-									</div>
-								{% endfor %}
-
-						</div>
-						{% endfor %}
-
-					</div>
-
-				</div>
-
-			</div>
-		</div>
-	</div>
-	<!-- /Row -->
 {% endif %}
 

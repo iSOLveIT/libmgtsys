@@ -584,26 +584,21 @@ function remove_row(id_value){
 	row.style.display = "none";
 }
 
+htmx.onLoad(function(content) {
+    disappear_row("report_form-feedback");
+})
+
+function disappear_row(id_value){
+    let row_btn = document.getElementById(`${id_value}`);
+    if (row_btn !== null){
+        row_btn.classList.add("fade");
+        window.setTimeout(() => {
+          row_btn.style.display = "none";
+        }, 2000)
+    }
+}
 function print_tag(){
 	window.print();
 	return false
 }
 
-// Report Generation JS
-let choose_report = document.getElementById("select_report");
-
-choose_report.addEventListener("click", function(){
-    report_option_selected = choose_report.value;
-    let show_users_div = document.getElementById("select_user_type");
-    let show_books_div = document.getElementById("select_book_category");
-
-    if (report_option_selected == "users"){
-        show_users_div.style.display = "block";
-        show_books_div.style.display = "none";
-    }
-    if (report_option_selected == "books"){
-        show_books_div.style.display = "block";
-        show_users_div.style.display = "none";
-    }
-
-})

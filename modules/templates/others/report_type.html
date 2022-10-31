@@ -1,23 +1,26 @@
 {% if report_type == 'users' %}
-    <select class="form-control" id="select_report_type" name="report_type" required="">
+    <select class="form-control" id="report_type" name="report_type" required="">
+        <option value="">Select Report Type</option>
         {% for role in roles %}
-            <option value="{{ role.purpose | lower }}">{{ role.purpose | capitalize }}</option>
+            <option value="{{ role.id }}">{{ role.purpose | capitalize }}</option>
         {% endfor %}
     </select>
 {% elif report_type == 'books' %}
-    <select class="form-control" id="select_report_type" name="report_type" required="">
+    <select class="form-control" id="report_type" name="report_type" required="">
+        <option value="">Select Report Type</option>
         {% for category in categories %}
             <option value="{{ category.department | lower }}">{{ category.department | capitalize }}</option>
         {% endfor %}
     </select>
 {% elif report_type == 'books_issued' %}
-    <select class="form-control" id="select_report_type" name="report_type" required="">
+    <select class="form-control" id="report_type" name="report_type" required="">
+        <option value="">Select Report Type</option>
         {% for category in categories %}
-            <option value="{{ category.department | lower}}">{{ category.department | capitalize }}</option>
+            <option value="{{ category.department | lower }}">{{ category.department | capitalize }}</option>
         {% endfor %}
     </select>
 {% else %}
-    <select class="form-control" id="select_report_type" name="report_type" required="">
+    <select class="form-control" id="report_type" name="report_type" required="">
         <option value="">Select Report Type</option>
     </select>
 {% endif %}
