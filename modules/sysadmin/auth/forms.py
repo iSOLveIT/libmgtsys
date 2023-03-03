@@ -1,4 +1,6 @@
 # from datetime import datetime as dt
+from wtforms.fields import StringField, PasswordField
+from wtforms_alchemy import InputRequired, Length, DataRequired
 
 from project.modules.users.models import User
 from project.modules import ModelForm
@@ -10,24 +12,32 @@ from project.modules import ModelForm
 class LoginForm(ModelForm):
     class Meta:
         model = User
-        only = ["sid", "password"]
-        field_args = {
-            "sid": {
-                "render_kw": {
-                    "autocomplete": "off",
-                    "required": "",
-                    "class": "form-control",
-                    "placeholder": "Student ID or Staff ID or Admin ID",
-                }
-            },
-            "password": {"render_kw": {"autocomplete": "off", "required": ""}},
-        }
+        only = ["sid", "show_pswd"]
+
+    sid = StringField(
+        "User ID",
+        validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
+        render_kw={
+            "class": "form-control",
+            "autocomplete": "off",
+            "placeholder": "Student ID or Staff ID or Admin ID",
+        },
+    )
+    show_pswd = PasswordField(
+        "Password",
+        validators=[InputRequired(), DataRequired(), Length(min=12, max=50)],
+        render_kw={
+            "class": "form-control",
+            "autocomplete": "off",
+            "placeholder": "***********",
+        },
+    )
 
 
-class RegistrationForm(ModelForm):
-    class Meta:
-        model = User
-
+# class RegistrationForm(ModelForm):
+#     class Meta:
+#         model = User
+#
 
 #
 # class TalkActivityForm(ModelForm):

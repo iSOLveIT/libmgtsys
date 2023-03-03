@@ -6,13 +6,14 @@ from zoneinfo import ZoneInfo
 import re
 
 from flask import Flask, redirect, url_for
+from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_migrate import Migrate
 from flask_wtf import CSRFProtect, FlaskForm
 from flask_sqlalchemy import SQLAlchemy
 from wtforms_alchemy import model_form_factory
 from jinja2.filters import pass_eval_context
-from pathlib import Path
+# from pathlib import Path
 from dotenv import load_dotenv
 
 
@@ -35,6 +36,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 migrate = Migrate(app, db)
 csrf = CSRFProtect(app)
+bcrypt = Bcrypt(app)
 tzinfo, app_time_zone = ZoneInfo, ZoneInfo("UTC")
 
 BaseModelForm = model_form_factory(FlaskForm)

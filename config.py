@@ -28,7 +28,7 @@ class ProductionConfig(BaseConfig):
     SQLALCHEMY_DATABASE_URI = (
         os.environ.get(
             "PROD_SQLALCHEMY_DATABASE_URI",
-            default="postgresql+psycopg2://isolveit:pswd#1234@localhost:8432/lib_dev"
+            default="postgresql+psycopg2://isolveit:pswd#1234@localhost:8432/school"
         )
     )
 
@@ -47,7 +47,7 @@ class DevelopmentConfig(BaseConfig):
     # database configs
     # Add the below line with corrected values in config.py
     # SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://isolveit:pswd#1234@localhost:8432/lib_dev'
-    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://randy:Password#1234@localhost/lib_dev'
+    SQLALCHEMY_DATABASE_URI = 'mysql+pymysql://randy:Password#1234@localhost/school'
 
     # unknown configs
     PASSWORD_SALT = "is not salt for food but a password salt"

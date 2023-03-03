@@ -2,6 +2,7 @@ from flask import Blueprint, render_template, flash, redirect, url_for, request
 from pathlib import Path
 from tempfile import NamedTemporaryFile
 
+from flask_login import login_required
 from sqlalchemy import or_
 from sqlalchemy.exc import IntegrityError
 from openpyxl import load_workbook
@@ -10,6 +11,7 @@ from .models import Books
 from .forms import AddBooksForm, SearchBooksForm
 from .. import db, allowed_file
 from .helper_func import process_data
+from project.modules.sysadmin.auth.view import admin_only_route
 
 static_path = Path(".").parent.absolute() / "modules/static"
 books_bp = Blueprint("books", __name__, url_prefix="/books", static_folder=static_path)
@@ -23,21 +25,21 @@ books_bp = Blueprint("books", __name__, url_prefix="/books", static_folder=stati
 
 # View to show book inventory page
 @books_bp.route("/add")
+@login_required
+@admin_only_route
 def book_index():
     context = {}
-    user_log = True
-    admin = True  # remove this when user login is implemented
     books_form = AddBooksForm()
-    context.update(admin=admin, books_form=books_form, user_log=user_log)
+    context.update(books_form=books_form)
     return render_template("books/add.html", **context)
 
 
 # View to show page for searching books
 @books_bp.route("/list", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def list_books():
     context = {}
-    user_log = True
-    admin = True  # remove this when user login is implemented
     search_form = SearchBooksForm()
 
     if request.method == "POST":
@@ -55,12 +57,14 @@ def list_books():
         context.update(book_records=get_books)
         return render_template("books/records_output.html", **context)
 
-    context.update(admin=admin, search_form=search_form, user_log=user_log)
+    context.update(search_form=search_form)
     return render_template("books/view.html", **context)
 
 
 # View to add books
 @books_bp.route("/add/books", methods=["POST"])
+@login_required
+@admin_only_route
 def add_books():
     form = AddBooksForm()
 
@@ -106,9 +110,10 @@ def add_books():
 
 # View to Edit book records
 @books_bp.route("/edit_book/<book_id>", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def edit_book(book_id):
     context = {}
-    # admin = True  # remove this when user login is implemented
     book_record = Books.query.get(book_id)
 
     if book_record is None:
@@ -146,8 +151,9 @@ def edit_book(book_id):
 
 # View to Delete book records
 @books_bp.route("/delete_book/<book_id>", methods=["DELETE"])
+@login_required
+@admin_only_route
 def delete_book(book_id):
-    # admin = True  # remove this when user login is implemented
     book_record = Books.query.get(book_id)
     if book_record is not None:
         book_record.delete()
@@ -171,6 +177,8 @@ def delete_book(book_id):
 
 # View to add books via file import
 @books_bp.route("/add/books/importfile", methods=["POST"])
+@login_required
+@admin_only_route
 def upload_books_file():
     if "books_file" not in request.files:
         flash("No selected file", "info")

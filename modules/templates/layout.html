@@ -23,7 +23,7 @@
 		
     </head>
 
-	{% if user_log %}
+	{% if current_user.is_authenticated %}
 		<body class="red-skin">
 
 		<!-- ============================================================== -->

@@ -191,7 +191,12 @@
 									{% set s_form = record.year_group | get_current_class %}
 									{% set s_track = record.track | get_track %}
 
-									{% set s_class = [s_prog, s_form, record.current_class, s_track] | join('') %}
+									{% if s_form > 3 %}
+										{% set s_class = [s_prog, 3, record.current_class, s_track, " (completed)"] | join('') %}
+									{% else %}
+										{% set s_class = [s_prog, s_form, record.current_class, s_track] | join('') %}
+									{% endif %}
+
 									<td>{{ s_class }} </td>
 									<td>{{ record.users | length }}</td>
 									<td>{{ record.year_group }}</td>

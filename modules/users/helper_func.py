@@ -8,8 +8,8 @@ from .models import User, StudentClass, Staff, Role
 
 def pswd_gen():
     content = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$"
-    generated_list = random.choices(content, k=4)
-    return "SWESCO_" + "".join(generated_list)
+    generated_list = random.choices(content, k=6)
+    return "SCHOOL-LIB-" + "".join(generated_list)
 
 
 def process_data(file_data):

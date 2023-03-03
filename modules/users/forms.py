@@ -7,7 +7,7 @@ from wtforms_alchemy.fields import QuerySelectField
 from wtforms_alchemy import InputRequired, Length, DataRequired
 
 # from flask_wtf.file import FileField
-from wtforms.fields import SelectField, StringField, SearchField
+from wtforms.fields import SelectField, StringField, SearchField, PasswordField
 
 
 class StudentForm(ModelForm):
@@ -100,9 +100,8 @@ class AdminForm(ModelForm):
 
     class Meta:
         model = User
-        only = ["sid", "name", "password", "gender"]
+        only = ["sid", "name", "show_pswd", "gender"]
         field_args = {
-            "password": {"render_kw": {"autocomplete": "off", "required": ""}},
             "name": {
                 "render_kw": {
                     "autocomplete": "off",
@@ -125,6 +124,15 @@ class AdminForm(ModelForm):
         "Admin ID",
         validators=[InputRequired(), DataRequired(), Length(min=10, max=30)],
         render_kw={"class": "form-control", "placeholder": "AD10318723"},
+    )
+    show_pswd = PasswordField(
+        "Password",
+        validators=[InputRequired(), DataRequired(), Length(min=12, max=50)],
+        render_kw={
+            "class": "form-control",
+            "autocomplete": "off",
+            "placeholder": "***********",
+        },
     )
 
 

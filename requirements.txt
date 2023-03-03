@@ -7,6 +7,7 @@ flask-migrate
 flask-pydantic
 flask-wtf
 flask-login
+flask-bcrypt
 Flask-WeasyPrint==0.6
 passlib
 gunicorn

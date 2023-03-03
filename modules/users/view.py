@@ -10,7 +10,7 @@ from flask import (
     request,
     send_from_directory,
 )
-from flask_login import current_user
+from flask_login import current_user, login_required
 from pathlib import Path
 from openpyxl import load_workbook
 from sqlalchemy.exc import IntegrityError
@@ -23,18 +23,18 @@ from .models import User, StudentClass, Staff, Role
 from .forms import StudentForm, TeacherForm, AdminForm, SearchUserForm, EditAdminForm
 from .helper_func import process_data, pswd_gen
 from .. import db, allowed_file
-
+from project.modules.sysadmin.auth.view import admin_only_route
 
 # Activation needed. Move from here to dashboard folder
-def activation_required(f):
-    @wraps(f)
-    def wrap(*args, **kwargs):
-        if not current_user.has_activated:
-            return redirect(url_for("reset_password"))
-
-        return f(*args, **kwargs)
-
-    return wrap
+# def activation_required(f):
+#     @wraps(f)
+#     def wrap(*args, **kwargs):
+#         if not current_user.has_activated:
+#             return redirect(url_for("reset_password"))
+#
+#         return f(*args, **kwargs)
+#
+#     return wrap
 
 
 static_path = Path(".").parent.absolute() / "modules/static"
@@ -45,17 +45,15 @@ users_bp = Blueprint("users", __name__, url_prefix="/users", static_folder=stati
 
 # View to show user registration page
 @users_bp.route("/register")
+@login_required
+@admin_only_route
 def user_index():
     context = {}
-    user_log = True
-    admin = True  # remove this when user login is implemented
     student_form = StudentForm()
     teacher_form = TeacherForm()
     admin_form = AdminForm()
     context.update(
-        admin=admin,
         student_form=student_form,
-        user_log=user_log,
         teacher_form=teacher_form,
         admin_form=admin_form,
     )
@@ -64,6 +62,8 @@ def user_index():
 
 # View to create student accounts
 @users_bp.route("/register/user/student", methods=["POST"])
+@login_required
+@admin_only_route
 def add_student_account():
     role = Role.query.filter(Role.purpose == "student").first()
     if role is None:
@@ -73,7 +73,9 @@ def add_student_account():
     form.name.data = str(form.name.data).lower()
     track, prog, year, _ = str(form.sid.data).upper().split("_", 3)
     student_user = User()
-    student_user.password = pswd_gen()
+    generate_pswd = pswd_gen()
+    student_user.password = generate_pswd
+    student_user._show_pswd = generate_pswd
     form.populate_obj(student_user)
 
     if form.validate():
@@ -113,6 +115,8 @@ def add_student_account():
 
 # View to create teacher accounts
 @users_bp.route("/register/user/teacher", methods=["POST"])
+@login_required
+@admin_only_route
 def add_teacher_account():
     role = Role.query.filter(Role.purpose == "teacher").first()
     if role is None:
@@ -121,7 +125,9 @@ def add_teacher_account():
     form.sid.data = str(form.sid.data).upper().replace("/", "_")
     form.name.data = str(form.name.data).lower()
     teacher_user = User()
-    teacher_user.password = pswd_gen()
+    generate_pswd = pswd_gen()
+    teacher_user.password = generate_pswd
+    teacher_user._show_pswd = generate_pswd
     form.populate_obj(teacher_user)
     if form.validate():
         print(form.validate_on_submit(), form.data)
@@ -151,6 +157,8 @@ def add_teacher_account():
 
 # View to create admin accounts
 @users_bp.route("/register/user/admin", methods=["POST"])
+@login_required
+@admin_only_route
 def add_admin_account():
     role = Role.query.filter(Role.purpose == "admin").first()
     if role is None:
@@ -166,8 +174,9 @@ def add_admin_account():
             flash(f"User with ID: {form.sid.data} already exist.", "warning")
             return redirect(url_for(".user_index"))
 
-        print(form.validate_on_submit(), form.data)
-        # TODO: admin_user.password = form.password.data
+        # print(form.validate_on_submit(), form.data)
+        admin_user.password = form.password.data
+        admin_user._show_pswd = form.password.data
         try:
             # Append user to role and class
             role.users.append(admin_user)
@@ -181,6 +190,8 @@ def add_admin_account():
 
 # View to show page for searching users
 @users_bp.route("/list", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def list_users():
     context = {}
     user_log = True
@@ -206,6 +217,8 @@ def list_users():
 
 # View to Edit user records
 @users_bp.route("/edit_user/<user_id>", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def edit_user(user_id):
     context = {}
     # admin = True  # remove this when user login is implemented
@@ -296,6 +309,8 @@ def edit_user(user_id):
 
 # View to Delete user records
 @users_bp.route("/delete_user/<user_id>", methods=["DELETE"])
+@login_required
+@admin_only_route
 def delete_user(user_id):
     # admin = True  # remove this when user login is implemented
     user_record = User.query.get(user_id)
@@ -321,6 +336,8 @@ def delete_user(user_id):
 
 # View to create users via file import
 @users_bp.route("/register/user/importfile", methods=["POST"])
+@login_required
+@admin_only_route
 def upload_users_file():
     if "user_file" not in request.files:
         flash("No selected file", "info")

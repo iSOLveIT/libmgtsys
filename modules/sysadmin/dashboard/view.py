@@ -13,7 +13,9 @@ from pathlib import Path
 
 from sqlalchemy import or_, desc, and_
 from werkzeug.utils import secure_filename
+from flask_login import login_required, current_user
 
+from project.modules.sysadmin.auth.view import admin_only_route
 from ... import allowed_file
 from project.modules.users.models import User, StudentClass, Role, Staff
 from project.modules.books.models import Books, UserBooksHistory
@@ -21,30 +23,24 @@ from project.modules.tracking.forms import SearchAvailableBooksForm
 from project.modules.books.forms import SearchBooksForm
 from .forms import BookTagForm, ReportForm
 
+
 static_path = Path(".").parent.absolute() / "modules/static"
 dashboard_bp = Blueprint("dashboard", __name__, url_prefix="/dashboard")
-
-
-@dashboard_bp.route("/")
-def dashboard():
-    return redirect(url_for("auth.login"))
 
 
 # VIEWS FOR THE ADMIN
 # View for admin dashboard
 @dashboard_bp.route("/admin")
+@login_required
+@admin_only_route
 def admin_dashboard():
-    user_log = True
     context = {}
-    admin = True  # remove this when user login is implemented
     total_users = User.query.count()
     total_books = Books.query.count()
     total_borrowed_books = Books.query.filter(Books.readers).count()
     total_classes = StudentClass.query.count()
     search_form = SearchBooksForm()
     context.update(
-        admin=admin,
-        user_log=user_log,
         search_form=search_form,
         counts=[
             total_users,
@@ -58,6 +54,8 @@ def admin_dashboard():
 
 # View to serve the Excel sample file so that they can be downloaded by users
 @dashboard_bp.route("/admin/download_sample/<string:file_name>")
+@login_required
+@admin_only_route
 def download_sample_file(file_name):
     filename = secure_filename(file_name)
     if allowed_file(filename):
@@ -66,11 +64,11 @@ def download_sample_file(file_name):
 
 # View for generating book tags
 @dashboard_bp.route("/admin/book_tags", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def book_tags():
     cancel_print = request.args.get("cancel_print", default=False)
-    user_log = True
     context = {}
-    admin = True  # remove this when user login is implemented
     form = BookTagForm()
     """
         If request method is POST, then cancel_print == False so show the div with the generated tags output.
@@ -98,7 +96,7 @@ def book_tags():
         )
         return render_template("others/tags_generated.html", **context)
     if not cancel_print:
-        context.update(admin=admin, user_log=user_log, form=form)
+        context.update(form=form)
         return render_template("others/book_tags.html", **context)
     context.update(cancel_print=cancel_print, form=form)
     return render_template("others/tags_generated.html", **context)
@@ -106,13 +104,13 @@ def book_tags():
 
 # View for admin reports
 @dashboard_bp.route("/admin/reports", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def generate_reports():
-    user_log = True
     context = {}
-    admin = True  # remove this when user login is implemented
     report_type = request.args.get("select_report", default=None, type=str)
     report_form = ReportForm()
-    context.update(admin=admin, user_log=user_log, report_form=report_form)
+    context.update(report_form=report_form)
 
     if report_type is None:
         return render_template("others/reports.html", **context)
@@ -135,10 +133,10 @@ def generate_reports():
 
 
 @dashboard_bp.route("/admin/print_reports", methods=["GET", "POST"])
+@login_required
+@admin_only_route
 def print_reports():
-    user_log = True
     context = {}
-    admin = True  # remove this when user login is implemented
     cancel_print = request.args.get("cancel_print", default=None, type=str)
     report_form = ReportForm()
     report_type = report_form.select_report.data or None
@@ -148,7 +146,7 @@ def print_reports():
     elif report_type == "books" or report_type == "books_issued":
         book_category = Staff.query.all()
         report_form.report_type.choices = [(str(item.department).lower(), item.department) for item in book_category]
-    context.update(admin=admin, user_log=user_log, report_form=report_form)
+    context.update(report_form=report_form)
 
     if cancel_print:
         return render_template("others/report_generated.html", **context)
@@ -195,8 +193,8 @@ def print_reports():
 # VIEWS FOR USER (STUDENT and TEACHER)
 # View for user dashboard
 @dashboard_bp.route("/user/<string:user_id>")
+@login_required
 def user_dashboard(user_id):
-    user_log = True
     context = {}
     admin = False  # remove this when user login is implemented
     user_info = User.query.filter(User.sid == user_id).first()
@@ -206,7 +204,6 @@ def user_dashboard(user_id):
     search_form = SearchAvailableBooksForm()
     context.update(
         admin=admin,
-        user_log=user_log,
         books_borrowed=total_books_borrowed,
         search_form=search_form,
         user_info=user_info,
@@ -216,9 +213,9 @@ def user_dashboard(user_id):
 
 # View for user profile
 @dashboard_bp.route("/user/profile")
+@login_required
 def user_profile():
-    user_log = True
     context = {}
     admin = False  # remove this when user login is implemented
-    context.update(admin=admin, user_log=user_log)
+    context.update(admin=admin)
     return render_template("others/user_profile.html", **context)

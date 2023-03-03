@@ -1,13 +1,14 @@
 from datetime import datetime as dt
 
 from flask_login import UserMixin
-from sqlalchemy.ext.hybrid import hybrid_property
+# from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy_utils.types import ChoiceType
-from passlib.hash import pbkdf2_sha512
+from passlib.hash import sha256_crypt
 
 # from project.modules import db
-from .. import db, login_manager
+from .. import db, login_manager, bcrypt
 from ..db_helper import PkModel
+
 
 # from ..tracking.meta import Book
 # from sqlalchemy_utils import force_auto_coercion
@@ -28,15 +29,16 @@ class User(UserMixin, PkModel):
         db.String(30), unique=True, nullable=False, info={"label": "User ID"}
     )
     name = db.Column(db.String(255), nullable=False, info={"label": "Name"})
-    _password = db.Column(db.String(255), nullable=False, info={"label": "Password"})
+    _password = db.Column(db.String, nullable=False, info={"label": "Password"})
+    show_pswd = db.Column(db.String(50), nullable=False, info={"label": "Password"})
     gender = db.Column(
         ChoiceType(choices=GENDER), nullable=False, info={"label": "Gender"}
     )
     date_registered = db.Column(db.DateTime, nullable=False, default=dt.now())
     last_seen = db.Column(db.DateTime, nullable=False, default=dt.now())
     login_at = db.Column(db.DateTime, nullable=False, default=dt.now())
-    has_activated = db.Column(db.Boolean(), nullable=False, default=False)
-    is_active = db.Column(db.Boolean, nullable=False, default=False)
+    authenticated = db.Column(db.Boolean(), nullable=False, default=False)
+    is_active = db.Column(db.Boolean, nullable=False, default=True)
 
     role_id = db.Column(db.Integer, db.ForeignKey("role.id"))
     student_class_id = db.Column(db.Integer, db.ForeignKey("student_class.id"))
@@ -45,18 +47,16 @@ class User(UserMixin, PkModel):
     def __repr__(self):
         return f"<User-id: {self.id}, User-sid: {self.sid}>"
 
-    @hybrid_property
+    @property
     def password(self):
         return self._password
 
     @password.setter
     def password(self, plaintext):
-        # the hashing method is pbkdf2_sha512
-        self._password = pbkdf2_sha512.hash(plaintext)
+        self._password = sha256_crypt.hash(plaintext)
 
     def check_password(self, password):
-        check = pbkdf2_sha512.verify(password, self._password)
-        return check
+        return sha256_crypt.verify(password, self._password)
 
     def is_admin(self):
         r = self.role
@@ -72,7 +72,7 @@ def load_user(user_id):
     return User.query.get(user_id)
 
 
-# login_manager.login_view = "auth.login"
+login_manager.login_view = "auth.login"
 
 
 class StudentClass(PkModel):
